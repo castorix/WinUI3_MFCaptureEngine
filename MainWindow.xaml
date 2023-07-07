@@ -1,0 +1,109 @@
+﻿<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!-- Licensed under the MIT License. See LICENSE in the project root for license information. -->
+
+<Window
+    x:Class="WinUI3_MFCaptureEngine.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinUI3_MFCaptureEngine"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Button x:Name="myButton" Click="myButton_Click">Click Me</Button>
+    </StackPanel>-->
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="10"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Button x:Name="btn_PreviewVideo" Background="MidnightBlue" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10, 8, 0, 0" Width="36" Height="32"
+                    Click="btn_PreviewVideo_Click"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ToolTipService.ToolTip>
+                    <ToolTip x:Name="ttip_PreViewVideo" Content="Start/Stop previewing video" Placement="Bottom" Background="LightYellow" Foreground="Black"/>
+                </ToolTipService.ToolTip>
+                <Viewbox Stretch="Uniform" StretchDirection="Both" Margin="-10, -12, -10, -10">
+                    <FontIcon x:Name="fi_PreviewVideo" FontFamily="Segoe UI Emoji" FontSize="20" 
+                                                           Glyph="&#x1F39E;"                             
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                </Viewbox>
+            </Button>
+            <Button x:Name="btn_RecordVideo" Background="MidnightBlue" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10, 8, 0, 0" Width="36" Height="32"
+                    Click="btn_RecordVideo_Click"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ToolTipService.ToolTip>
+                    <ToolTip x:Name="ttip_RecordVideo" Content="Start recording video" Placement="Bottom" Background="LightYellow" Foreground="Black"/>
+                </ToolTipService.ToolTip>
+                <Viewbox Stretch="Uniform" StretchDirection="Both" Margin="-10, -12, -10, -10">
+                    <!--Glyph="&#x1F4F9;"-->
+                    <FontIcon x:Name="fi_RecordVideo" FontFamily="Segoe UI Emoji" FontSize="20" 
+                                                           Glyph="&#x1F3A5;"                             
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                </Viewbox>
+            </Button>
+            <Button x:Name="btnBrowseVideo"  Background="MidnightBlue" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5, 8, 0, 0" Width="36" Height="32"
+                    Click="btnBrowseVideo_Click"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Browse to select video output file" Placement="Bottom" Background="LightYellow" Foreground="Black"/>
+                </ToolTipService.ToolTip>
+                <Viewbox Stretch="Uniform" StretchDirection="Both" Margin="-10, -12, -10, -10">
+                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="20" Glyph="&#x1F4C1;" 
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                </Viewbox>
+            </Button>
+            <TextBox x:Name="tbFileVideo" Width="400" Height="34" Margin="0, 8, 0, 0"></TextBox>
+            <Button x:Name="btn_SaveImage" Background="MidnightBlue" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10, 8, 0, 0" Width="36" Height="32"
+                    Click="btn_SaveImage_Click"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ToolTipService.ToolTip>
+                    <ToolTip x:Name="ttip_SaveImage" Content="Save the current frame" Placement="Bottom" Background="LightYellow" Foreground="Black"/>
+                </ToolTipService.ToolTip>
+                <Viewbox Stretch="Uniform" StretchDirection="Both" Margin="-10, -12, -10, -10">
+                    <!--Glyph="&#x1F4F9;"-->
+                    <FontIcon x:Name="fi_SaveImage" FontFamily="Segoe UI Emoji" FontSize="20" 
+                                                           Glyph="&#x1F4F7;"                             
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                </Viewbox>
+            </Button>
+            <Button x:Name="btnBrowseImage"  Background="MidnightBlue" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5, 8, 0, 0" Width="36" Height="32"
+                    Click="btnBrowseImage_Click"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Browse to select image output file" Placement="Bottom" Background="LightYellow" Foreground="Black"/>
+                </ToolTipService.ToolTip>
+                <Viewbox Stretch="Uniform" StretchDirection="Both" Margin="-10, -12, -10, -10">
+                    <FontIcon FontFamily="Segoe UI Emoji" FontSize="20" Glyph="&#x1F4C1;" 
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                </Viewbox>
+            </Button>
+            <TextBox x:Name="tbFileImage" Width="400" Height="34" Margin="0, 8, 0, 0"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <!--<ToggleSwitch x:Name="tsMirror" Header="Mirror" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0, 6, 0, 0"
+                          OffContent="No" OnContent="Yes" Toggled="tsMirror_Toggled">
+            <ToolTipService.ToolTip>
+                <ToolTip Content="Mirror Preview" Placement="Bottom" Background="LightYellow" Foreground="Black"/>
+            </ToolTipService.ToolTip>
+            </ToggleSwitch>-->
+            <TextBlock Margin="10, 8, 0, 0">Rotate (video)</TextBlock>
+            <!--Header="Rotate"-->
+            <ComboBox x:Name="cmbRotate" Margin="0, 4, 0, 0"
+                ItemsSource="{x:Bind rotate}" SelectionChanged="cmbRotate_SelectionChanged">                
+            </ComboBox>     
+        </StackPanel>
+
+        <Border Grid.Row="2" Grid.Column="0"  Background="Black"  BorderThickness="2" BorderBrush="Gray" Margin="10, 10, 0, 10">
+            <Image x:Name="img1" x:FieldModifier="public" HorizontalAlignment="Center" Margin="0, 0, 0, 0" Stretch="Uniform"
+                   Source="Assets/webcam.jpg">
+            </Image>
+        </Border>
+
+    </Grid>
+</Window>

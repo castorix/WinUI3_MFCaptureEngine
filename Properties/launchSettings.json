@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "WinUI3_MFCaptureEngine (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "WinUI3_MFCaptureEngine (Unpackaged)": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

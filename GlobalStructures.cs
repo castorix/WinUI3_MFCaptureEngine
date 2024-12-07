@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace GlobalStructures
 {
-    public enum HRESULT : int
+    public enum HRESULTMF : int
     {
         S_OK = 0,
         S_FALSE = 1,
@@ -203,15 +203,15 @@ namespace GlobalStructures
     public interface IPropertyStore
     {
         [PreserveSig]
-        HRESULT GetCount([Out] out uint propertyCount);
+        HRESULTMF GetCount([Out] out uint propertyCount);
         [PreserveSig]
-        HRESULT GetAt([In] uint propertyIndex, [Out, MarshalAs(UnmanagedType.Struct)] out PROPERTYKEY key);
+        HRESULTMF GetAt([In] uint propertyIndex, [Out, MarshalAs(UnmanagedType.Struct)] out PROPERTYKEY key);
         [PreserveSig]
-        HRESULT GetValue([In, MarshalAs(UnmanagedType.Struct)] ref PROPERTYKEY key, [Out, MarshalAs(UnmanagedType.Struct)] out PROPVARIANT pv);
+        HRESULTMF GetValue([In, MarshalAs(UnmanagedType.Struct)] ref PROPERTYKEY key, [Out, MarshalAs(UnmanagedType.Struct)] out PROPVARIANT pv);
         [PreserveSig]
-        HRESULT SetValue([In, MarshalAs(UnmanagedType.Struct)] ref PROPERTYKEY key, [In, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pv);
+        HRESULTMF SetValue([In, MarshalAs(UnmanagedType.Struct)] ref PROPERTYKEY key, [In, MarshalAs(UnmanagedType.Struct)] ref PROPVARIANT pv);
         [PreserveSig]
-        HRESULT Commit();
+        HRESULTMF Commit();
     }
 
     public class GlobalTools

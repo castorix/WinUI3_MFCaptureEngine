@@ -14,10 +14,10 @@ namespace DXGI
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IDXGIObject
     {
-        HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
     }
 
     [ComImport]
@@ -26,13 +26,13 @@ namespace DXGI
     public interface IDXGIDeviceSubObject : IDXGIObject
     {
         #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
-        HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
+        HRESULTMF GetDevice(ref Guid riid, out IntPtr ppDevice);
     }
 
     [ComImport]
@@ -41,16 +41,16 @@ namespace DXGI
     public interface IDXGIAdapter : IDXGIObject
     {
         #region IDXGIObject
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
         [PreserveSig]
-        HRESULT EnumOutputs(uint Output, ref IDXGIOutput ppOutput);
-        HRESULT GetDesc(out DXGI_ADAPTER_DESC pDesc);
-        HRESULT CheckInterfaceSupport(ref Guid InterfaceName, out LARGE_INTEGER pUMDVersion);
+        HRESULTMF EnumOutputs(uint Output, ref IDXGIOutput ppOutput);
+        HRESULTMF GetDesc(out DXGI_ADAPTER_DESC pDesc);
+        HRESULTMF CheckInterfaceSupport(ref Guid InterfaceName, out LARGE_INTEGER pUMDVersion);
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -81,27 +81,27 @@ namespace DXGI
     public interface IDXGIOutput : IDXGIObject
     {
         #region IDXGIObject
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
         //HRESULT SetPrivateDataInterface(ref Guid Name, IUnknown* pUnknown);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
-        HRESULT GetDesc(out DXGI_OUTPUT_DESC pDesc);
-        HRESULT GetDisplayModeList(DXGI_FORMAT EnumFormat, uint Flags, ref uint pNumModes, DXGI_MODE_DESC pDesc);
+        HRESULTMF GetDesc(out DXGI_OUTPUT_DESC pDesc);
+        HRESULTMF GetDisplayModeList(DXGI_FORMAT EnumFormat, uint Flags, ref uint pNumModes, DXGI_MODE_DESC pDesc);
         //HRESULT FindClosestMatchingMode(DXGI_MODE_DESC pModeToMatch, out  DXGI_MODE_DESC pClosestMatch, IUnknown pConcernedDevice);
-        HRESULT FindClosestMatchingMode(DXGI_MODE_DESC pModeToMatch, out DXGI_MODE_DESC pClosestMatch, IntPtr pConcernedDevice);
-        HRESULT WaitForVBlank();
+        HRESULTMF FindClosestMatchingMode(DXGI_MODE_DESC pModeToMatch, out DXGI_MODE_DESC pClosestMatch, IntPtr pConcernedDevice);
+        HRESULTMF WaitForVBlank();
         //HRESULT TakeOwnership(IUnknown pDevice, bool Exclusive);
-        HRESULT TakeOwnership(IntPtr pDevice, bool Exclusive);
+        HRESULTMF TakeOwnership(IntPtr pDevice, bool Exclusive);
         void ReleaseOwnership();
-        HRESULT GetGammaControlCapabilities(out DXGI_GAMMA_CONTROL_CAPABILITIES pGammaCaps);
-        HRESULT SetGammaControl(DXGI_GAMMA_CONTROL pArray);
-        HRESULT GetGammaControl(out DXGI_GAMMA_CONTROL pArray);
-        HRESULT SetDisplaySurface(IDXGISurface pScanoutSurface);
-        HRESULT GetDisplaySurfaceData(IDXGISurface pDestination);
-        HRESULT GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
+        HRESULTMF GetGammaControlCapabilities(out DXGI_GAMMA_CONTROL_CAPABILITIES pGammaCaps);
+        HRESULTMF SetGammaControl(DXGI_GAMMA_CONTROL pArray);
+        HRESULTMF GetGammaControl(out DXGI_GAMMA_CONTROL pArray);
+        HRESULTMF SetDisplaySurface(IDXGISurface pScanoutSurface);
+        HRESULTMF GetDisplaySurfaceData(IDXGISurface pDestination);
+        HRESULTMF GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -354,20 +354,20 @@ namespace DXGI
         #region <IDXGIDeviceSubObject>
 
         #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
-        new HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
+        new HRESULTMF GetDevice(ref Guid riid, out IntPtr ppDevice);
         #endregion
 
-        HRESULT GetDesc(out DXGI_SURFACE_DESC pDesc);
+        HRESULTMF GetDesc(out DXGI_SURFACE_DESC pDesc);
         [PreserveSig]
-        HRESULT Map(out DXGI_MAPPED_RECT pLockedRect, uint MapFlags);
+        HRESULTMF Map(out DXGI_MAPPED_RECT pLockedRect, uint MapFlags);
         [PreserveSig]
-        HRESULT Unmap();
+        HRESULTMF Unmap();
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -392,19 +392,19 @@ namespace DXGI
     public interface IDXGIFactory : IDXGIObject
     {
         #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
         //HRESULT SetPrivateDataInterface(ref Guid Name, IUnknown* pUnknown);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
-        HRESULT EnumAdapters(uint Adapter, out IDXGIAdapter ppAdapter);
-        HRESULT MakeWindowAssociation(IntPtr WindowHandle, uint Flags);
-        HRESULT GetWindowAssociation(out IntPtr pWindowHandle);
+        HRESULTMF EnumAdapters(uint Adapter, out IDXGIAdapter ppAdapter);
+        HRESULTMF MakeWindowAssociation(IntPtr WindowHandle, uint Flags);
+        HRESULTMF GetWindowAssociation(out IntPtr pWindowHandle);
         [PreserveSig]
-        HRESULT CreateSwapChain(IntPtr pDevice, DXGI_SWAP_CHAIN_DESC pDesc, out IDXGISwapChain ppSwapChain);
-        HRESULT CreateSoftwareAdapter(IntPtr Module, out IDXGIAdapter ppAdapter);
+        HRESULTMF CreateSwapChain(IntPtr pDevice, DXGI_SWAP_CHAIN_DESC pDesc, out IDXGISwapChain ppSwapChain);
+        HRESULTMF CreateSoftwareAdapter(IntPtr Module, out IDXGIAdapter ppAdapter);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -442,28 +442,28 @@ namespace DXGI
     {
         #region IDXGIDeviceSubObject
         #region IDXGIObject
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
         //HRESULT SetPrivateDataInterface(ref Guid Name, IUnknown* pUnknown);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
-        new HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
+        new HRESULTMF GetDevice(ref Guid riid, out IntPtr ppDevice);
         #endregion
 
         [PreserveSig]
-        HRESULT Present(uint SyncInterval, uint Flags);
+        HRESULTMF Present(uint SyncInterval, uint Flags);
         [PreserveSig]
-        HRESULT GetBuffer(uint Buffer, ref Guid riid, out IntPtr ppSurface);
-        HRESULT SetFullscreenState(bool Fullscreen, IDXGIOutput pTarget);
-        HRESULT GetFullscreenState(out bool pFullscreen, out IDXGIOutput ppTarget);
-        HRESULT GetDesc(out DXGI_SWAP_CHAIN_DESC pDesc);
-        HRESULT ResizeBuffers(uint BufferCount, uint Width, uint Height, DXGI_FORMAT NewFormat, uint SwapChainFlags);
-        HRESULT ResizeTarget(DXGI_MODE_DESC pNewTargetParameters);
-        HRESULT GetContainingOutput(out IDXGIOutput ppOutput);
-        HRESULT GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
-        HRESULT GetLastPresentCount(out uint pLastPresentCount);
+        HRESULTMF GetBuffer(uint Buffer, ref Guid riid, out IntPtr ppSurface);
+        HRESULTMF SetFullscreenState(bool Fullscreen, IDXGIOutput pTarget);
+        HRESULTMF GetFullscreenState(out bool pFullscreen, out IDXGIOutput ppTarget);
+        HRESULTMF GetDesc(out DXGI_SWAP_CHAIN_DESC pDesc);
+        HRESULTMF ResizeBuffers(uint BufferCount, uint Width, uint Height, DXGI_FORMAT NewFormat, uint SwapChainFlags);
+        HRESULTMF ResizeTarget(DXGI_MODE_DESC pNewTargetParameters);
+        HRESULTMF GetContainingOutput(out IDXGIOutput ppOutput);
+        HRESULTMF GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
+        HRESULTMF GetLastPresentCount(out uint pLastPresentCount);
     }
 
     [ComImport]
@@ -472,23 +472,23 @@ namespace DXGI
     public interface IDXGIFactory1 : IDXGIFactory
     {
         #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
         //HRESULT SetPrivateDataInterface(ref Guid Name, IUnknown* pUnknown);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
         #region <IDXGIFactory>
-        new HRESULT EnumAdapters(uint Adapter, out IDXGIAdapter ppAdapter);
-        new HRESULT MakeWindowAssociation(IntPtr WindowHandle, uint Flags);
-        new HRESULT GetWindowAssociation(out IntPtr pWindowHandle);
+        new HRESULTMF EnumAdapters(uint Adapter, out IDXGIAdapter ppAdapter);
+        new HRESULTMF MakeWindowAssociation(IntPtr WindowHandle, uint Flags);
+        new HRESULTMF GetWindowAssociation(out IntPtr pWindowHandle);
         [PreserveSig]
-        new HRESULT CreateSwapChain(IntPtr pDevice, DXGI_SWAP_CHAIN_DESC pDesc, out IDXGISwapChain ppSwapChain);
-        new HRESULT CreateSoftwareAdapter(IntPtr Module, out IDXGIAdapter ppAdapter);
+        new HRESULTMF CreateSwapChain(IntPtr pDevice, DXGI_SWAP_CHAIN_DESC pDesc, out IDXGISwapChain ppSwapChain);
+        new HRESULTMF CreateSoftwareAdapter(IntPtr Module, out IDXGIAdapter ppAdapter);
         #endregion
 
-        HRESULT EnumAdapters1(uint Adapter, out IDXGIAdapter1 ppAdapter);
+        HRESULTMF EnumAdapters1(uint Adapter, out IDXGIAdapter1 ppAdapter);
         bool IsCurrent();
     }
 
@@ -499,19 +499,19 @@ namespace DXGI
     {
         #region IDXGIAdapter
         #region IDXGIObject
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
         [PreserveSig]
-        new HRESULT EnumOutputs(uint Output, ref IDXGIOutput ppOutput);
-        new HRESULT GetDesc(out DXGI_ADAPTER_DESC pDesc);
-        new HRESULT CheckInterfaceSupport(ref Guid InterfaceName, out LARGE_INTEGER pUMDVersion);
+        new HRESULTMF EnumOutputs(uint Output, ref IDXGIOutput ppOutput);
+        new HRESULTMF GetDesc(out DXGI_ADAPTER_DESC pDesc);
+        new HRESULTMF CheckInterfaceSupport(ref Guid InterfaceName, out LARGE_INTEGER pUMDVersion);
         #endregion
 
-        HRESULT GetDesc1(DXGI_ADAPTER_DESC1 pDesc);
+        HRESULTMF GetDesc1(DXGI_ADAPTER_DESC1 pDesc);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -537,41 +537,41 @@ namespace DXGI
     {
         #region <IDXGIFactory1>
         #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
         //HRESULT SetPrivateDataInterface(ref Guid Name, IUnknown* pUnknown);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
         #region <IDXGIFactory>
-        new HRESULT EnumAdapters(uint Adapter, out IDXGIAdapter ppAdapter);
-        new HRESULT MakeWindowAssociation(IntPtr WindowHandle, uint Flags);
-        new HRESULT GetWindowAssociation(out IntPtr pWindowHandle);
+        new HRESULTMF EnumAdapters(uint Adapter, out IDXGIAdapter ppAdapter);
+        new HRESULTMF MakeWindowAssociation(IntPtr WindowHandle, uint Flags);
+        new HRESULTMF GetWindowAssociation(out IntPtr pWindowHandle);
         [PreserveSig]
-        new HRESULT CreateSwapChain(IntPtr pDevice, DXGI_SWAP_CHAIN_DESC pDesc, out IDXGISwapChain ppSwapChain);
-        new HRESULT CreateSoftwareAdapter(IntPtr Module, out IDXGIAdapter ppAdapter);
+        new HRESULTMF CreateSwapChain(IntPtr pDevice, DXGI_SWAP_CHAIN_DESC pDesc, out IDXGISwapChain ppSwapChain);
+        new HRESULTMF CreateSoftwareAdapter(IntPtr Module, out IDXGIAdapter ppAdapter);
         #endregion
 
-        new HRESULT EnumAdapters1(uint Adapter, out IDXGIAdapter1 ppAdapter);
+        new HRESULTMF EnumAdapters1(uint Adapter, out IDXGIAdapter1 ppAdapter);
         new bool IsCurrent();
         #endregion
 
         bool IsWindowedStereoEnabled();
         //HRESULT CreateSwapChainForHwnd(IntPtr pDevice, IntPtr hWnd, DXGI_SWAP_CHAIN_DESC1 pDesc, DXGI_SWAP_CHAIN_FULLSCREEN_DESC pFullscreenDesc, IDXGIOutput pRestrictToOutput, out IDXGISwapChain1 ppSwapChain);
         [PreserveSig]
-        HRESULT CreateSwapChainForHwnd(IntPtr pDevice, IntPtr hWnd, ref DXGI_SWAP_CHAIN_DESC1 pDesc, IntPtr pFullscreenDesc, IDXGIOutput pRestrictToOutput, out IDXGISwapChain1 ppSwapChain);
+        HRESULTMF CreateSwapChainForHwnd(IntPtr pDevice, IntPtr hWnd, ref DXGI_SWAP_CHAIN_DESC1 pDesc, IntPtr pFullscreenDesc, IDXGIOutput pRestrictToOutput, out IDXGISwapChain1 ppSwapChain);
         [PreserveSig]
-        HRESULT CreateSwapChainForCoreWindow(IntPtr pDevice, IntPtr pWindow, ref DXGI_SWAP_CHAIN_DESC1 pDesc, IDXGIOutput pRestrictToOutput, out IDXGISwapChain1 ppSwapChain);
-        HRESULT GetSharedResourceAdapterLuid(IntPtr hResource, out LUID pLuid);
-        HRESULT RegisterStereoStatusWindow(IntPtr WindowHandle, uint wMsg, out uint pdwCookie);
-        HRESULT RegisterStereoStatusEvent(IntPtr hEvent, out uint pdwCookie);
+        HRESULTMF CreateSwapChainForCoreWindow(IntPtr pDevice, IntPtr pWindow, ref DXGI_SWAP_CHAIN_DESC1 pDesc, IDXGIOutput pRestrictToOutput, out IDXGISwapChain1 ppSwapChain);
+        HRESULTMF GetSharedResourceAdapterLuid(IntPtr hResource, out LUID pLuid);
+        HRESULTMF RegisterStereoStatusWindow(IntPtr WindowHandle, uint wMsg, out uint pdwCookie);
+        HRESULTMF RegisterStereoStatusEvent(IntPtr hEvent, out uint pdwCookie);
         void UnregisterStereoStatus(uint dwCookie);
-        HRESULT RegisterOcclusionStatusWindow(IntPtr WindowHandle, uint wMsg, out uint pdwCookie);
-        HRESULT RegisterOcclusionStatusEvent(IntPtr hEvent, out uint pdwCookie);
+        HRESULTMF RegisterOcclusionStatusWindow(IntPtr WindowHandle, uint wMsg, out uint pdwCookie);
+        HRESULTMF RegisterOcclusionStatusEvent(IntPtr hEvent, out uint pdwCookie);
         void UnregisterOcclusionStatus(uint dwCookie);
         [PreserveSig]
-        HRESULT CreateSwapChainForComposition(IntPtr pDevice, ref DXGI_SWAP_CHAIN_DESC1 pDesc, IDXGIOutput pRestrictToOutput, out IDXGISwapChain1 ppSwapChain);
+        HRESULTMF CreateSwapChainForComposition(IntPtr pDevice, ref DXGI_SWAP_CHAIN_DESC1 pDesc, IDXGIOutput pRestrictToOutput, out IDXGISwapChain1 ppSwapChain);
     }
 
     [ComImport]
@@ -582,45 +582,45 @@ namespace DXGI
         #region IDXGISwapChain
         #region IDXGIDeviceSubObject
         #region IDXGIObject
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
         //HRESULT SetPrivateDataInterface(ref Guid Name, IUnknown* pUnknown);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
-        new HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
+        new HRESULTMF GetDevice(ref Guid riid, out IntPtr ppDevice);
         #endregion
 
         [PreserveSig]
-        new HRESULT Present(uint SyncInterval, uint Flags);
+        new HRESULTMF Present(uint SyncInterval, uint Flags);
         [PreserveSig]
-        new HRESULT GetBuffer(uint Buffer, ref Guid riid, out IntPtr ppSurface);
-        new HRESULT SetFullscreenState(bool Fullscreen, IDXGIOutput pTarget);
-        new HRESULT GetFullscreenState(out bool pFullscreen, out IDXGIOutput ppTarget);
-        new HRESULT GetDesc(out DXGI_SWAP_CHAIN_DESC pDesc);
+        new HRESULTMF GetBuffer(uint Buffer, ref Guid riid, out IntPtr ppSurface);
+        new HRESULTMF SetFullscreenState(bool Fullscreen, IDXGIOutput pTarget);
+        new HRESULTMF GetFullscreenState(out bool pFullscreen, out IDXGIOutput ppTarget);
+        new HRESULTMF GetDesc(out DXGI_SWAP_CHAIN_DESC pDesc);
 
         [PreserveSig]
-        new HRESULT ResizeBuffers(uint BufferCount, uint Width, uint Height, DXGI_FORMAT NewFormat, uint SwapChainFlags);
-        new HRESULT ResizeTarget(DXGI_MODE_DESC pNewTargetParameters);
-        new HRESULT GetContainingOutput(out IDXGIOutput ppOutput);
+        new HRESULTMF ResizeBuffers(uint BufferCount, uint Width, uint Height, DXGI_FORMAT NewFormat, uint SwapChainFlags);
+        new HRESULTMF ResizeTarget(DXGI_MODE_DESC pNewTargetParameters);
+        new HRESULTMF GetContainingOutput(out IDXGIOutput ppOutput);
         [PreserveSig]
-        new HRESULT GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
-        new HRESULT GetLastPresentCount(out uint pLastPresentCount);
+        new HRESULTMF GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
+        new HRESULTMF GetLastPresentCount(out uint pLastPresentCount);
         #endregion
 
-        HRESULT GetDesc1(out DXGI_SWAP_CHAIN_DESC1 pDesc);
-        HRESULT GetFullscreenDesc(out DXGI_SWAP_CHAIN_FULLSCREEN_DESC pDesc);
-        HRESULT GetIntPtr(out IntPtr pIntPtr);
-        HRESULT GetCoreWindow(ref Guid refiid, out IntPtr ppUnk);
+        HRESULTMF GetDesc1(out DXGI_SWAP_CHAIN_DESC1 pDesc);
+        HRESULTMF GetFullscreenDesc(out DXGI_SWAP_CHAIN_FULLSCREEN_DESC pDesc);
+        HRESULTMF GetIntPtr(out IntPtr pIntPtr);
+        HRESULTMF GetCoreWindow(ref Guid refiid, out IntPtr ppUnk);
         [PreserveSig]
-        HRESULT Present1(uint SyncInterval, uint PresentFlags, DXGI_PRESENT_PARAMETERS pPresentParameters);
+        HRESULTMF Present1(uint SyncInterval, uint PresentFlags, DXGI_PRESENT_PARAMETERS pPresentParameters);
         bool IsTemporaryMonoSupported();
-        HRESULT GetRestrictToOutput(out IDXGIOutput ppRestrictToOutput);
-        HRESULT SetBackgroundColor(DXGI_RGBA pColor);
-        HRESULT GetBackgroundColor(out DXGI_RGBA pColor);
-        HRESULT SetRotation(DXGI_MODE_ROTATION Rotation);
-        HRESULT GetRotation(out DXGI_MODE_ROTATION pRotation);
+        HRESULTMF GetRestrictToOutput(out IDXGIOutput ppRestrictToOutput);
+        HRESULTMF SetBackgroundColor(DXGI_RGBA pColor);
+        HRESULTMF GetBackgroundColor(out DXGI_RGBA pColor);
+        HRESULTMF SetRotation(DXGI_MODE_ROTATION Rotation);
+        HRESULTMF GetRotation(out DXGI_MODE_ROTATION pRotation);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -705,18 +705,18 @@ namespace DXGI
     public interface IDXGIDevice : IDXGIObject
     {
         #region IDXGIObject
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
         //HRESULT SetPrivateDataInterface(ref Guid Name, IUnknown* pUnknown);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
-        HRESULT GetAdapter(out IDXGIAdapter pAdapter);
-        HRESULT CreateSurface(DXGI_SURFACE_DESC pDesc, uint NumSurfaces, uint Usage, ref DXGI_SHARED_RESOURCE pSharedResource, out IDXGISurface ppSurface);
-        HRESULT QueryResourceResidency(IntPtr ppResources, out DXGI_RESIDENCY pResidencyStatus, uint NumResources);
-        HRESULT SetGPUThreadPriority(int Priority);
-        HRESULT GetGPUThreadPriority(out int pPriority);
+        HRESULTMF GetAdapter(out IDXGIAdapter pAdapter);
+        HRESULTMF CreateSurface(DXGI_SURFACE_DESC pDesc, uint NumSurfaces, uint Usage, ref DXGI_SHARED_RESOURCE pSharedResource, out IDXGISurface ppSurface);
+        HRESULTMF QueryResourceResidency(IntPtr ppResources, out DXGI_RESIDENCY pResidencyStatus, uint NumResources);
+        HRESULTMF SetGPUThreadPriority(int Priority);
+        HRESULTMF GetGPUThreadPriority(out int pPriority);
     }
 
     [ComImport]
@@ -726,22 +726,22 @@ namespace DXGI
     {
         #region IDXGIDevice
         #region IDXGIObject
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
         //HRESULT SetPrivateDataInterface(ref Guid Name, IUnknown* pUnknown);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
-        new HRESULT GetAdapter(out IDXGIAdapter pAdapter);
-        new HRESULT CreateSurface(DXGI_SURFACE_DESC pDesc, uint NumSurfaces, uint Usage, ref DXGI_SHARED_RESOURCE pSharedResource, out IDXGISurface ppSurface);
-        new HRESULT QueryResourceResidency(IntPtr ppResources, out DXGI_RESIDENCY pResidencyStatus, uint NumResources);
-        new HRESULT SetGPUThreadPriority(int Priority);
-        new HRESULT GetGPUThreadPriority(out int pPriority);
+        new HRESULTMF GetAdapter(out IDXGIAdapter pAdapter);
+        new HRESULTMF CreateSurface(DXGI_SURFACE_DESC pDesc, uint NumSurfaces, uint Usage, ref DXGI_SHARED_RESOURCE pSharedResource, out IDXGISurface ppSurface);
+        new HRESULTMF QueryResourceResidency(IntPtr ppResources, out DXGI_RESIDENCY pResidencyStatus, uint NumResources);
+        new HRESULTMF SetGPUThreadPriority(int Priority);
+        new HRESULTMF GetGPUThreadPriority(out int pPriority);
         #endregion
 
-        HRESULT SetMaximumFrameLatency(uint MaxLatency);
-        HRESULT GetMaximumFrameLatency(out uint pMaxLatency);
+        HRESULTMF SetMaximumFrameLatency(uint MaxLatency);
+        HRESULTMF GetMaximumFrameLatency(out uint pMaxLatency);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -762,13 +762,13 @@ namespace DXGI
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFDXGIDeviceManager
     {
-        HRESULT CloseDeviceIntPtr(IntPtr hDevice);
-        HRESULT GetVideoService(IntPtr hDevice, ref Guid riid, out IntPtr ppService);
-        HRESULT LockDevice(IntPtr hDevice, ref Guid riid, out IntPtr ppUnkDevice, bool fBlock);
-        HRESULT OpenDeviceHandle(out IntPtr phDevice);
-        HRESULT ResetDevice(IntPtr pUnkDevice, uint resetToken);
-        HRESULT TestDevice(IntPtr hDevice);
-        HRESULT UnlockDevice(IntPtr hDevice, bool fSaveState);
+        HRESULTMF CloseDeviceIntPtr(IntPtr hDevice);
+        HRESULTMF GetVideoService(IntPtr hDevice, ref Guid riid, out IntPtr ppService);
+        HRESULTMF LockDevice(IntPtr hDevice, ref Guid riid, out IntPtr ppUnkDevice, bool fBlock);
+        HRESULTMF OpenDeviceHandle(out IntPtr phDevice);
+        HRESULTMF ResetDevice(IntPtr pUnkDevice, uint resetToken);
+        HRESULTMF TestDevice(IntPtr hDevice);
+        HRESULTMF UnlockDevice(IntPtr hDevice, bool fSaveState);
     }
 
     [ComImport]
@@ -791,54 +791,54 @@ namespace DXGI
         #region IDXGISwapChain
         #region IDXGIDeviceSubObject
         #region IDXGIObject
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
         //HRESULT SetPrivateDataInterface(ref Guid Name, IUnknown* pUnknown);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
 
-        new HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
+        new HRESULTMF GetDevice(ref Guid riid, out IntPtr ppDevice);
         #endregion
 
         [PreserveSig]
-        new HRESULT Present(uint SyncInterval, uint Flags);
-        new HRESULT GetBuffer(uint Buffer, ref Guid riid, out IntPtr ppSurface);
-        new HRESULT SetFullscreenState(bool Fullscreen, IDXGIOutput pTarget);
-        new HRESULT GetFullscreenState(out bool pFullscreen, out IDXGIOutput ppTarget);
-        new HRESULT GetDesc(out DXGI_SWAP_CHAIN_DESC pDesc);
+        new HRESULTMF Present(uint SyncInterval, uint Flags);
+        new HRESULTMF GetBuffer(uint Buffer, ref Guid riid, out IntPtr ppSurface);
+        new HRESULTMF SetFullscreenState(bool Fullscreen, IDXGIOutput pTarget);
+        new HRESULTMF GetFullscreenState(out bool pFullscreen, out IDXGIOutput ppTarget);
+        new HRESULTMF GetDesc(out DXGI_SWAP_CHAIN_DESC pDesc);
 
         [PreserveSig]
-        new HRESULT ResizeBuffers(uint BufferCount, uint Width, uint Height, DXGI_FORMAT NewFormat, uint SwapChainFlags);
-        new HRESULT ResizeTarget(DXGI_MODE_DESC pNewTargetParameters);
-        new HRESULT GetContainingOutput(out IDXGIOutput ppOutput);
-        new HRESULT GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
-        new HRESULT GetLastPresentCount(out uint pLastPresentCount);
+        new HRESULTMF ResizeBuffers(uint BufferCount, uint Width, uint Height, DXGI_FORMAT NewFormat, uint SwapChainFlags);
+        new HRESULTMF ResizeTarget(DXGI_MODE_DESC pNewTargetParameters);
+        new HRESULTMF GetContainingOutput(out IDXGIOutput ppOutput);
+        new HRESULTMF GetFrameStatistics(out DXGI_FRAME_STATISTICS pStats);
+        new HRESULTMF GetLastPresentCount(out uint pLastPresentCount);
         #endregion
 
-        new HRESULT GetDesc1(out DXGI_SWAP_CHAIN_DESC1 pDesc);
-        new HRESULT GetFullscreenDesc(out DXGI_SWAP_CHAIN_FULLSCREEN_DESC pDesc);
-        new HRESULT GetIntPtr(out IntPtr pIntPtr);
-        new HRESULT GetCoreWindow(ref Guid refiid, out IntPtr ppUnk);
+        new HRESULTMF GetDesc1(out DXGI_SWAP_CHAIN_DESC1 pDesc);
+        new HRESULTMF GetFullscreenDesc(out DXGI_SWAP_CHAIN_FULLSCREEN_DESC pDesc);
+        new HRESULTMF GetIntPtr(out IntPtr pIntPtr);
+        new HRESULTMF GetCoreWindow(ref Guid refiid, out IntPtr ppUnk);
         [PreserveSig]
-        new HRESULT Present1(uint SyncInterval, uint PresentFlags, DXGI_PRESENT_PARAMETERS pPresentParameters);
+        new HRESULTMF Present1(uint SyncInterval, uint PresentFlags, DXGI_PRESENT_PARAMETERS pPresentParameters);
         new bool IsTemporaryMonoSupported();
-        new HRESULT GetRestrictToOutput(out IDXGIOutput ppRestrictToOutput);
-        new HRESULT SetBackgroundColor(DXGI_RGBA pColor);
-        new HRESULT GetBackgroundColor(out DXGI_RGBA pColor);
-        new HRESULT SetRotation(DXGI_MODE_ROTATION Rotation);
-        new HRESULT GetRotation(out DXGI_MODE_ROTATION pRotation);
+        new HRESULTMF GetRestrictToOutput(out IDXGIOutput ppRestrictToOutput);
+        new HRESULTMF SetBackgroundColor(DXGI_RGBA pColor);
+        new HRESULTMF GetBackgroundColor(out DXGI_RGBA pColor);
+        new HRESULTMF SetRotation(DXGI_MODE_ROTATION Rotation);
+        new HRESULTMF GetRotation(out DXGI_MODE_ROTATION pRotation);
         #endregion
 
         [PreserveSig]
-        HRESULT SetSourceSize(uint Width, uint Height);
-        HRESULT GetSourceSize(out uint pWidth, out uint pHeight);
-        HRESULT SetMaximumFrameLatency(uint MaxLatency);
-        HRESULT GetMaximumFrameLatency(out uint pMaxLatency);
+        HRESULTMF SetSourceSize(uint Width, uint Height);
+        HRESULTMF GetSourceSize(out uint pWidth, out uint pHeight);
+        HRESULTMF SetMaximumFrameLatency(uint MaxLatency);
+        HRESULTMF GetMaximumFrameLatency(out uint pMaxLatency);
         IntPtr GetFrameLatencyWaitableObject();
         [PreserveSig]
-        HRESULT SetMatrixTransform(ref DXGI_MATRIX_3X2_F pMatrix);
-        HRESULT GetMatrixTransform(out DXGI_MATRIX_3X2_F pMatrix);
+        HRESULTMF SetMatrixTransform(ref DXGI_MATRIX_3X2_F pMatrix);
+        HRESULTMF GetMatrixTransform(out DXGI_MATRIX_3X2_F pMatrix);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -860,22 +860,22 @@ namespace DXGI
         #region <IDXGISurface>
         #region <IDXGIDeviceSubObject>
         #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
-        new HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
+        new HRESULTMF GetDevice(ref Guid riid, out IntPtr ppDevice);
         #endregion
-        new HRESULT GetDesc(out DXGI_SURFACE_DESC pDesc);
-        new HRESULT Map(out DXGI_MAPPED_RECT pLockedRect, uint MapFlags);
-        new HRESULT Unmap();
+        new HRESULTMF GetDesc(out DXGI_SURFACE_DESC pDesc);
+        new HRESULTMF Map(out DXGI_MAPPED_RECT pLockedRect, uint MapFlags);
+        new HRESULTMF Unmap();
         #endregion
 
         [PreserveSig]
-        HRESULT GetDC(bool Discard, out IntPtr phdc);
+        HRESULTMF GetDC(bool Discard, out IntPtr phdc);
         //HRESULT ReleaseDC( ref RECT pDirtyRect);
-        HRESULT ReleaseDC(IntPtr pDirtyRect);
+        HRESULTMF ReleaseDC(IntPtr pDirtyRect);
     }
 
     [ComImport]
@@ -887,25 +887,25 @@ namespace DXGI
         #region <IDXGISurface>
         #region <IDXGIDeviceSubObject>
         #region <IDXGIObject>
-        new HRESULT SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
-        new HRESULT GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
-        new HRESULT GetParent(ref Guid riid, out IntPtr ppParent);
+        new HRESULTMF SetPrivateData(ref Guid Name, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateDataInterface(ref Guid Name, IntPtr pUnknown);
+        new HRESULTMF GetPrivateData(ref Guid Name, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF GetParent(ref Guid riid, out IntPtr ppParent);
         #endregion
-        new HRESULT GetDevice(ref Guid riid, out IntPtr ppDevice);
+        new HRESULTMF GetDevice(ref Guid riid, out IntPtr ppDevice);
         #endregion
-        new HRESULT GetDesc(out DXGI_SURFACE_DESC pDesc);
-        new HRESULT Map(out DXGI_MAPPED_RECT pLockedRect, uint MapFlags);
-        new HRESULT Unmap();
+        new HRESULTMF GetDesc(out DXGI_SURFACE_DESC pDesc);
+        new HRESULTMF Map(out DXGI_MAPPED_RECT pLockedRect, uint MapFlags);
+        new HRESULTMF Unmap();
         #endregion
 
         [PreserveSig]
-        new HRESULT GetDC(bool Discard, out IntPtr phdc);
+        new HRESULTMF GetDC(bool Discard, out IntPtr phdc);
         //new HRESULT ReleaseDC(ref RECT pDirtyRect);
-        new HRESULT ReleaseDC(IntPtr pDirtyRect);
+        new HRESULTMF ReleaseDC(IntPtr pDirtyRect);
         #endregion
 
-        HRESULT GetResource(ref Guid riid, out IntPtr ppParentResource, out uint pSubresourceIndex);
+        HRESULTMF GetResource(ref Guid riid, out IntPtr ppParentResource, out uint pSubresourceIndex);
     }
 
     // D3D11
@@ -917,9 +917,9 @@ namespace DXGI
     {
         //void GetDevice(out ID3D11Device ppDevice);
         void GetDevice(out IntPtr ppDevice);
-        HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
-        HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
-        HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        HRESULTMF GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        HRESULTMF SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        HRESULTMF SetPrivateDataInterface(ref Guid guid, IntPtr pData);
     }
 
     [ComImport]
@@ -930,9 +930,9 @@ namespace DXGI
         #region ID3D11DeviceChild
         //new void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULTMF GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateDataInterface(ref Guid guid, IntPtr pData);
         #endregion
 
         void GetType(out D3D11_RESOURCE_DIMENSION pResourceDimension);
@@ -958,9 +958,9 @@ namespace DXGI
         #region ID3D11DeviceChild
         //new void GetDevice(out ID3D11Device ppDevice);
         new void GetDevice(out IntPtr ppDevice);
-        new HRESULT GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
-        new HRESULT SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
-        new HRESULT SetPrivateDataInterface(ref Guid guid, IntPtr pData);
+        new HRESULTMF GetPrivateData(ref Guid guid, ref uint pDataSize, out IntPtr pData);
+        new HRESULTMF SetPrivateData(ref Guid guid, uint DataSize, IntPtr pData);
+        new HRESULTMF SetPrivateDataInterface(ref Guid guid, IntPtr pData);
         #endregion
 
         new void GetType(out D3D11_RESOURCE_DIMENSION pResourceDimension);
@@ -998,10 +998,10 @@ namespace DXGI
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFDXGIBuffer
     {
-        HRESULT GetResource(ref Guid riid, out IntPtr ppvObject);
-        HRESULT GetSubresourceIndex(out uint puSubresource);
-        HRESULT GetUnknown(ref Guid guid, ref Guid riid, out IntPtr ppvObject);
-        HRESULT SetUnknown(ref Guid guid, IntPtr pUnkData);
+        HRESULTMF GetResource(ref Guid riid, out IntPtr ppvObject);
+        HRESULTMF GetSubresourceIndex(out uint puSubresource);
+        HRESULTMF GetUnknown(ref Guid guid, ref Guid riid, out IntPtr ppvObject);
+        HRESULTMF SetUnknown(ref Guid guid, IntPtr pUnkData);
     }
  
 
@@ -1010,15 +1010,15 @@ namespace DXGI
         public static Guid IID_ID3D11Texture2D = new Guid("6f15aaf2-d208-4e89-9ab4-489535d34f9c");
 
         [DllImport("DXGI.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern HRESULT CreateDXGIFactory2(uint Flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IDXGIFactory2 ppFactory);
+        public static extern HRESULTMF CreateDXGIFactory2(uint Flags, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, out IDXGIFactory2 ppFactory);
 
         public const int DXGI_CREATE_FACTORY_DEBUG = 0x01;
 
         [DllImport("Mfplat.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern HRESULT MFCreateDXGIDeviceManager(out uint resetToken, out IMFDXGIDeviceManager ppDeviceManager);
+        public static extern HRESULTMF MFCreateDXGIDeviceManager(out uint resetToken, out IMFDXGIDeviceManager ppDeviceManager);
 
         [DllImport("D3D11.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern HRESULT D3D11CreateDevice(IDXGIAdapter pAdapter, D3D_DRIVER_TYPE DriverType, IntPtr Software, uint Flags, [MarshalAs(UnmanagedType.LPArray)] int[] pFeatureLevels,
+        public static extern HRESULTMF D3D11CreateDevice(IDXGIAdapter pAdapter, D3D_DRIVER_TYPE DriverType, IntPtr Software, uint Flags, [MarshalAs(UnmanagedType.LPArray)] int[] pFeatureLevels,
             uint FeatureLevels, uint SDKVersion, out IntPtr ppDevice, out D3D_FEATURE_LEVEL pFeatureLevel, out IntPtr ppImmediateContext);
 
         public const int D3D11_SDK_VERSION = 7;
@@ -1094,7 +1094,7 @@ namespace DXGI
         //
         // The Present operation was invisible to the user.
         //
-        public const HRESULT DXGI_STATUS_OCCLUDED = (HRESULT)0x087A0001;
+        public const HRESULTMF DXGI_STATUS_OCCLUDED = (HRESULTMF)0x087A0001;
 
         //
         // MessageId: DXGI_STATUS_CLIPPED
@@ -1103,7 +1103,7 @@ namespace DXGI
         //
         // The Present operation was partially invisible to the user.
         //
-        public const HRESULT DXGI_STATUS_CLIPPED = (HRESULT)0x087A0002;
+        public const HRESULTMF DXGI_STATUS_CLIPPED = (HRESULTMF)0x087A0002;
 
         //
         // MessageId: DXGI_STATUS_NO_REDIRECTION
@@ -1112,7 +1112,7 @@ namespace DXGI
         //
         // The driver is requesting that the DXGI runtime not use shared resources to communicate with the Desktop Window Manager.
         //
-        public const HRESULT DXGI_STATUS_NO_REDIRECTION = (HRESULT)0x087A0004;
+        public const HRESULTMF DXGI_STATUS_NO_REDIRECTION = (HRESULTMF)0x087A0004;
 
         //
         // MessageId: DXGI_STATUS_NO_DESKTOP_ACCESS
@@ -1121,7 +1121,7 @@ namespace DXGI
         //
         // The Present operation was not visible because the Windows session has switched to another desktop (for example, ctrl-alt-de;.
         //
-        public const HRESULT DXGI_STATUS_NO_DESKTOP_ACCESS = (HRESULT)0x087A0005;
+        public const HRESULTMF DXGI_STATUS_NO_DESKTOP_ACCESS = (HRESULTMF)0x087A0005;
 
         //
         // MessageId: DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE
@@ -1130,7 +1130,7 @@ namespace DXGI
         //
         // The Present operation was not visible because the target monitor was being used for some other purpose.
         //
-        public const HRESULT DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE = (HRESULT)0x087A0006;
+        public const HRESULTMF DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE = (HRESULTMF)0x087A0006;
 
         //
         // MessageId: DXGI_STATUS_MODE_CHANGED
@@ -1139,7 +1139,7 @@ namespace DXGI
         //
         // The Present operation was not visible because the display mode changed. DXGI will have re-attempted the presentation.
         //
-        public const HRESULT DXGI_STATUS_MODE_CHANGED = (HRESULT)0x087A0007;
+        public const HRESULTMF DXGI_STATUS_MODE_CHANGED = (HRESULTMF)0x087A0007;
 
         //
         // MessageId: DXGI_STATUS_MODE_CHANGE_IN_PROGRESS
@@ -1148,7 +1148,7 @@ namespace DXGI
         //
         // The Present operation was not visible because another Direct3D device was attempting to take fullscreen mode at the time.
         //
-        public const HRESULT DXGI_STATUS_MODE_CHANGE_IN_PROGRESS = (HRESULT)0x087A0008;
+        public const HRESULTMF DXGI_STATUS_MODE_CHANGE_IN_PROGRESS = (HRESULTMF)0x087A0008;
 
         //
         // DXGI error codes
@@ -1162,7 +1162,7 @@ namespace DXGI
         // The application made a call that is invalid. Either the parameters of the call or the state of some object was incorrect.
         // Enable the D3D debug layer in order to see details via debug messages.
         //
-        public const HRESULT DXGI_ERROR_INVALID_CALL = (HRESULT)unchecked((int)0x887A0001);
+        public const HRESULTMF DXGI_ERROR_INVALID_CALL = (HRESULTMF)unchecked((int)0x887A0001);
 
         //
         // MessageId: DXGI_ERROR_NOT_FOUND
@@ -1171,7 +1171,7 @@ namespace DXGI
         //
         // The object was not found. If calling IDXGIFactory::EnumAdaptes, there is no adapter with the specified ordinal.
         //
-        public const HRESULT DXGI_ERROR_NOT_FOUND = (HRESULT)unchecked((int)0x887A0002);
+        public const HRESULTMF DXGI_ERROR_NOT_FOUND = (HRESULTMF)unchecked((int)0x887A0002);
 
         //
         // MessageId: DXGI_ERROR_MORE_DATA
@@ -1180,7 +1180,7 @@ namespace DXGI
         //
         // The caller did not supply a sufficiently large buffer.
         //
-        public const HRESULT DXGI_ERROR_MORE_DATA = (HRESULT)unchecked((int)0x887A0003);
+        public const HRESULTMF DXGI_ERROR_MORE_DATA = (HRESULTMF)unchecked((int)0x887A0003);
 
         //
         // MessageId: DXGI_ERROR_UNSUPPORTED
@@ -1189,7 +1189,7 @@ namespace DXGI
         //
         // The specified device interface or feature level is not supported on this system.
         //
-        public const HRESULT DXGI_ERROR_UNSUPPORTED = (HRESULT)unchecked((int)0x887A0004);
+        public const HRESULTMF DXGI_ERROR_UNSUPPORTED = (HRESULTMF)unchecked((int)0x887A0004);
 
         //
         // MessageId: DXGI_ERROR_DEVICE_REMOVED
@@ -1198,7 +1198,7 @@ namespace DXGI
         //
         // The GPU device instance has been suspended. Use GetDeviceRemovedReason to determine the appropriate action.
         //
-        public const HRESULT DXGI_ERROR_DEVICE_REMOVED = (HRESULT)unchecked((int)0x887A0005);
+        public const HRESULTMF DXGI_ERROR_DEVICE_REMOVED = (HRESULTMF)unchecked((int)0x887A0005);
 
         //
         // MessageId: DXGI_ERROR_DEVICE_HUNG
@@ -1207,7 +1207,7 @@ namespace DXGI
         //
         // The GPU will not respond to more commands, most likely because of an invalid command passed by the calling application.
         //
-        public const HRESULT DXGI_ERROR_DEVICE_HUNG = (HRESULT)unchecked((int)0x887A0006);
+        public const HRESULTMF DXGI_ERROR_DEVICE_HUNG = (HRESULTMF)unchecked((int)0x887A0006);
 
         //
         // MessageId: DXGI_ERROR_DEVICE_RESET
@@ -1217,7 +1217,7 @@ namespace DXGI
         // The GPU will not respond to more commands, most likely because some other application submitted invalid commands.
         // The calling application should re-create the device and continue.
         //
-        public const HRESULT DXGI_ERROR_DEVICE_RESET = (HRESULT)unchecked((int)0x887A0007);
+        public const HRESULTMF DXGI_ERROR_DEVICE_RESET = (HRESULTMF)unchecked((int)0x887A0007);
 
         //
         // MessageId: DXGI_ERROR_WAS_STILL_DRAWING
@@ -1226,7 +1226,7 @@ namespace DXGI
         //
         // The GPU was busy at the moment when the call was made, and the call was neither executed nor scheduled.
         //
-        public const HRESULT DXGI_ERROR_WAS_STILL_DRAWING = (HRESULT)unchecked((int)0x887A000A);
+        public const HRESULTMF DXGI_ERROR_WAS_STILL_DRAWING = (HRESULTMF)unchecked((int)0x887A000A);
 
         //
         // MessageId: DXGI_ERROR_FRAME_STATISTICS_DISJOINT
@@ -1236,7 +1236,7 @@ namespace DXGI
         // An event (such as power cycle) interrupted the gathering of presentation statistics. Any previous statistics should be
         // considered invalid.
         //
-        public const HRESULT DXGI_ERROR_FRAME_STATISTICS_DISJOINT = (HRESULT)unchecked((int)0x887A000B);
+        public const HRESULTMF DXGI_ERROR_FRAME_STATISTICS_DISJOINT = (HRESULTMF)unchecked((int)0x887A000B);
 
         //
         // MessageId: DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE
@@ -1245,7 +1245,7 @@ namespace DXGI
         //
         // Fullscreen mode could not be achieved because the specified output was already in use.
         //
-        public const HRESULT DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE = (HRESULT)unchecked((int)0x887A000C);
+        public const HRESULTMF DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE = (HRESULTMF)unchecked((int)0x887A000C);
 
         //
         // MessageId: DXGI_ERROR_DRIVER_INTERNAL_ERROR
@@ -1255,7 +1255,7 @@ namespace DXGI
         // An internal issue prevented the driver from carrying out the specified operation. The driver's state is probably suspect,
         // and the application should not continue.
         //
-        public const HRESULT DXGI_ERROR_DRIVER_INTERNAL_ERROR = (HRESULT)unchecked((int)0x887A0020);
+        public const HRESULTMF DXGI_ERROR_DRIVER_INTERNAL_ERROR = (HRESULTMF)unchecked((int)0x887A0020);
 
         //
         // MessageId: DXGI_ERROR_NONEXCLUSIVE
@@ -1264,7 +1264,7 @@ namespace DXGI
         //
         // A global counter resource was in use, and the specified counter cannot be used by this Direct3D device at this time.
         //
-        public const HRESULT DXGI_ERROR_NONEXCLUSIVE = (HRESULT)unchecked((int)0x887A0021);
+        public const HRESULTMF DXGI_ERROR_NONEXCLUSIVE = (HRESULTMF)unchecked((int)0x887A0021);
 
         //
         // MessageId: DXGI_ERROR_NOT_CURRENTLY_AVAILABLE
@@ -1273,7 +1273,7 @@ namespace DXGI
         //
         // A resource is not available at the time of the call, but may become available later.
         //
-        public const HRESULT DXGI_ERROR_NOT_CURRENTLY_AVAILABLE = (HRESULT)unchecked((int)0x887A0022);
+        public const HRESULTMF DXGI_ERROR_NOT_CURRENTLY_AVAILABLE = (HRESULTMF)unchecked((int)0x887A0022);
 
         //
         // MessageId: DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED
@@ -1283,7 +1283,7 @@ namespace DXGI
         // The application's remote device has been removed due to session disconnect or network disconnect.
         // The application should call IDXGIFactory1::IsCurrent to find out when the remote device becomes available again.
         //
-        public const HRESULT DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED = (HRESULT)unchecked((int)0x887A0023);
+        public const HRESULTMF DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED = (HRESULTMF)unchecked((int)0x887A0023);
 
         //
         // MessageId: DXGI_ERROR_REMOTE_OUTOFMEMORY
@@ -1292,7 +1292,7 @@ namespace DXGI
         //
         // The device has been removed during a remote session because the remote computer ran out of memory.
         //
-        public const HRESULT DXGI_ERROR_REMOTE_OUTOFMEMORY = (HRESULT)unchecked((int)0x887A0024);
+        public const HRESULTMF DXGI_ERROR_REMOTE_OUTOFMEMORY = (HRESULTMF)unchecked((int)0x887A0024);
 
         //
         // MessageId: DXGI_ERROR_ACCESS_LOST
@@ -1301,7 +1301,7 @@ namespace DXGI
         //
         // The keyed mutex was abandoned.
         //
-        public const HRESULT DXGI_ERROR_ACCESS_LOST = (HRESULT)unchecked((int)0x887A0026);
+        public const HRESULTMF DXGI_ERROR_ACCESS_LOST = (HRESULTMF)unchecked((int)0x887A0026);
 
         //
         // MessageId: DXGI_ERROR_WAIT_TIMEOUT
@@ -1310,7 +1310,7 @@ namespace DXGI
         //
         // The timeout value has elapsed and the resource is not yet available.
         //
-        public const HRESULT DXGI_ERROR_WAIT_TIMEOUT = (HRESULT)unchecked((int)0x887A0027);
+        public const HRESULTMF DXGI_ERROR_WAIT_TIMEOUT = (HRESULTMF)unchecked((int)0x887A0027);
 
         //
         // MessageId: DXGI_ERROR_SESSION_DISCONNECTED
@@ -1320,7 +1320,7 @@ namespace DXGI
         // The output duplication has been turned off because the Windows session ended or was disconnected.
         // This happens when a remote user disconnects, or when "switch user" is used locally.
         //
-        public const HRESULT DXGI_ERROR_SESSION_DISCONNECTED = (HRESULT)unchecked((int)0x887A0028);
+        public const HRESULTMF DXGI_ERROR_SESSION_DISCONNECTED = (HRESULTMF)unchecked((int)0x887A0028);
 
         //
         // MessageId: DXGI_ERROR_RESTRICT_TO_OUTPUT_STALE
@@ -1329,7 +1329,7 @@ namespace DXGI
         //
         // The DXGI output (monitor) to which the swapchain content was restricted, has been disconnected or changed.
         //
-        public const HRESULT DXGI_ERROR_RESTRICT_TO_OUTPUT_STALE = (HRESULT)unchecked((int)0x887A0029);
+        public const HRESULTMF DXGI_ERROR_RESTRICT_TO_OUTPUT_STALE = (HRESULTMF)unchecked((int)0x887A0029);
 
         //
         // MessageId: DXGI_ERROR_CANNOT_PROTECT_CONTENT
@@ -1339,7 +1339,7 @@ namespace DXGI
         // DXGI is unable to provide content protection on the swapchain. This is typically caused by an older driver,
         // or by the application using a swapchain that is incompatible with content protection.
         //
-        public const HRESULT DXGI_ERROR_CANNOT_PROTECT_CONTENT = (HRESULT)unchecked((int)0x887A002A);
+        public const HRESULTMF DXGI_ERROR_CANNOT_PROTECT_CONTENT = (HRESULTMF)unchecked((int)0x887A002A);
 
         //
         // MessageId: DXGI_ERROR_ACCESS_DENIED
@@ -1349,7 +1349,7 @@ namespace DXGI
         // The application is trying to use a resource to which it does not have the required access privileges.
         // This is most commonly caused by writing to a shared resource with read-only access.
         //
-        public const HRESULT DXGI_ERROR_ACCESS_DENIED = (HRESULT)unchecked((int)0x887A002B);
+        public const HRESULTMF DXGI_ERROR_ACCESS_DENIED = (HRESULTMF)unchecked((int)0x887A002B);
 
         //
         // MessageId: DXGI_ERROR_NAME_ALREADY_EXISTS
@@ -1358,7 +1358,7 @@ namespace DXGI
         //
         // The application is trying to create a shared handle using a name that is already associated with some other resource.
         //
-        public const HRESULT DXGI_ERROR_NAME_ALREADY_EXISTS = (HRESULT)unchecked((int)0x887A002C);
+        public const HRESULTMF DXGI_ERROR_NAME_ALREADY_EXISTS = (HRESULTMF)unchecked((int)0x887A002C);
 
         //
         // MessageId: DXGI_ERROR_SDK_COMPONENT_MISSING
@@ -1367,7 +1367,7 @@ namespace DXGI
         //
         // The application requested an operation that depends on an SDK component that is missing or mismatched.
         //
-        public const HRESULT DXGI_ERROR_SDK_COMPONENT_MISSING = (HRESULT)unchecked((int)0x887A002D);
+        public const HRESULTMF DXGI_ERROR_SDK_COMPONENT_MISSING = (HRESULTMF)unchecked((int)0x887A002D);
 
         //
         // MessageId: DXGI_ERROR_NOT_CURRENT
@@ -1376,7 +1376,7 @@ namespace DXGI
         //
         // The DXGI objects that the application has created are no longer current & need to be recreated for this operation to be performed.
         //
-        public const HRESULT DXGI_ERROR_NOT_CURRENT = (HRESULT)unchecked((int)0x887A002E);
+        public const HRESULTMF DXGI_ERROR_NOT_CURRENT = (HRESULTMF)unchecked((int)0x887A002E);
 
         //
         // MessageId: DXGI_ERROR_HW_PROTECTION_OUTOFMEMORY
@@ -1385,7 +1385,7 @@ namespace DXGI
         //
         // Insufficient HW protected memory exits for proper function.
         //
-        public const HRESULT DXGI_ERROR_HW_PROTECTION_OUTOFMEMORY = (HRESULT)unchecked((int)0x887A0030);
+        public const HRESULTMF DXGI_ERROR_HW_PROTECTION_OUTOFMEMORY = (HRESULTMF)unchecked((int)0x887A0030);
 
         //
         // MessageId: DXGI_ERROR_DYNAMIC_CODE_POLICY_VIOLATION
@@ -1394,7 +1394,7 @@ namespace DXGI
         //
         // Creating this device would violate the process's dynamic code policy.
         //
-        public const HRESULT DXGI_ERROR_DYNAMIC_CODE_POLICY_VIOLATION = (HRESULT)unchecked((int)0x887A0031);
+        public const HRESULTMF DXGI_ERROR_DYNAMIC_CODE_POLICY_VIOLATION = (HRESULTMF)unchecked((int)0x887A0031);
 
         //
         // MessageId: DXGI_ERROR_NON_COMPOSITED_UI
@@ -1403,7 +1403,7 @@ namespace DXGI
         //
         // The operation failed because the compositor is not in control of the output.
         //
-        public const HRESULT DXGI_ERROR_NON_COMPOSITED_UI = (HRESULT)unchecked((int)0x887A0032);
+        public const HRESULTMF DXGI_ERROR_NON_COMPOSITED_UI = (HRESULTMF)unchecked((int)0x887A0032);
 
 
         //
@@ -1417,7 +1417,7 @@ namespace DXGI
         //
         // The application failed to unregister from an event it registered for.
         //
-        public const HRESULT DXCORE_ERROR_EVENT_NOT_UNREGISTERED = (HRESULT)unchecked((int)0x88800001);
+        public const HRESULTMF DXCORE_ERROR_EVENT_NOT_UNREGISTERED = (HRESULTMF)unchecked((int)0x88800001);
 
 
         //
@@ -1431,7 +1431,7 @@ namespace DXGI
         //
         // The swapchain has become unoccluded.
         //
-        public const HRESULT DXGI_STATUS_UNOCCLUDED = (HRESULT)unchecked((int)0x087A0009);
+        public const HRESULTMF DXGI_STATUS_UNOCCLUDED = (HRESULTMF)unchecked((int)0x087A0009);
 
         //
         // MessageId: DXGI_STATUS_DDA_WAS_STILL_DRAWING
@@ -1440,7 +1440,7 @@ namespace DXGI
         //
         // The adapter did not have access to the required resources to complete the Desktop Duplication Present() call, the Present() call needs to be made again
         //
-        public const HRESULT DXGI_STATUS_DDA_WAS_STILL_DRAWING = (HRESULT)unchecked((int)0x087A000A);
+        public const HRESULTMF DXGI_STATUS_DDA_WAS_STILL_DRAWING = (HRESULTMF)unchecked((int)0x087A000A);
 
         //
         // MessageId: DXGI_ERROR_MODE_CHANGE_IN_PROGRESS
@@ -1449,7 +1449,7 @@ namespace DXGI
         //
         // An on-going mode change prevented completion of the call. The call may succeed if attempted later.
         //
-        public const HRESULT DXGI_ERROR_MODE_CHANGE_IN_PROGRESS = (HRESULT)unchecked((int)0x887A0025);
+        public const HRESULTMF DXGI_ERROR_MODE_CHANGE_IN_PROGRESS = (HRESULTMF)unchecked((int)0x887A0025);
 
         //
         // MessageId: DXGI_STATUS_PRESENT_REQUIRED
@@ -1458,7 +1458,7 @@ namespace DXGI
         //
         // The present succeeded but the caller should present again on the next V-sync, even if there are no changes to the content.
         //
-        public const HRESULT DXGI_STATUS_PRESENT_REQUIRED = (HRESULT)unchecked((int)0x087A002F);
+        public const HRESULTMF DXGI_STATUS_PRESENT_REQUIRED = (HRESULTMF)unchecked((int)0x087A002F);
 
 
         //
@@ -1472,7 +1472,7 @@ namespace DXGI
         //
         // The cache is corrupt and either could not be opened or could not be reset.
         //
-        public const HRESULT DXGI_ERROR_CACHE_CORRUPT = (HRESULT)unchecked((int)0x887A0033);
+        public const HRESULTMF DXGI_ERROR_CACHE_CORRUPT = (HRESULTMF)unchecked((int)0x887A0033);
 
         //
         // MessageId: DXGI_ERROR_CACHE_FULL
@@ -1481,7 +1481,7 @@ namespace DXGI
         //
         // This entry would cause the cache to exceed its quota. On a load operation, this may indicate exceeding the maximum in-memory size.
         //
-        public const HRESULT DXGI_ERROR_CACHE_FULL = (HRESULT)unchecked((int)0x887A0034);
+        public const HRESULTMF DXGI_ERROR_CACHE_FULL = (HRESULTMF)unchecked((int)0x887A0034);
 
         //
         // MessageId: DXGI_ERROR_CACHE_HASH_COLLISION
@@ -1490,7 +1490,7 @@ namespace DXGI
         //
         // A cache entry was found, but the key provided does not match the key stored in the entry.
         //
-        public const HRESULT DXGI_ERROR_CACHE_HASH_COLLISION = (HRESULT)unchecked((int)0x887A0035);
+        public const HRESULTMF DXGI_ERROR_CACHE_HASH_COLLISION = (HRESULTMF)unchecked((int)0x887A0035);
 
         //
         // MessageId: DXGI_ERROR_ALREADY_EXISTS
@@ -1499,7 +1499,7 @@ namespace DXGI
         //
         // The desired element already exists.
         //
-        public const HRESULT DXGI_ERROR_ALREADY_EXISTS = (HRESULT)unchecked((int)0x887A0036);
+        public const HRESULTMF DXGI_ERROR_ALREADY_EXISTS = (HRESULTMF)unchecked((int)0x887A0036);
 
 
         //
@@ -1513,7 +1513,7 @@ namespace DXGI
         //
         // The GPU was busy when the operation was requested.
         //
-        public const HRESULT DXGI_DDI_ERR_WASSTILLDRAWING = (HRESULT)unchecked((int)0x887B0001);
+        public const HRESULTMF DXGI_DDI_ERR_WASSTILLDRAWING = (HRESULTMF)unchecked((int)0x887B0001);
 
         //
         // MessageId: DXGI_DDI_ERR_UNSUPPORTED
@@ -1522,7 +1522,7 @@ namespace DXGI
         //
         // The driver has rejected the creation of this resource.
         //
-        public const HRESULT DXGI_DDI_ERR_UNSUPPORTED = (HRESULT)unchecked((int)0x887B0002);
+        public const HRESULTMF DXGI_DDI_ERR_UNSUPPORTED = (HRESULTMF)unchecked((int)0x887B0002);
 
         //
         // MessageId: DXGI_DDI_ERR_NONEXCLUSIVE
@@ -1531,7 +1531,7 @@ namespace DXGI
         //
         // The GPU counter was in use by another process or d3d device when application requested access to it.
         //
-        public const HRESULT DXGI_DDI_ERR_NONEXCLUSIVE = (HRESULT)unchecked((int)0x887B0003);
+        public const HRESULTMF DXGI_DDI_ERR_NONEXCLUSIVE = (HRESULTMF)unchecked((int)0x887B0003);
 
     }
 }

@@ -15,14 +15,14 @@ namespace MFCaptureEngine
     internal class MFCaptureEngineTools
     {
         [DllImport("Mfplat.dll", SetLastError = true)]
-        public static extern HRESULT MFStartup(uint Version, uint dwFlags = 0);
+        public static extern HRESULTMF MFStartup(uint Version, uint dwFlags = 0);
 
         public const int MF_SDK_VERSION = 0x0002;
         public const int MF_API_VERSION = 0x0070; // This value is unused in the Win7 release and left at its Vista release value
         public const int MF_VERSION = (MF_SDK_VERSION << 16 | MF_API_VERSION);
 
         [DllImport("Mfplat.dll", SetLastError = true)]
-        public static extern HRESULT MFShutdown();
+        public static extern HRESULTMF MFShutdown();
 
         public static readonly Guid CLSID_MFCaptureEngine = new Guid(0xefce38d3, 0x8914, 0x4674, 0xa7, 0xdf, 0xae, 0x1b, 0x3d, 0x65, 0x4b, 0x8a);
         public static readonly Guid CLSID_MFCaptureEngineClassFactory = new Guid(0xefce38d3, 0x8914, 0x4674, 0xa7, 0xdf, 0xae, 0x1b, 0x3d, 0x65, 0x4b, 0x8a);
@@ -63,10 +63,10 @@ namespace MFCaptureEngine
         public static readonly Guid MF_CAPTURE_ENGINE_SELECTEDCAMERAPROFILE_INDEX = new Guid(0x3CE88613, 0x2214, 0x46C3, 0xB4, 0x17, 0x82, 0xF8, 0xA3, 0x13, 0xC9, 0xC3);
 
         [DllImport("Mfplat.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern HRESULT MFCreateAttributes(out IMFAttributes ppMFAttributes, uint cInitialSize);
+        public static extern HRESULTMF MFCreateAttributes(out IMFAttributes ppMFAttributes, uint cInitialSize);
 
         [DllImport("Mfplat.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern HRESULT MFCreateMediaType(out IMFMediaType ppMFType);
+        public static extern HRESULTMF MFCreateMediaType(out IMFMediaType ppMFType);
 
         public static readonly Guid MF_MT_MAJOR_TYPE = new Guid("48eba18e-f8c9-4687-bf11-0a74c9f96a8f");
         public static readonly Guid MF_MT_SUBTYPE = new Guid("f7e34c9a-42e8-4714-b74b-cb29d72c35e5");
@@ -271,22 +271,22 @@ namespace MFCaptureEngine
         public static readonly Guid MFAudioFormat_WMAudioV8 = new Guid("00000161-0000-0010-8000-00aa00389b71");
         public static readonly Guid MFAudioFormat_WMAudioV9 = new Guid("00000162-0000-0010-8000-00aa00389b71");
 
-        public static HRESULT CopyAttribute(IMFAttributes pSrc, IMFAttributes pDest, Guid key)
+        public static HRESULTMF CopyAttribute(IMFAttributes pSrc, IMFAttributes pDest, Guid key)
         {
             PROPVARIANT var = new PROPVARIANT();
-            HRESULT hr = pSrc.GetItem(ref key, ref var);
-            if (hr == HRESULT.S_OK)
+            HRESULTMF hr = pSrc.GetItem(ref key, ref var);
+            if (hr == HRESULTMF.S_OK)
             {
                 hr = pDest.SetItem(ref key, ref var);
             }
             return hr;
         }
 
-        public static HRESULT CloneVideoMediaType(IMFMediaType pSrcMediaType, Guid guidSubType, out IMFMediaType ppNewMediaType)
+        public static HRESULTMF CloneVideoMediaType(IMFMediaType pSrcMediaType, Guid guidSubType, out IMFMediaType ppNewMediaType)
         {
             IMFMediaType pNewMediaType = null;
-            HRESULT hr = MFCreateMediaType(out pNewMediaType);
-            if (hr == HRESULT.S_OK)
+            HRESULTMF hr = MFCreateMediaType(out pNewMediaType);
+            if (hr == HRESULTMF.S_OK)
             {
                 hr = pNewMediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
                 hr = pNewMediaType.SetGUID(MF_MT_SUBTYPE, guidSubType);
@@ -359,22 +359,22 @@ namespace MFCaptureEngine
 
 
         [DllImport("Mf.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern HRESULT MFEnumDeviceSources(IMFAttributes pAttributes, out IMFActivate[] pppSourceActivate, out uint pcSourceActivate);
+        public static extern HRESULTMF MFEnumDeviceSources(IMFAttributes pAttributes, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] out IMFActivate[] pppSourceActivate, out uint pcSourceActivate);
 
-        public static HRESULT MFGetAttributeSize(IMFAttributes pAttributes, Guid guidKey, out uint punWidth, out uint punHeight)
+        public static HRESULTMF MFGetAttributeSize(IMFAttributes pAttributes, Guid guidKey, out uint punWidth, out uint punHeight)
         {
             return MFGetAttribute2UINT32asUINT64(pAttributes, ref guidKey, out punWidth, out punHeight);
         }
 
-        public static HRESULT MFGetAttribute2UINT32asUINT64(IMFAttributes pAttributes, ref Guid guidKey, out uint punHigh32, out uint punLow32)
+        public static HRESULTMF MFGetAttribute2UINT32asUINT64(IMFAttributes pAttributes, ref Guid guidKey, out uint punHigh32, out uint punLow32)
         {
             ulong unPacked = 0;
-            HRESULT hr = HRESULT.S_OK;
+            HRESULTMF hr = HRESULTMF.S_OK;
 
             punHigh32 = 0;
             punLow32 = 0;
             hr = pAttributes.GetUINT64(ref guidKey, out unPacked);
-            if (hr == HRESULT.S_OK)
+            if (hr == HRESULTMF.S_OK)
             {
                 Unpack2UINT32AsUINT64(unPacked, out punHigh32, out punLow32);
             }
@@ -397,22 +397,22 @@ namespace MFCaptureEngine
             return (uint)unPacked;
         }
 
-        public static HRESULT MFGetAttributeRatio(IMFAttributes pAttributes, Guid guidKey, out uint punNumerator, out uint punDenominator)
+        public static HRESULTMF MFGetAttributeRatio(IMFAttributes pAttributes, Guid guidKey, out uint punNumerator, out uint punDenominator)
         {
             return MFGetAttribute2UINT32asUINT64(pAttributes, ref guidKey, out punNumerator, out punDenominator);
         }
 
         [DllImport("Mfreadwrite.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern HRESULT MFCreateSourceReaderFromMediaSource(IMFMediaSource pMediaSource, IMFAttributes pAttributes, out IMFSourceReader ppSourceReader);
+        public static extern HRESULTMF MFCreateSourceReaderFromMediaSource(IMFMediaSource pMediaSource, IMFAttributes pAttributes, out IMFSourceReader ppSourceReader);
 
         [DllImport("Mf.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern HRESULT MFTranscodeGetAudioOutputAvailableTypes(ref Guid guidSubType, uint dwMFTFlags, IMFAttributes pCodecConfig, out IMFCollection ppAvailableTypes);
+        public static extern HRESULTMF MFTranscodeGetAudioOutputAvailableTypes(ref Guid guidSubType, uint dwMFTFlags, IMFAttributes pCodecConfig, out IMFCollection ppAvailableTypes);
 
         public static readonly Guid MR_POLICY_VOLUME_SERVICE = new Guid(0x1abaa2ac, 0x9d3b, 0x47c6, 0xab, 0x48, 0xc5, 0x95, 0x6, 0xde, 0x78, 0x4d);
         public static readonly Guid MR_CAPTURE_POLICY_VOLUME_SERVICE = new Guid(0x24030acd, 0x107a, 0x4265, 0x97, 0x5c, 0x41, 0x4e, 0x33, 0xe6, 0x5f, 0x2a);
 
         [DllImport("Mf.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern HRESULT MFGetService(IntPtr punkObject, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
+        public static extern HRESULTMF MFGetService(IntPtr punkObject, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
 
         public static readonly PROPERTYKEY MFPKEY_COLOR_BRIGHTNESS = new PROPERTYKEY(new Guid(0x174fb0ec, 0x2695, 0x476c, 0x88, 0xaa, 0xd2, 0xb4, 0x1c, 0xe7, 0x5e, 0x67), 0x01);
         public static readonly PROPERTYKEY MFPKEY_COLOR_CONTRAST = new PROPERTYKEY(new Guid(0x174fb0ec, 0x2695, 0x476c, 0x88, 0xaa, 0xd2, 0xb4, 0x1c, 0xe7, 0x5e, 0x67), 0x02);
@@ -489,7 +489,7 @@ namespace MFCaptureEngine
     public interface IMFCaptureEngineOnEventCallback
     {
         [PreserveSig]
-        HRESULT OnEvent(IMFMediaEvent pEvent);
+        HRESULTMF OnEvent(IMFMediaEvent pEvent);
     }
 
     [ComImport]
@@ -509,11 +509,11 @@ namespace MFCaptureEngine
     {
 #region IMFCaptureEngineOnSampleCallback
         [PreserveSig]
-        new HRESULT OnSample(IMFSample pSample);
+        new HRESULTMF OnSample(IMFSample pSample);
 #endregion
 
         [PreserveSig]
-        HRESULT OnSynchronizedEvent(IMFMediaEvent pEvent);
+        HRESULTMF OnSynchronizedEvent(IMFMediaEvent pEvent);
     }
 
     [ComImport]
@@ -522,15 +522,15 @@ namespace MFCaptureEngine
     public interface IMFCaptureSink
     {
         [PreserveSig]
-        HRESULT GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
+        HRESULTMF GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        HRESULT GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
+        HRESULTMF GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
         [PreserveSig]
-        HRESULT AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
+        HRESULTMF AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
         [PreserveSig]
-        HRESULT Prepare();
+        HRESULTMF Prepare();
         [PreserveSig]
-        HRESULT RemoveAllStreams();
+        HRESULTMF RemoveAllStreams();
     }
 
     [ComImport]
@@ -540,18 +540,18 @@ namespace MFCaptureEngine
     {
         #region IMFCaptureSink
         [PreserveSig]
-        new HRESULT GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
+        new HRESULTMF GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        new HRESULT GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
+        new HRESULTMF GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
         [PreserveSig]
-        new HRESULT AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
+        new HRESULTMF AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
         [PreserveSig]
-        new HRESULT Prepare();
+        new HRESULTMF Prepare();
         [PreserveSig]
-        new HRESULT RemoveAllStreams();
+        new HRESULTMF RemoveAllStreams();
         #endregion
         [PreserveSig]
-        HRESULT SetOutputMediaType(uint dwStreamIndex, IMFMediaType pMediaType, IMFAttributes pEncodingAttributes);
+        HRESULTMF SetOutputMediaType(uint dwStreamIndex, IMFMediaType pMediaType, IMFAttributes pEncodingAttributes);
     }
 
     [ComImport]
@@ -561,29 +561,29 @@ namespace MFCaptureEngine
     {
         #region IMFCaptureSink
         [PreserveSig]
-        new HRESULT GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
+        new HRESULTMF GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        new HRESULT GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
+        new HRESULTMF GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
         [PreserveSig]
-        new HRESULT AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
+        new HRESULTMF AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
         [PreserveSig]
-        new HRESULT Prepare();
+        new HRESULTMF Prepare();
         [PreserveSig]
-        new HRESULT RemoveAllStreams();
+        new HRESULTMF RemoveAllStreams();
         #endregion
 
         [PreserveSig]
-        HRESULT SetOutputByteStream(IMFByteStream pByteStream, ref Guid guidContainerType);
+        HRESULTMF SetOutputByteStream(IMFByteStream pByteStream, ref Guid guidContainerType);
         [PreserveSig]
-        HRESULT SetOutputFileName(string fileName);
+        HRESULTMF SetOutputFileName(string fileName);
         [PreserveSig]
-        HRESULT SetSampleCallback(uint dwStreamSinkIndex, IMFCaptureEngineOnSampleCallback pCallback);
+        HRESULTMF SetSampleCallback(uint dwStreamSinkIndex, IMFCaptureEngineOnSampleCallback pCallback);
         [PreserveSig]
-        HRESULT SetCustomSink(IMFMediaSink pMediaSink);
+        HRESULTMF SetCustomSink(IMFMediaSink pMediaSink);
         [PreserveSig]
-        HRESULT GetRotation(uint dwStreamIndex, out uint pdwRotationValue);
+        HRESULTMF GetRotation(uint dwStreamIndex, out uint pdwRotationValue);
         [PreserveSig]
-        HRESULT SetRotation(uint dwStreamIndex, uint dwRotationValue);
+        HRESULTMF SetRotation(uint dwStreamIndex, uint dwRotationValue);
     }
 
     [ComImport]
@@ -593,35 +593,35 @@ namespace MFCaptureEngine
     {
         #region IMFCaptureSink
         [PreserveSig]
-        new HRESULT GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
+        new HRESULTMF GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        new HRESULT GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
+        new HRESULTMF GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
         [PreserveSig]
-        new HRESULT AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
+        new HRESULTMF AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
         [PreserveSig]
-        new HRESULT Prepare();
+        new HRESULTMF Prepare();
         [PreserveSig]
-        new HRESULT RemoveAllStreams();
+        new HRESULTMF RemoveAllStreams();
         #endregion
 
         [PreserveSig]
-        HRESULT SetRenderHandle(IntPtr handle);
+        HRESULTMF SetRenderHandle(IntPtr handle);
         [PreserveSig]
-        HRESULT SetRenderSurface(IntPtr pSurface);
+        HRESULTMF SetRenderSurface(IntPtr pSurface);
         [PreserveSig]
-        HRESULT UpdateVideo(ref MFVideoNormalizedRect pSrc, ref RECT pDst, uint pBorderClr);
+        HRESULTMF UpdateVideo(ref MFVideoNormalizedRect pSrc, ref RECT pDst, uint pBorderClr);
         [PreserveSig]
-        HRESULT SetSampleCallback(uint dwStreamSinkIndex, IMFCaptureEngineOnSampleCallback pCallback);
+        HRESULTMF SetSampleCallback(uint dwStreamSinkIndex, IMFCaptureEngineOnSampleCallback pCallback);
         [PreserveSig]
-        HRESULT GetMirrorState(out bool pfMirrorState);
+        HRESULTMF GetMirrorState(out bool pfMirrorState);
         [PreserveSig]
-        HRESULT SetMirrorState(bool fMirrorState);
+        HRESULTMF SetMirrorState(bool fMirrorState);
         [PreserveSig]
-        HRESULT GetRotation(uint dwStreamIndex, out uint pdwRotationValue);
+        HRESULTMF GetRotation(uint dwStreamIndex, out uint pdwRotationValue);
         [PreserveSig]
-        HRESULT SetRotation(uint dwStreamIndex, uint dwRotationValue);
+        HRESULTMF SetRotation(uint dwStreamIndex, uint dwRotationValue);
         [PreserveSig]
-        HRESULT SetCustomSink(IMFMediaSink pMediaSink);
+        HRESULTMF SetCustomSink(IMFMediaSink pMediaSink);
     }
 
     [ComImport]
@@ -631,23 +631,23 @@ namespace MFCaptureEngine
     {
         #region IMFCaptureSink
         [PreserveSig]
-        new HRESULT GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
+        new HRESULTMF GetOutputMediaType(uint dwSinkStreamIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        new HRESULT GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
+        new HRESULTMF GetService(uint dwSinkStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
         [PreserveSig]
-        new HRESULT AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
+        new HRESULTMF AddStream(uint dwSourceStreamIndex, IMFMediaType pMediaType, IMFAttributes pAttributes, out uint pdwSinkStreamIndex);
         [PreserveSig]
-        new HRESULT Prepare();
+        new HRESULTMF Prepare();
         [PreserveSig]
-        new HRESULT RemoveAllStreams();
+        new HRESULTMF RemoveAllStreams();
         #endregion
 
         [PreserveSig]
-        HRESULT SetOutputFileName(string fileName);
+        HRESULTMF SetOutputFileName(string fileName);
         [PreserveSig]
-        HRESULT SetSampleCallback(IMFCaptureEngineOnSampleCallback pCallback);
+        HRESULTMF SetSampleCallback(IMFCaptureEngineOnSampleCallback pCallback);
         [PreserveSig]
-        HRESULT SetOutputByteStream(IMFByteStream pByteStream);
+        HRESULTMF SetOutputByteStream(IMFByteStream pByteStream);
     }
 
     [ComImport]
@@ -656,33 +656,33 @@ namespace MFCaptureEngine
     public interface IMFCaptureSource
     {
         [PreserveSig]
-        HRESULT GetCaptureDeviceSource(MF_CAPTURE_ENGINE_DEVICE_TYPE mfCaptureEngineDeviceType, out IMFMediaSource ppMediaSource);
+        HRESULTMF GetCaptureDeviceSource(MF_CAPTURE_ENGINE_DEVICE_TYPE mfCaptureEngineDeviceType, out IMFMediaSource ppMediaSource);
         [PreserveSig]
-        HRESULT GetCaptureDeviceActivate(MF_CAPTURE_ENGINE_DEVICE_TYPE mfCaptureEngineDeviceType, out IMFActivate ppActivate);
+        HRESULTMF GetCaptureDeviceActivate(MF_CAPTURE_ENGINE_DEVICE_TYPE mfCaptureEngineDeviceType, out IMFActivate ppActivate);
         [PreserveSig]
-        HRESULT GetService([MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
+        HRESULTMF GetService([MarshalAs(UnmanagedType.LPStruct)] Guid rguidService, [MarshalAs(UnmanagedType.LPStruct)] Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown);
         [PreserveSig]
-        HRESULT AddEffect(uint dwSourceStreamIndex, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+        HRESULTMF AddEffect(uint dwSourceStreamIndex, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
         [PreserveSig]     
-        HRESULT RemoveEffect(uint dwSourceStreamIndex, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+        HRESULTMF RemoveEffect(uint dwSourceStreamIndex, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
         [PreserveSig]
-        HRESULT RemoveAllEffects(uint dwSourceStreamIndex);
+        HRESULTMF RemoveAllEffects(uint dwSourceStreamIndex);
         [PreserveSig]
-        HRESULT GetAvailableDeviceMediaType(uint dwSourceStreamIndex, uint dwMediaTypeIndex, out IMFMediaType ppMediaType);
+        HRESULTMF GetAvailableDeviceMediaType(uint dwSourceStreamIndex, uint dwMediaTypeIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        HRESULT SetCurrentDeviceMediaType(uint dwSourceStreamIndex, IMFMediaType pMediaType);
+        HRESULTMF SetCurrentDeviceMediaType(uint dwSourceStreamIndex, IMFMediaType pMediaType);
         [PreserveSig]
-        HRESULT GetCurrentDeviceMediaType(uint dwSourceStreamIndex, out IMFMediaType ppMediaType);
+        HRESULTMF GetCurrentDeviceMediaType(uint dwSourceStreamIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        HRESULT GetDeviceStreamCount(out uint pdwStreamCount);
+        HRESULTMF GetDeviceStreamCount(out uint pdwStreamCount);
         [PreserveSig]
-        HRESULT GetDeviceStreamCategory(uint dwSourceStreamIndex, out MF_CAPTURE_ENGINE_STREAM_CATEGORY pStreamCategory);
+        HRESULTMF GetDeviceStreamCategory(uint dwSourceStreamIndex, out MF_CAPTURE_ENGINE_STREAM_CATEGORY pStreamCategory);
         [PreserveSig]
-        HRESULT GetMirrorState(uint dwStreamIndex, out bool pfMirrorState);
+        HRESULTMF GetMirrorState(uint dwStreamIndex, out bool pfMirrorState);
         [PreserveSig]
-        HRESULT SetMirrorState(uint dwStreamIndex, bool fMirrorState);
+        HRESULTMF SetMirrorState(uint dwStreamIndex, bool fMirrorState);
         [PreserveSig]
-        HRESULT GetStreamIndexFromFriendlyName(uint uifriendlyName, out uint pdwActualStreamIndex);
+        HRESULTMF GetStreamIndexFromFriendlyName(uint uifriendlyName, out uint pdwActualStreamIndex);
     }
 
     [ComImport]
@@ -691,21 +691,21 @@ namespace MFCaptureEngine
     public interface IMFCaptureEngine
     {
         [PreserveSig]
-        HRESULT Initialize(IMFCaptureEngineOnEventCallback pEventCallback, IMFAttributes pAttributes, IntPtr pAudioSource, IntPtr pVideoSource);
+        HRESULTMF Initialize(IMFCaptureEngineOnEventCallback pEventCallback, IMFAttributes pAttributes, IntPtr pAudioSource, IntPtr pVideoSource);
         [PreserveSig]
-        HRESULT StartPreview();
+        HRESULTMF StartPreview();
         [PreserveSig]
-        HRESULT StopPreview();
+        HRESULTMF StopPreview();
         [PreserveSig]
-        HRESULT StartRecord();
+        HRESULTMF StartRecord();
         [PreserveSig]
-        HRESULT StopRecord(bool bFinalize, bool bFlushUnprocessedSamples);
+        HRESULTMF StopRecord(bool bFinalize, bool bFlushUnprocessedSamples);
         [PreserveSig]
-        HRESULT TakePhoto();
+        HRESULTMF TakePhoto();
         [PreserveSig]
-        HRESULT GetSink(MF_CAPTURE_ENGINE_SINK_TYPE mfCaptureEngineSinkType, out IMFCaptureSink ppSink);
+        HRESULTMF GetSink(MF_CAPTURE_ENGINE_SINK_TYPE mfCaptureEngineSinkType, out IMFCaptureSink ppSink);
         [PreserveSig]
-        HRESULT GetSource(out IMFCaptureSource ppSource);
+        HRESULTMF GetSource(out IMFCaptureSource ppSource);
     }
 
     [ComImport]
@@ -714,7 +714,7 @@ namespace MFCaptureEngine
     public interface IMFCaptureEngineClassFactory
     {
         [PreserveSig]
-        HRESULT CreateInstance(ref Guid clsid, ref Guid riid, out IMFCaptureEngine ppvObject);
+        HRESULTMF CreateInstance(ref Guid clsid, ref Guid riid, out IMFCaptureEngine ppvObject);
     }
 
     [ComImport]
@@ -723,65 +723,65 @@ namespace MFCaptureEngine
     public interface IMFAttributes
     {
         [PreserveSig]
-        HRESULT GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
+        HRESULTMF GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        HRESULT GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
+        HRESULTMF GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
         [PreserveSig]
-        HRESULT CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
+        HRESULTMF CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
         [PreserveSig]
-        HRESULT Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
+        HRESULTMF Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
         [PreserveSig]
-        HRESULT GetUINT32(ref Guid guidKey, out uint punValue);
+        HRESULTMF GetUINT32(ref Guid guidKey, out uint punValue);
         [PreserveSig]
-        HRESULT GetUINT64(ref Guid guidKey, out ulong punValue);
+        HRESULTMF GetUINT64(ref Guid guidKey, out ulong punValue);
         [PreserveSig]
-        HRESULT GetDouble(ref Guid guidKey, out double pfValue);
+        HRESULTMF GetDouble(ref Guid guidKey, out double pfValue);
         [PreserveSig]
-        HRESULT GetGUID(ref Guid guidKey, out Guid pguidValue);
+        HRESULTMF GetGUID(ref Guid guidKey, out Guid pguidValue);
         [PreserveSig]
-        HRESULT GetStringLength(ref Guid guidKey, out uint pcchLength);
+        HRESULTMF GetStringLength(ref Guid guidKey, out uint pcchLength);
         [PreserveSig]
-        HRESULT GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
+        HRESULTMF GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
         [PreserveSig]
-        HRESULT GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
+        HRESULTMF GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
         [PreserveSig]
-        HRESULT GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
+        HRESULTMF GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
         [PreserveSig]
-        HRESULT GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
+        HRESULTMF GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
         [PreserveSig]
-        HRESULT GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
+        HRESULTMF GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
         [PreserveSig]
-        HRESULT GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
+        HRESULTMF GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
         [PreserveSig]
-        HRESULT SetItem(ref Guid guidKey, ref PROPVARIANT Value);
+        HRESULTMF SetItem(ref Guid guidKey, ref PROPVARIANT Value);
         [PreserveSig]
-        HRESULT DeleteItem(ref Guid guidKey);
+        HRESULTMF DeleteItem(ref Guid guidKey);
         [PreserveSig]
-        HRESULT DeleteAllItems();
+        HRESULTMF DeleteAllItems();
         [PreserveSig]
-        HRESULT SetUINT32(ref Guid guidKey, uint unValue);
+        HRESULTMF SetUINT32(ref Guid guidKey, uint unValue);
         [PreserveSig]
-        HRESULT SetUINT64(ref Guid guidKey, ulong unValue);
+        HRESULTMF SetUINT64(ref Guid guidKey, ulong unValue);
         [PreserveSig]
-        HRESULT SetDouble(ref Guid guidKey, double fValue);
+        HRESULTMF SetDouble(ref Guid guidKey, double fValue);
         [PreserveSig]
-        HRESULT SetGUID(ref Guid guidKey, ref Guid guidValue);
+        HRESULTMF SetGUID(ref Guid guidKey, ref Guid guidValue);
         [PreserveSig]
-        HRESULT SetString(ref Guid guidKey, string wszValue);
+        HRESULTMF SetString(ref Guid guidKey, string wszValue);
         [PreserveSig]
-        HRESULT SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
+        HRESULTMF SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
         [PreserveSig]
-        HRESULT SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+        HRESULTMF SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
         [PreserveSig]
-        HRESULT LockStore();
+        HRESULTMF LockStore();
         [PreserveSig]
-        HRESULT UnlockStore();
+        HRESULTMF UnlockStore();
         [PreserveSig]
-        HRESULT GetCount(out uint pcItems);
+        HRESULTMF GetCount(out uint pcItems);
         [PreserveSig]
-        HRESULT GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
+        HRESULTMF GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        HRESULT CopyAllItems(IMFAttributes pDest = null);
+        HRESULTMF CopyAllItems(IMFAttributes pDest = null);
     }
 
     public enum MF_ATTRIBUTE_TYPE
@@ -809,75 +809,75 @@ namespace MFCaptureEngine
     {
         #region IMFAttributes
         [PreserveSig]
-        new HRESULT GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
+        new HRESULTMF GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
         [PreserveSig]
-        new HRESULT CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
+        new HRESULTMF CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
         [PreserveSig]
-        new HRESULT Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
+        new HRESULTMF Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
         [PreserveSig]
-        new HRESULT GetUINT32(ref Guid guidKey, out uint punValue);
+        new HRESULTMF GetUINT32(ref Guid guidKey, out uint punValue);
         [PreserveSig]
-        new HRESULT GetUINT64(ref Guid guidKey, out ulong punValue);
+        new HRESULTMF GetUINT64(ref Guid guidKey, out ulong punValue);
         [PreserveSig]
-        new HRESULT GetDouble(ref Guid guidKey, out double pfValue);
+        new HRESULTMF GetDouble(ref Guid guidKey, out double pfValue);
         [PreserveSig]
-        new HRESULT GetGUID(ref Guid guidKey, out Guid pguidValue);
+        new HRESULTMF GetGUID(ref Guid guidKey, out Guid pguidValue);
         [PreserveSig]
-        new HRESULT GetStringLength(ref Guid guidKey, out uint pcchLength);
+        new HRESULTMF GetStringLength(ref Guid guidKey, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
+        new HRESULTMF GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
         [PreserveSig]
-        new HRESULT GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
+        new HRESULTMF GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
+        new HRESULTMF GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
+        new HRESULTMF GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
+        new HRESULTMF GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
         [PreserveSig]
-        new HRESULT GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
+        new HRESULTMF GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
         [PreserveSig]
-        new HRESULT SetItem(ref Guid guidKey, ref PROPVARIANT Value);
+        new HRESULTMF SetItem(ref Guid guidKey, ref PROPVARIANT Value);
         [PreserveSig]
-        new HRESULT DeleteItem(ref Guid guidKey);
+        new HRESULTMF DeleteItem(ref Guid guidKey);
         [PreserveSig]
-        new HRESULT DeleteAllItems();
+        new HRESULTMF DeleteAllItems();
         [PreserveSig]
-        new HRESULT SetUINT32(ref Guid guidKey, uint unValue);
+        new HRESULTMF SetUINT32(ref Guid guidKey, uint unValue);
         [PreserveSig]
-        new HRESULT SetUINT64(ref Guid guidKey, ulong unValue);
+        new HRESULTMF SetUINT64(ref Guid guidKey, ulong unValue);
         [PreserveSig]
-        new HRESULT SetDouble(ref Guid guidKey, double fValue);
+        new HRESULTMF SetDouble(ref Guid guidKey, double fValue);
         [PreserveSig]
-        new HRESULT SetGUID(ref Guid guidKey, ref Guid guidValue);
+        new HRESULTMF SetGUID(ref Guid guidKey, ref Guid guidValue);
         [PreserveSig]
-        new HRESULT SetString(ref Guid guidKey, string wszValue);
+        new HRESULTMF SetString(ref Guid guidKey, string wszValue);
         [PreserveSig]
-        new HRESULT SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
+        new HRESULTMF SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
         [PreserveSig]
-        new HRESULT SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+        new HRESULTMF SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
         [PreserveSig]
-        new HRESULT LockStore();
+        new HRESULTMF LockStore();
         [PreserveSig]
-        new HRESULT UnlockStore();
+        new HRESULTMF UnlockStore();
         [PreserveSig]
-        new HRESULT GetCount(out uint pcItems);
+        new HRESULTMF GetCount(out uint pcItems);
         [PreserveSig]
-        new HRESULT GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT CopyAllItems(IMFAttributes pDest = null);
+        new HRESULTMF CopyAllItems(IMFAttributes pDest = null);
         #endregion
 
         [PreserveSig]
-        HRESULT GetType(out MediaEventType pmet);
+        HRESULTMF GetType(out MediaEventType pmet);
         [PreserveSig]
-        HRESULT GetExtendedType(out Guid pguidExtendedType);
+        HRESULTMF GetExtendedType(out Guid pguidExtendedType);
         [PreserveSig]
-        HRESULT GetStatus(out HRESULT phrStatus);
+        HRESULTMF GetStatus(out HRESULTMF phrStatus);
         [PreserveSig]
-        HRESULT GetValue(out PROPVARIANT pvValue);
+        HRESULTMF GetValue(out PROPVARIANT pvValue);
     };
 
     public enum MediaEventType
@@ -1011,94 +1011,94 @@ namespace MFCaptureEngine
     {
         #region IMFAttributes
         [PreserveSig]
-        new HRESULT GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
+        new HRESULTMF GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
         [PreserveSig]
-        new HRESULT CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
+        new HRESULTMF CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
         [PreserveSig]
-        new HRESULT Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
+        new HRESULTMF Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
         [PreserveSig]
-        new HRESULT GetUINT32(ref Guid guidKey, out uint punValue);
+        new HRESULTMF GetUINT32(ref Guid guidKey, out uint punValue);
         [PreserveSig]
-        new HRESULT GetUINT64(ref Guid guidKey, out ulong punValue);
+        new HRESULTMF GetUINT64(ref Guid guidKey, out ulong punValue);
         [PreserveSig]
-        new HRESULT GetDouble(ref Guid guidKey, out double pfValue);
+        new HRESULTMF GetDouble(ref Guid guidKey, out double pfValue);
         [PreserveSig]
-        new HRESULT GetGUID(ref Guid guidKey, out Guid pguidValue);
+        new HRESULTMF GetGUID(ref Guid guidKey, out Guid pguidValue);
         [PreserveSig]
-        new HRESULT GetStringLength(ref Guid guidKey, out uint pcchLength);
+        new HRESULTMF GetStringLength(ref Guid guidKey, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
+        new HRESULTMF GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
         [PreserveSig]
-        new HRESULT GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
+        new HRESULTMF GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
+        new HRESULTMF GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
+        new HRESULTMF GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
+        new HRESULTMF GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
         [PreserveSig]
-        new HRESULT GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
+        new HRESULTMF GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
         [PreserveSig]
-        new HRESULT SetItem(ref Guid guidKey, ref PROPVARIANT Value);
+        new HRESULTMF SetItem(ref Guid guidKey, ref PROPVARIANT Value);
         [PreserveSig]
-        new HRESULT DeleteItem(ref Guid guidKey);
+        new HRESULTMF DeleteItem(ref Guid guidKey);
         [PreserveSig]
-        new HRESULT DeleteAllItems();
+        new HRESULTMF DeleteAllItems();
         [PreserveSig]
-        new HRESULT SetUINT32(ref Guid guidKey, uint unValue);
+        new HRESULTMF SetUINT32(ref Guid guidKey, uint unValue);
         [PreserveSig]
-        new HRESULT SetUINT64(ref Guid guidKey, ulong unValue);
+        new HRESULTMF SetUINT64(ref Guid guidKey, ulong unValue);
         [PreserveSig]
-        new HRESULT SetDouble(ref Guid guidKey, double fValue);
+        new HRESULTMF SetDouble(ref Guid guidKey, double fValue);
         [PreserveSig]
-        new HRESULT SetGUID(ref Guid guidKey, ref Guid guidValue);
+        new HRESULTMF SetGUID(ref Guid guidKey, ref Guid guidValue);
         [PreserveSig]
-        new HRESULT SetString(ref Guid guidKey, string wszValue);
+        new HRESULTMF SetString(ref Guid guidKey, string wszValue);
         [PreserveSig]
-        new HRESULT SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
+        new HRESULTMF SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
         [PreserveSig]
-        new HRESULT SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+        new HRESULTMF SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
         [PreserveSig]
-        new HRESULT LockStore();
+        new HRESULTMF LockStore();
         [PreserveSig]
-        new HRESULT UnlockStore();
+        new HRESULTMF UnlockStore();
         [PreserveSig]
-        new HRESULT GetCount(out uint pcItems);
+        new HRESULTMF GetCount(out uint pcItems);
         [PreserveSig]
-        new HRESULT GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT CopyAllItems(IMFAttributes pDest = null);
+        new HRESULTMF CopyAllItems(IMFAttributes pDest = null);
         #endregion
 
         [PreserveSig]
-        HRESULT GetSampleFlags(out int pdwSampleFlags);
+        HRESULTMF GetSampleFlags(out int pdwSampleFlags);
         [PreserveSig]
-        HRESULT SetSampleFlags(int dwSampleFlags);
+        HRESULTMF SetSampleFlags(int dwSampleFlags);
         [PreserveSig]
-        HRESULT GetSampleTime(out long phnsSampleTime);
+        HRESULTMF GetSampleTime(out long phnsSampleTime);
         [PreserveSig]
-        HRESULT SetSampleTime(long hnsSampleTime);
+        HRESULTMF SetSampleTime(long hnsSampleTime);
         [PreserveSig]
-        HRESULT GetSampleDuration(out long phnsSampleDuration);
-        HRESULT SetSampleDuration(long hnsSampleDuration);
+        HRESULTMF GetSampleDuration(out long phnsSampleDuration);
+        HRESULTMF SetSampleDuration(long hnsSampleDuration);
         [PreserveSig]
-        HRESULT GetBufferCount(out int pdwBufferCount);
+        HRESULTMF GetBufferCount(out int pdwBufferCount);
         [PreserveSig]
-        HRESULT GetBufferByIndex(int dwIndex, out IMFMediaBuffer ppBuffer);
+        HRESULTMF GetBufferByIndex(int dwIndex, out IMFMediaBuffer ppBuffer);
         [PreserveSig]
-        HRESULT ConvertToContiguousBuffer(out IMFMediaBuffer ppBuffer);
+        HRESULTMF ConvertToContiguousBuffer(out IMFMediaBuffer ppBuffer);
         [PreserveSig]
-        HRESULT AddBuffer(IMFMediaBuffer pBuffer);
+        HRESULTMF AddBuffer(IMFMediaBuffer pBuffer);
         [PreserveSig]
-        HRESULT RemoveBufferByIndex(int dwIndex);
+        HRESULTMF RemoveBufferByIndex(int dwIndex);
         [PreserveSig]
-        HRESULT RemoveAllBuffers();
+        HRESULTMF RemoveAllBuffers();
         [PreserveSig]
-        HRESULT GetTotalLength(out int pcbTotalLength);
+        HRESULTMF GetTotalLength(out int pcbTotalLength);
         [PreserveSig]
-        HRESULT CopyToBuffer(IMFMediaBuffer pBuffer);
+        HRESULTMF CopyToBuffer(IMFMediaBuffer pBuffer);
     }
 
     [Guid("045FA593-8799-42b8-BC8D-8968C6453507")]
@@ -1106,15 +1106,15 @@ namespace MFCaptureEngine
     public interface IMFMediaBuffer
     {
         [PreserveSig]
-        HRESULT Lock(out IntPtr ppbBuffer, out int pcbMaxLength, out int pcbCurrentLength);
+        HRESULTMF Lock(out IntPtr ppbBuffer, out int pcbMaxLength, out int pcbCurrentLength);
         [PreserveSig]
-        HRESULT Unlock();
+        HRESULTMF Unlock();
         [PreserveSig]
-        HRESULT GetCurrentLength(out int pcbCurrentLength);
+        HRESULTMF GetCurrentLength(out int pcbCurrentLength);
         [PreserveSig]
-        HRESULT SetCurrentLength(int cbCurrentLength);
+        HRESULTMF SetCurrentLength(int cbCurrentLength);
         [PreserveSig]
-        HRESULT GetMaxLength(out int pcbMaxLength);
+        HRESULTMF GetMaxLength(out int pcbMaxLength);
     }
 
     [ComImport]
@@ -1124,77 +1124,77 @@ namespace MFCaptureEngine
     {
         #region IMFAttributes
         [PreserveSig]
-        new HRESULT GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
+        new HRESULTMF GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
         [PreserveSig]
-        new HRESULT CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
+        new HRESULTMF CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
         [PreserveSig]
-        new HRESULT Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
+        new HRESULTMF Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
         [PreserveSig]
-        new HRESULT GetUINT32(ref Guid guidKey, out uint punValue);
+        new HRESULTMF GetUINT32(ref Guid guidKey, out uint punValue);
         [PreserveSig]
-        new HRESULT GetUINT64(ref Guid guidKey, out ulong punValue);
+        new HRESULTMF GetUINT64(ref Guid guidKey, out ulong punValue);
         [PreserveSig]
-        new HRESULT GetDouble(ref Guid guidKey, out double pfValue);
+        new HRESULTMF GetDouble(ref Guid guidKey, out double pfValue);
         [PreserveSig]
-        new HRESULT GetGUID(ref Guid guidKey, out Guid pguidValue);
+        new HRESULTMF GetGUID(ref Guid guidKey, out Guid pguidValue);
         [PreserveSig]
-        new HRESULT GetStringLength(ref Guid guidKey, out uint pcchLength);
+        new HRESULTMF GetStringLength(ref Guid guidKey, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
+        new HRESULTMF GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
         [PreserveSig]
-        new HRESULT GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
+        new HRESULTMF GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
+        new HRESULTMF GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
+        new HRESULTMF GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
+        new HRESULTMF GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
         [PreserveSig]
-        new HRESULT GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
+        new HRESULTMF GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
         [PreserveSig]
-        new HRESULT SetItem(ref Guid guidKey, ref PROPVARIANT Value);
+        new HRESULTMF SetItem(ref Guid guidKey, ref PROPVARIANT Value);
         [PreserveSig]
-        new HRESULT DeleteItem(ref Guid guidKey);
+        new HRESULTMF DeleteItem(ref Guid guidKey);
         [PreserveSig]
-        new HRESULT DeleteAllItems();
+        new HRESULTMF DeleteAllItems();
         [PreserveSig]
-        new HRESULT SetUINT32(ref Guid guidKey, uint unValue);
+        new HRESULTMF SetUINT32(ref Guid guidKey, uint unValue);
         [PreserveSig]
-        new HRESULT SetUINT64(ref Guid guidKey, ulong unValue);
+        new HRESULTMF SetUINT64(ref Guid guidKey, ulong unValue);
         [PreserveSig]
-        new HRESULT SetDouble(ref Guid guidKey, double fValue);
+        new HRESULTMF SetDouble(ref Guid guidKey, double fValue);
         [PreserveSig]
-        new HRESULT SetGUID(ref Guid guidKey, ref Guid guidValue);
+        new HRESULTMF SetGUID(ref Guid guidKey, ref Guid guidValue);
         [PreserveSig]
-        new HRESULT SetString(ref Guid guidKey, string wszValue);
+        new HRESULTMF SetString(ref Guid guidKey, string wszValue);
         [PreserveSig]
-        new HRESULT SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
+        new HRESULTMF SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
         [PreserveSig]
-        new HRESULT SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+        new HRESULTMF SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
         [PreserveSig]
-        new HRESULT LockStore();
+        new HRESULTMF LockStore();
         [PreserveSig]
-        new HRESULT UnlockStore();
+        new HRESULTMF UnlockStore();
         [PreserveSig]
-        new HRESULT GetCount(out uint pcItems);
+        new HRESULTMF GetCount(out uint pcItems);
         [PreserveSig]
-        new HRESULT GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT CopyAllItems(IMFAttributes pDest = null);
+        new HRESULTMF CopyAllItems(IMFAttributes pDest = null);
         #endregion
 
         [PreserveSig]
-        HRESULT GetMajorType(out Guid pguidMajorType);
+        HRESULTMF GetMajorType(out Guid pguidMajorType);
         [PreserveSig]
-        HRESULT IsCompressedFormat(out bool pfCompressed);
+        HRESULTMF IsCompressedFormat(out bool pfCompressed);
         [PreserveSig]
-        HRESULT IsEqual(IMFMediaType pIMediaType, out int pdwFlags);
+        HRESULTMF IsEqual(IMFMediaType pIMediaType, out int pdwFlags);
         [PreserveSig]
-        HRESULT GetRepresentation(ref Guid guidRepresentation, out IntPtr ppvRepresentation);
+        HRESULTMF GetRepresentation(ref Guid guidRepresentation, out IntPtr ppvRepresentation);
         [PreserveSig]
-        HRESULT FreeRepresentation(ref Guid guidRepresentation, IntPtr pvRepresentation);
+        HRESULTMF FreeRepresentation(ref Guid guidRepresentation, IntPtr pvRepresentation);
     }
 
     [ComImport]
@@ -1203,35 +1203,35 @@ namespace MFCaptureEngine
     public interface IMFByteStream
     {
         [PreserveSig]
-        HRESULT GetCapabilities(out int pdwCapabilities);
+        HRESULTMF GetCapabilities(out int pdwCapabilities);
         [PreserveSig]
-        HRESULT GetLength(out ulong pqwLength);
+        HRESULTMF GetLength(out ulong pqwLength);
         [PreserveSig]
-        HRESULT SetLength(ulong qwLength);
+        HRESULTMF SetLength(ulong qwLength);
         [PreserveSig]
-        HRESULT GetCurrentPosition(out ulong pqwPosition);
+        HRESULTMF GetCurrentPosition(out ulong pqwPosition);
         [PreserveSig]
-        HRESULT SetCurrentPosition(ulong qwPosition);
+        HRESULTMF SetCurrentPosition(ulong qwPosition);
         [PreserveSig]
-        HRESULT IsEndOfStream(out bool pfEndOfStream);
+        HRESULTMF IsEndOfStream(out bool pfEndOfStream);
         [PreserveSig]
-        HRESULT Read(IntPtr pb, uint cb, out uint pcbRead);
+        HRESULTMF Read(IntPtr pb, uint cb, out uint pcbRead);
         [PreserveSig]
-        HRESULT BeginRead(IntPtr pb, uint cb, IMFAsyncCallback pCallback, IntPtr punkState);
+        HRESULTMF BeginRead(IntPtr pb, uint cb, IMFAsyncCallback pCallback, IntPtr punkState);
         [PreserveSig]
-        HRESULT EndRead(IMFAsyncResult pResult, out uint pcbRead);
+        HRESULTMF EndRead(IMFAsyncResult pResult, out uint pcbRead);
         [PreserveSig]
-        HRESULT Write(IntPtr pb, uint cb, out uint pcbWritten);
+        HRESULTMF Write(IntPtr pb, uint cb, out uint pcbWritten);
         [PreserveSig]
-        HRESULT BeginWrite(IntPtr pb, uint cb, IMFAsyncCallback pCallback, IntPtr punkState);
+        HRESULTMF BeginWrite(IntPtr pb, uint cb, IMFAsyncCallback pCallback, IntPtr punkState);
         [PreserveSig]
-        HRESULT EndWrite(IMFAsyncResult pResult, out uint pcbWritten);
+        HRESULTMF EndWrite(IMFAsyncResult pResult, out uint pcbWritten);
         [PreserveSig]
-        HRESULT Seek(MFBYTESTREAM_SEEK_ORIGIN SeekOrigin, long llSeekOffset, int dwSeekFlags, out ulong pqwCurrentPosition);
+        HRESULTMF Seek(MFBYTESTREAM_SEEK_ORIGIN SeekOrigin, long llSeekOffset, int dwSeekFlags, out ulong pqwCurrentPosition);
         [PreserveSig]
-        HRESULT Flush();
+        HRESULTMF Flush();
         [PreserveSig]
-        HRESULT Close();
+        HRESULTMF Close();
     }
 
     public enum MFBYTESTREAM_SEEK_ORIGIN
@@ -1246,9 +1246,9 @@ namespace MFCaptureEngine
     public interface IMFAsyncCallback
     {
         [PreserveSig]
-        HRESULT GetParameters(out int pdwFlags, out int pdwQueue);
+        HRESULTMF GetParameters(out int pdwFlags, out int pdwQueue);
         [PreserveSig]
-        HRESULT Invoke(IMFAsyncResult pAsyncResult);
+        HRESULTMF Invoke(IMFAsyncResult pAsyncResult);
     }
 
     [ComImport]
@@ -1257,13 +1257,13 @@ namespace MFCaptureEngine
     public interface IMFAsyncResult
     {
         [PreserveSig]
-        HRESULT GetState(out IntPtr ppunkState);
+        HRESULTMF GetState(out IntPtr ppunkState);
         [PreserveSig]
-        HRESULT GetStatus();
+        HRESULTMF GetStatus();
         [PreserveSig]
-        HRESULT SetStatus(HRESULT hrStatus);
+        HRESULTMF SetStatus(HRESULTMF hrStatus);
         [PreserveSig]
-        HRESULT GetObject(out IntPtr ppObject);
+        HRESULTMF GetObject(out IntPtr ppObject);
         //IUnknown* GetStateNoAddRef();
         [PreserveSig]
         IntPtr GetStateNoAddRef();
@@ -1275,36 +1275,36 @@ namespace MFCaptureEngine
     public interface IMFMediaSink
     {
         [PreserveSig]
-        HRESULT GetCharacteristics(out uint pdwCharacteristics);
+        HRESULTMF GetCharacteristics(out uint pdwCharacteristics);
         [PreserveSig]
-        HRESULT AddStreamSink(uint dwStreamSinkIdentifier, IMFMediaType pMediaType, out IMFStreamSink ppStreamSink);
+        HRESULTMF AddStreamSink(uint dwStreamSinkIdentifier, IMFMediaType pMediaType, out IMFStreamSink ppStreamSink);
         [PreserveSig]
-        HRESULT RemoveStreamSink(uint dwStreamSinkIdentifier);
+        HRESULTMF RemoveStreamSink(uint dwStreamSinkIdentifier);
         [PreserveSig]
-        HRESULT GetStreamSinkCount(out uint pcStreamSinkCount);
+        HRESULTMF GetStreamSinkCount(out uint pcStreamSinkCount);
         [PreserveSig]
-        HRESULT GetStreamSinkByIndex(uint dwIndex, out IMFStreamSink ppStreamSink);
+        HRESULTMF GetStreamSinkByIndex(uint dwIndex, out IMFStreamSink ppStreamSink);
         [PreserveSig]
-        HRESULT GetStreamSinkById(uint dwStreamSinkIdentifier, out IMFStreamSink ppStreamSink);
+        HRESULTMF GetStreamSinkById(uint dwStreamSinkIdentifier, out IMFStreamSink ppStreamSink);
         [PreserveSig]
-        HRESULT SetPresentationClock(IMFPresentationClock pPresentationClock);
+        HRESULTMF SetPresentationClock(IMFPresentationClock pPresentationClock);
         [PreserveSig]
-        HRESULT GetPresentationClock(out IMFPresentationClock ppPresentationClock);
+        HRESULTMF GetPresentationClock(out IMFPresentationClock ppPresentationClock);
         [PreserveSig]
-        HRESULT Shutdown();
+        HRESULTMF Shutdown();
     }
 
     [ComImport, Guid("2CD0BD52-BCD5-4B89-B62C-EADC0C031E7D"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFMediaEventGenerator
     {
         [PreserveSig]
-        HRESULT GetEvent(int dwFlags, out IMFMediaEvent ppEvent);
+        HRESULTMF GetEvent(int dwFlags, out IMFMediaEvent ppEvent);
         [PreserveSig]
-        HRESULT BeginGetEvent(IMFAsyncCallback pCallback, IntPtr punkState);
+        HRESULTMF BeginGetEvent(IMFAsyncCallback pCallback, IntPtr punkState);
         [PreserveSig]
-        HRESULT EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent);
+        HRESULTMF EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent);
         [PreserveSig]
-        HRESULT QueueEvent(int met, ref Guid guidExtendedType, HRESULT hrStatus, PROPVARIANT pvValue);
+        HRESULTMF QueueEvent(int met, ref Guid guidExtendedType, HRESULTMF hrStatus, PROPVARIANT pvValue);
     };
 
     [ComImport, Guid("0A97B3CF-8E7C-4a3d-8F8C-0C843DC247FB"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1312,44 +1312,44 @@ namespace MFCaptureEngine
     {
         #region IMFMediaEventGenerator
         [PreserveSig]
-        new HRESULT GetEvent(int dwFlags, out IMFMediaEvent ppEvent);
+        new HRESULTMF GetEvent(int dwFlags, out IMFMediaEvent ppEvent);
         [PreserveSig]
-        new HRESULT BeginGetEvent(IMFAsyncCallback pCallback, IntPtr punkState);
+        new HRESULTMF BeginGetEvent(IMFAsyncCallback pCallback, IntPtr punkState);
         [PreserveSig]
-        new HRESULT EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent);
+        new HRESULTMF EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent);
         [PreserveSig]
-        new HRESULT QueueEvent(int met, ref Guid guidExtendedType, HRESULT hrStatus, PROPVARIANT pvValue);
+        new HRESULTMF QueueEvent(int met, ref Guid guidExtendedType, HRESULTMF hrStatus, PROPVARIANT pvValue);
         #endregion
 
         [PreserveSig]
-        HRESULT GetMediaSink(out IMFMediaSink ppMediaSink);
+        HRESULTMF GetMediaSink(out IMFMediaSink ppMediaSink);
         [PreserveSig]
-        HRESULT GetIdentifier(out uint pdwIdentifier);
+        HRESULTMF GetIdentifier(out uint pdwIdentifier);
         [PreserveSig]
-        HRESULT GetMediaTypeHandler(out IMFMediaTypeHandler ppHandler);
+        HRESULTMF GetMediaTypeHandler(out IMFMediaTypeHandler ppHandler);
         [PreserveSig]
-        HRESULT ProcessSample(IMFSample pSample);
+        HRESULTMF ProcessSample(IMFSample pSample);
         [PreserveSig]
-        HRESULT PlaceMarker(MFSTREAMSINK_MARKER_TYPE eMarkerType, PROPVARIANT pvarMarkerValue, PROPVARIANT pvarContextValue);
+        HRESULTMF PlaceMarker(MFSTREAMSINK_MARKER_TYPE eMarkerType, PROPVARIANT pvarMarkerValue, PROPVARIANT pvarContextValue);
         [PreserveSig]
-        HRESULT Flush();
+        HRESULTMF Flush();
     }
 
     [ComImport, Guid("e93dcf6c-4b07-4e1e-8123-aa16ed6eadf5"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFMediaTypeHandler
     {
         [PreserveSig]
-        HRESULT IsMediaTypeSupported(IMFMediaType pMediaType, out IMFMediaType ppMediaType);
+        HRESULTMF IsMediaTypeSupported(IMFMediaType pMediaType, out IMFMediaType ppMediaType);
         [PreserveSig]
-        HRESULT GetMediaTypeCount(out int pdwTypeCount);
+        HRESULTMF GetMediaTypeCount(out int pdwTypeCount);
         [PreserveSig]
-        HRESULT GetMediaTypeByIndex(int dwIndex, out IMFMediaType ppType);
+        HRESULTMF GetMediaTypeByIndex(int dwIndex, out IMFMediaType ppType);
         [PreserveSig]
-        HRESULT SetCurrentMediaType(IMFMediaType pMediaType);
+        HRESULTMF SetCurrentMediaType(IMFMediaType pMediaType);
         [PreserveSig]
-        HRESULT GetCurrentMediaType(out IMFMediaType ppMediaType);
+        HRESULTMF GetCurrentMediaType(out IMFMediaType ppMediaType);
         [PreserveSig]
-        HRESULT GetMajorType(out Guid pguidMajorType);
+        HRESULTMF GetMajorType(out Guid pguidMajorType);
     };
 
     public enum MFSTREAMSINK_MARKER_TYPE
@@ -1366,15 +1366,15 @@ namespace MFCaptureEngine
     public interface IMFClock
     {
         [PreserveSig]
-        HRESULT GetClockCharacteristics(out uint pdwCharacteristics);
+        HRESULTMF GetClockCharacteristics(out uint pdwCharacteristics);
         [PreserveSig]
-        HRESULT GetCorrelatedTime(uint dwReserved, out long pllClockTime, out long phnsSystemTime);
+        HRESULTMF GetCorrelatedTime(uint dwReserved, out long pllClockTime, out long phnsSystemTime);
         [PreserveSig]
-        HRESULT GetContinuityKey(out uint pdwContinuityKey);
+        HRESULTMF GetContinuityKey(out uint pdwContinuityKey);
         [PreserveSig]
-        HRESULT GetState(uint dwReserved, out MFCLOCK_STATE peClockState);
+        HRESULTMF GetState(uint dwReserved, out MFCLOCK_STATE peClockState);
         [PreserveSig]
-        HRESULT GetProperties(out MFCLOCK_PROPERTIES pClockProperties);
+        HRESULTMF GetProperties(out MFCLOCK_PROPERTIES pClockProperties);
     }
 
     public enum MFCLOCK_STATE
@@ -1403,33 +1403,33 @@ namespace MFCaptureEngine
     {
         #region IMFClock
         [PreserveSig]
-        new HRESULT GetClockCharacteristics(out uint pdwCharacteristics);
+        new HRESULTMF GetClockCharacteristics(out uint pdwCharacteristics);
         [PreserveSig]
-        new HRESULT GetCorrelatedTime(uint dwReserved, out long pllClockTime, out long phnsSystemTime);
+        new HRESULTMF GetCorrelatedTime(uint dwReserved, out long pllClockTime, out long phnsSystemTime);
         [PreserveSig]
-        new HRESULT GetContinuityKey(out uint pdwContinuityKey);
+        new HRESULTMF GetContinuityKey(out uint pdwContinuityKey);
         [PreserveSig]
-        new HRESULT GetState(uint dwReserved, out MFCLOCK_STATE peClockState);
+        new HRESULTMF GetState(uint dwReserved, out MFCLOCK_STATE peClockState);
         [PreserveSig]
-        new HRESULT GetProperties(out MFCLOCK_PROPERTIES pClockProperties);
+        new HRESULTMF GetProperties(out MFCLOCK_PROPERTIES pClockProperties);
         #endregion
 
         [PreserveSig]
-        HRESULT SetTimeSource(IMFPresentationTimeSource pTimeSource);
+        HRESULTMF SetTimeSource(IMFPresentationTimeSource pTimeSource);
         [PreserveSig]
-        HRESULT GetTimeSource(out IMFPresentationTimeSource ppTimeSource);
+        HRESULTMF GetTimeSource(out IMFPresentationTimeSource ppTimeSource);
         [PreserveSig]
-        HRESULT GetTime(out long phnsClockTime);
+        HRESULTMF GetTime(out long phnsClockTime);
         [PreserveSig]
-        HRESULT AddClockStateSink(IMFClockStateSink pStateSink);
+        HRESULTMF AddClockStateSink(IMFClockStateSink pStateSink);
         [PreserveSig]
-        HRESULT RemoveClockStateSink(IMFClockStateSink pStateSink);
+        HRESULTMF RemoveClockStateSink(IMFClockStateSink pStateSink);
         [PreserveSig]
-        HRESULT Start(long llClockStartOffset);
+        HRESULTMF Start(long llClockStartOffset);
         [PreserveSig]
-        HRESULT Stop();
+        HRESULTMF Stop();
         [PreserveSig]
-        HRESULT Pause();
+        HRESULTMF Pause();
     }
 
 
@@ -1440,19 +1440,19 @@ namespace MFCaptureEngine
     {
         #region IMFClock
         [PreserveSig]
-        new HRESULT GetClockCharacteristics(out uint pdwCharacteristics);
+        new HRESULTMF GetClockCharacteristics(out uint pdwCharacteristics);
         [PreserveSig]
-        new HRESULT GetCorrelatedTime(uint dwReserved, out long pllClockTime, out long phnsSystemTime);
+        new HRESULTMF GetCorrelatedTime(uint dwReserved, out long pllClockTime, out long phnsSystemTime);
         [PreserveSig]
-        new HRESULT GetContinuityKey(out uint pdwContinuityKey);
+        new HRESULTMF GetContinuityKey(out uint pdwContinuityKey);
         [PreserveSig]
-        new HRESULT GetState(uint dwReserved, out MFCLOCK_STATE peClockState);
+        new HRESULTMF GetState(uint dwReserved, out MFCLOCK_STATE peClockState);
         [PreserveSig]
-        new HRESULT GetProperties(out MFCLOCK_PROPERTIES pClockProperties);
+        new HRESULTMF GetProperties(out MFCLOCK_PROPERTIES pClockProperties);
         #endregion
 
         [PreserveSig]
-        HRESULT GetUnderlyingClock(out IMFClock ppClock);
+        HRESULTMF GetUnderlyingClock(out IMFClock ppClock);
     }
 
     [ComImport]
@@ -1461,15 +1461,15 @@ namespace MFCaptureEngine
     public interface IMFClockStateSink
     {
         [PreserveSig]
-        HRESULT OnClockStart(long hnsSystemTime, long llClockStartOffset);
+        HRESULTMF OnClockStart(long hnsSystemTime, long llClockStartOffset);
         [PreserveSig]
-        HRESULT OnClockStop(long hnsSystemTime);
+        HRESULTMF OnClockStop(long hnsSystemTime);
         [PreserveSig]
-        HRESULT OnClockPause(long hnsSystemTime);
+        HRESULTMF OnClockPause(long hnsSystemTime);
         [PreserveSig]
-        HRESULT OnClockRestart(long hnsSystemTime);
+        HRESULTMF OnClockRestart(long hnsSystemTime);
         [PreserveSig]
-        HRESULT OnClockSetRate(long hnsSystemTime, float flRate);
+        HRESULTMF OnClockSetRate(long hnsSystemTime, float flRate);
     }
 
     [ComImport, Guid("279a808d-aec7-40c8-9c6b-a6b492c78a66"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1477,27 +1477,27 @@ namespace MFCaptureEngine
     {
         #region IMFMediaEventGenerator
         [PreserveSig]
-        new HRESULT GetEvent(int dwFlags, out IMFMediaEvent ppEvent);
+        new HRESULTMF GetEvent(int dwFlags, out IMFMediaEvent ppEvent);
         [PreserveSig]
-        new HRESULT BeginGetEvent(IMFAsyncCallback pCallback, IntPtr punkState);
+        new HRESULTMF BeginGetEvent(IMFAsyncCallback pCallback, IntPtr punkState);
         [PreserveSig]
-        new HRESULT EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent);
+        new HRESULTMF EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent);
         [PreserveSig]
-        new HRESULT QueueEvent(int met, ref Guid guidExtendedType, HRESULT hrStatus, PROPVARIANT pvValue);
+        new HRESULTMF QueueEvent(int met, ref Guid guidExtendedType, HRESULTMF hrStatus, PROPVARIANT pvValue);
         #endregion
 
         [PreserveSig]
-        HRESULT GetCharacteristics(out int pdwCharacteristics);
+        HRESULTMF GetCharacteristics(out int pdwCharacteristics);
         [PreserveSig]
-        HRESULT CreatePresentationDescriptor(out IMFPresentationDescriptor ppPresentationDescriptor);
+        HRESULTMF CreatePresentationDescriptor(out IMFPresentationDescriptor ppPresentationDescriptor);
         [PreserveSig]
-        HRESULT Start(IMFPresentationDescriptor pPresentationDescriptor, ref Guid pguidTimeFormat, PROPVARIANT pvarStartPosition);
+        HRESULTMF Start(IMFPresentationDescriptor pPresentationDescriptor, ref Guid pguidTimeFormat, PROPVARIANT pvarStartPosition);
         [PreserveSig]
-        HRESULT Stop();
+        HRESULTMF Stop();
         [PreserveSig]
-        HRESULT Pause();
+        HRESULTMF Pause();
         [PreserveSig]
-        HRESULT Shutdown();
+        HRESULTMF Shutdown();
     };
 
     [ComImport, Guid("03cb2711-24d7-4db6-a17f-f3a7a479a536"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1505,77 +1505,77 @@ namespace MFCaptureEngine
     {
         #region IMFAttributes
         [PreserveSig]
-        new HRESULT GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
+        new HRESULTMF GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
         [PreserveSig]
-        new HRESULT CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
+        new HRESULTMF CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
         [PreserveSig]
-        new HRESULT Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
+        new HRESULTMF Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
         [PreserveSig]
-        new HRESULT GetUINT32(ref Guid guidKey, out uint punValue);
+        new HRESULTMF GetUINT32(ref Guid guidKey, out uint punValue);
         [PreserveSig]
-        new HRESULT GetUINT64(ref Guid guidKey, out ulong punValue);
+        new HRESULTMF GetUINT64(ref Guid guidKey, out ulong punValue);
         [PreserveSig]
-        new HRESULT GetDouble(ref Guid guidKey, out double pfValue);
+        new HRESULTMF GetDouble(ref Guid guidKey, out double pfValue);
         [PreserveSig]
-        new HRESULT GetGUID(ref Guid guidKey, out Guid pguidValue);
+        new HRESULTMF GetGUID(ref Guid guidKey, out Guid pguidValue);
         [PreserveSig]
-        new HRESULT GetStringLength(ref Guid guidKey, out uint pcchLength);
+        new HRESULTMF GetStringLength(ref Guid guidKey, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
+        new HRESULTMF GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
         [PreserveSig]
-        new HRESULT GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
+        new HRESULTMF GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
+        new HRESULTMF GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
+        new HRESULTMF GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
+        new HRESULTMF GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
         [PreserveSig]
-        new HRESULT GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
+        new HRESULTMF GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
         [PreserveSig]
-        new HRESULT SetItem(ref Guid guidKey, ref PROPVARIANT Value);
+        new HRESULTMF SetItem(ref Guid guidKey, ref PROPVARIANT Value);
         [PreserveSig]
-        new HRESULT DeleteItem(ref Guid guidKey);
+        new HRESULTMF DeleteItem(ref Guid guidKey);
         [PreserveSig]
-        new HRESULT DeleteAllItems();
+        new HRESULTMF DeleteAllItems();
         [PreserveSig]
-        new HRESULT SetUINT32(ref Guid guidKey, uint unValue);
+        new HRESULTMF SetUINT32(ref Guid guidKey, uint unValue);
         [PreserveSig]
-        new HRESULT SetUINT64(ref Guid guidKey, ulong unValue);
+        new HRESULTMF SetUINT64(ref Guid guidKey, ulong unValue);
         [PreserveSig]
-        new HRESULT SetDouble(ref Guid guidKey, double fValue);
+        new HRESULTMF SetDouble(ref Guid guidKey, double fValue);
         [PreserveSig]
-        new HRESULT SetGUID(ref Guid guidKey, ref Guid guidValue);
+        new HRESULTMF SetGUID(ref Guid guidKey, ref Guid guidValue);
         [PreserveSig]
-        new HRESULT SetString(ref Guid guidKey, string wszValue);
+        new HRESULTMF SetString(ref Guid guidKey, string wszValue);
         [PreserveSig]
-        new HRESULT SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
+        new HRESULTMF SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
         [PreserveSig]
-        new HRESULT SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+        new HRESULTMF SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
         [PreserveSig]
-        new HRESULT LockStore();
+        new HRESULTMF LockStore();
         [PreserveSig]
-        new HRESULT UnlockStore();
+        new HRESULTMF UnlockStore();
         [PreserveSig]
-        new HRESULT GetCount(out uint pcItems);
+        new HRESULTMF GetCount(out uint pcItems);
         [PreserveSig]
-        new HRESULT GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT CopyAllItems(IMFAttributes pDest = null);
+        new HRESULTMF CopyAllItems(IMFAttributes pDest = null);
         #endregion
 
         [PreserveSig]
-        HRESULT GetStreamDescriptorCount(out int pdwDescriptorCount);
+        HRESULTMF GetStreamDescriptorCount(out int pdwDescriptorCount);
         [PreserveSig]
-        HRESULT GetStreamDescriptorByIndex(int dwIndex, out bool pfSelected, out IMFStreamDescriptor ppDescriptor);
+        HRESULTMF GetStreamDescriptorByIndex(int dwIndex, out bool pfSelected, out IMFStreamDescriptor ppDescriptor);
         [PreserveSig]
-        HRESULT SelectStream(int dwDescriptorIndex);
+        HRESULTMF SelectStream(int dwDescriptorIndex);
         [PreserveSig]
-        HRESULT DeselectStream(int dwDescriptorIndex);
+        HRESULTMF DeselectStream(int dwDescriptorIndex);
         [PreserveSig]
-        HRESULT Clone(out IMFPresentationDescriptor ppPresentationDescriptor);
+        HRESULTMF Clone(out IMFPresentationDescriptor ppPresentationDescriptor);
     };
 
     [ComImport, Guid("56c03d9c-9dbb-45f5-ab4b-d80f47c05938"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1583,71 +1583,71 @@ namespace MFCaptureEngine
     {
         #region IMFAttributes
         [PreserveSig]
-        new HRESULT GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
+        new HRESULTMF GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
         [PreserveSig]
-        new HRESULT CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
+        new HRESULTMF CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
         [PreserveSig]
-        new HRESULT Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
+        new HRESULTMF Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
         [PreserveSig]
-        new HRESULT GetUINT32(ref Guid guidKey, out uint punValue);
+        new HRESULTMF GetUINT32(ref Guid guidKey, out uint punValue);
         [PreserveSig]
-        new HRESULT GetUINT64(ref Guid guidKey, out ulong punValue);
+        new HRESULTMF GetUINT64(ref Guid guidKey, out ulong punValue);
         [PreserveSig]
-        new HRESULT GetDouble(ref Guid guidKey, out double pfValue);
+        new HRESULTMF GetDouble(ref Guid guidKey, out double pfValue);
         [PreserveSig]
-        new HRESULT GetGUID(ref Guid guidKey, out Guid pguidValue);
+        new HRESULTMF GetGUID(ref Guid guidKey, out Guid pguidValue);
         [PreserveSig]
-        new HRESULT GetStringLength(ref Guid guidKey, out uint pcchLength);
+        new HRESULTMF GetStringLength(ref Guid guidKey, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
+        new HRESULTMF GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
         [PreserveSig]
-        new HRESULT GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
+        new HRESULTMF GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
+        new HRESULTMF GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
+        new HRESULTMF GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
+        new HRESULTMF GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
         [PreserveSig]
-        new HRESULT GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
+        new HRESULTMF GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
         [PreserveSig]
-        new HRESULT SetItem(ref Guid guidKey, ref PROPVARIANT Value);
+        new HRESULTMF SetItem(ref Guid guidKey, ref PROPVARIANT Value);
         [PreserveSig]
-        new HRESULT DeleteItem(ref Guid guidKey);
+        new HRESULTMF DeleteItem(ref Guid guidKey);
         [PreserveSig]
-        new HRESULT DeleteAllItems();
+        new HRESULTMF DeleteAllItems();
         [PreserveSig]
-        new HRESULT SetUINT32(ref Guid guidKey, uint unValue);
+        new HRESULTMF SetUINT32(ref Guid guidKey, uint unValue);
         [PreserveSig]
-        new HRESULT SetUINT64(ref Guid guidKey, ulong unValue);
+        new HRESULTMF SetUINT64(ref Guid guidKey, ulong unValue);
         [PreserveSig]
-        new HRESULT SetDouble(ref Guid guidKey, double fValue);
+        new HRESULTMF SetDouble(ref Guid guidKey, double fValue);
         [PreserveSig]
-        new HRESULT SetGUID(ref Guid guidKey, ref Guid guidValue);
+        new HRESULTMF SetGUID(ref Guid guidKey, ref Guid guidValue);
         [PreserveSig]
-        new HRESULT SetString(ref Guid guidKey, string wszValue);
+        new HRESULTMF SetString(ref Guid guidKey, string wszValue);
         [PreserveSig]
-        new HRESULT SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
+        new HRESULTMF SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
         [PreserveSig]
-        new HRESULT SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);   
+        new HRESULTMF SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);   
         [PreserveSig]
-        new HRESULT LockStore();
+        new HRESULTMF LockStore();
         [PreserveSig]
-        new HRESULT UnlockStore();
+        new HRESULTMF UnlockStore();
         [PreserveSig]
-        new HRESULT GetCount(out uint pcItems);
+        new HRESULTMF GetCount(out uint pcItems);
         [PreserveSig]
-        new HRESULT GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT CopyAllItems(IMFAttributes pDest = null);
+        new HRESULTMF CopyAllItems(IMFAttributes pDest = null);
         #endregion
 
         [PreserveSig]
-        HRESULT GetStreamIdentifier(out int pdwStreamIdentifier);
+        HRESULTMF GetStreamIdentifier(out int pdwStreamIdentifier);
         [PreserveSig]
-        HRESULT GetMediaTypeHandler(out IMFMediaTypeHandler ppMediaTypeHandler);
+        HRESULTMF GetMediaTypeHandler(out IMFMediaTypeHandler ppMediaTypeHandler);
     };
 
     [ComImport, Guid("7FEE9E9A-4A89-47a6-899C-B6A53A70FB67"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1655,73 +1655,73 @@ namespace MFCaptureEngine
     {
         #region IMFAttributes
         [PreserveSig]
-        new HRESULT GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItem(ref Guid guidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
+        new HRESULTMF GetItemType(ref Guid guidKey, out MF_ATTRIBUTE_TYPE pType);
         [PreserveSig]
-        new HRESULT CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
+        new HRESULTMF CompareItem(ref Guid guidKey, ref PROPVARIANT Value, out bool pbResult);
         [PreserveSig]
-        new HRESULT Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
+        new HRESULTMF Compare(IMFAttributes pTheirs, MF_ATTRIBUTES_MATCH_TYPE MatchType, out bool pbResult);
         [PreserveSig]
-        new HRESULT GetUINT32(ref Guid guidKey, out uint punValue);
+        new HRESULTMF GetUINT32(ref Guid guidKey, out uint punValue);
         [PreserveSig]
-        new HRESULT GetUINT64(ref Guid guidKey, out ulong punValue);
+        new HRESULTMF GetUINT64(ref Guid guidKey, out ulong punValue);
         [PreserveSig]
-        new HRESULT GetDouble(ref Guid guidKey, out double pfValue);
+        new HRESULTMF GetDouble(ref Guid guidKey, out double pfValue);
         [PreserveSig]
-        new HRESULT GetGUID(ref Guid guidKey, out Guid pguidValue);
+        new HRESULTMF GetGUID(ref Guid guidKey, out Guid pguidValue);
         [PreserveSig]
-        new HRESULT GetStringLength(ref Guid guidKey, out uint pcchLength);
+        new HRESULTMF GetStringLength(ref Guid guidKey, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
+        new HRESULTMF GetString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder pwszValue, uint cchBufSize, ref uint pcchLength);
         [PreserveSig]
-        new HRESULT GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
+        new HRESULTMF GetAllocatedString(ref Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out StringBuilder ppwszValue, out uint pcchLength);
         [PreserveSig]
-        new HRESULT GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
+        new HRESULTMF GetBlobSize(ref Guid guidKey, out uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
+        new HRESULTMF GetBlob(ref Guid guidKey, out IntPtr pBuf, uint cbBufSize, ref uint pcbBlobSize);
         [PreserveSig]
-        new HRESULT GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
+        new HRESULTMF GetAllocatedBlob(ref Guid guidKey, out IntPtr ppBuf, out uint pcbSize);
         [PreserveSig]
-        new HRESULT GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
+        new HRESULTMF GetUnknown(ref Guid guidKey, ref Guid riid, out IntPtr ppv);
         [PreserveSig]
-        new HRESULT SetItem(ref Guid guidKey, ref PROPVARIANT Value);
+        new HRESULTMF SetItem(ref Guid guidKey, ref PROPVARIANT Value);
         [PreserveSig]
-        new HRESULT DeleteItem(ref Guid guidKey);
+        new HRESULTMF DeleteItem(ref Guid guidKey);
         [PreserveSig]
-        new HRESULT DeleteAllItems();
+        new HRESULTMF DeleteAllItems();
         [PreserveSig]
-        new HRESULT SetUINT32(ref Guid guidKey, uint unValue);
+        new HRESULTMF SetUINT32(ref Guid guidKey, uint unValue);
         [PreserveSig]
-        new HRESULT SetUINT64(ref Guid guidKey, ulong unValue);
+        new HRESULTMF SetUINT64(ref Guid guidKey, ulong unValue);
         [PreserveSig]
-        new HRESULT SetDouble(ref Guid guidKey, double fValue);
+        new HRESULTMF SetDouble(ref Guid guidKey, double fValue);
         [PreserveSig]
-        new HRESULT SetGUID(ref Guid guidKey, ref Guid guidValue);
+        new HRESULTMF SetGUID(ref Guid guidKey, ref Guid guidValue);
         [PreserveSig]
-        new HRESULT SetString(ref Guid guidKey, string wszValue);
+        new HRESULTMF SetString(ref Guid guidKey, string wszValue);
         [PreserveSig]
-        new HRESULT SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
+        new HRESULTMF SetBlob(ref Guid guidKey, char pBuf, uint cbBufSize);
         [PreserveSig]
-        new HRESULT SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+        new HRESULTMF SetUnknown(ref Guid guidKey, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
         [PreserveSig]
-        new HRESULT LockStore();
+        new HRESULTMF LockStore();
         [PreserveSig]
-        new HRESULT UnlockStore();
+        new HRESULTMF UnlockStore();
         [PreserveSig]
-        new HRESULT GetCount(out uint pcItems);
+        new HRESULTMF GetCount(out uint pcItems);
         [PreserveSig]
-        new HRESULT GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
+        new HRESULTMF GetItemByIndex(uint unIndex, out Guid pguidKey, ref PROPVARIANT pValue);
         [PreserveSig]
-        new HRESULT CopyAllItems(IMFAttributes pDest = null);
+        new HRESULTMF CopyAllItems(IMFAttributes pDest = null);
         #endregion
 
         [PreserveSig]
-        HRESULT ActivateObject(ref Guid riid, out IntPtr ppv);
+        HRESULTMF ActivateObject(ref Guid riid, out IntPtr ppv);
         [PreserveSig]
-        HRESULT ShutdownObject();
+        HRESULTMF ShutdownObject();
         [PreserveSig]
-        HRESULT DetachObject();
+        HRESULTMF DetachObject();
     }
 
     [ComImport]
@@ -1730,19 +1730,19 @@ namespace MFCaptureEngine
     public interface IMF2DBuffer
     {
         [PreserveSig]
-        HRESULT Lock2D(out IntPtr ppbScanline0, out uint plPitch);
+        HRESULTMF Lock2D(out IntPtr ppbScanline0, out uint plPitch);
         [PreserveSig]
-        HRESULT Unlock2D();
+        HRESULTMF Unlock2D();
         [PreserveSig]
-        HRESULT GetScanline0AndPitch(out IntPtr pbScanline0, out uint plPitch);
+        HRESULTMF GetScanline0AndPitch(out IntPtr pbScanline0, out uint plPitch);
         [PreserveSig]
-        HRESULT IsContiguousFormat(out bool pfIsContiguous);
+        HRESULTMF IsContiguousFormat(out bool pfIsContiguous);
         [PreserveSig]
-        HRESULT GetContiguousLength(out uint pcbLength);
+        HRESULTMF GetContiguousLength(out uint pcbLength);
         [PreserveSig]
-        HRESULT ContiguousCopyTo(out IntPtr pbDestBuffer, uint cbDestBuffer);
+        HRESULTMF ContiguousCopyTo(out IntPtr pbDestBuffer, uint cbDestBuffer);
         [PreserveSig]
-        HRESULT ContiguousCopyFrom(IntPtr pbSrcBuffer, uint cbSrcBuffer);
+        HRESULTMF ContiguousCopyFrom(IntPtr pbSrcBuffer, uint cbSrcBuffer);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -1767,25 +1767,25 @@ namespace MFCaptureEngine
     public interface IMFSourceReader
     {
         [PreserveSig]
-        HRESULT GetStreamSelection(uint dwStreamIndex, out bool pfSelected);
+        HRESULTMF GetStreamSelection(uint dwStreamIndex, out bool pfSelected);
         [PreserveSig]
-        HRESULT SetStreamSelection(uint dwStreamIndex, bool fSelected);
+        HRESULTMF SetStreamSelection(uint dwStreamIndex, bool fSelected);
         [PreserveSig]
-        HRESULT GetNativeMediaType(uint dwStreamIndex, uint dwMediaTypeIndex, out IMFMediaType ppMediaType);
+        HRESULTMF GetNativeMediaType(uint dwStreamIndex, uint dwMediaTypeIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        HRESULT GetCurrentMediaType(uint dwStreamIndex, out IMFMediaType ppMediaType);
+        HRESULTMF GetCurrentMediaType(uint dwStreamIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        HRESULT SetCurrentMediaType(uint dwStreamIndex, ref uint pdwReserved, IMFMediaType pMediaType);
+        HRESULTMF SetCurrentMediaType(uint dwStreamIndex, ref uint pdwReserved, IMFMediaType pMediaType);
         [PreserveSig]
-        HRESULT SetCurrentPosition(ref Guid guidTimeFormat, ref PROPVARIANT varPosition);
+        HRESULTMF SetCurrentPosition(ref Guid guidTimeFormat, ref PROPVARIANT varPosition);
         [PreserveSig]
-        HRESULT ReadSample(uint dwStreamIndex, uint dwControlFlags, out uint pdwActualStreamIndex, out uint pdwStreamFlags, out long pllTimestamp, out IMFSample ppSample);
+        HRESULTMF ReadSample(uint dwStreamIndex, uint dwControlFlags, out uint pdwActualStreamIndex, out uint pdwStreamFlags, out long pllTimestamp, out IMFSample ppSample);
         [PreserveSig]
-        HRESULT Flush(uint dwStreamIndex);
+        HRESULTMF Flush(uint dwStreamIndex);
         [PreserveSig]
-        HRESULT GetServiceForStream(uint dwStreamIndex, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
+        HRESULTMF GetServiceForStream(uint dwStreamIndex, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
         [PreserveSig]
-        HRESULT GetPresentationAttribute(uint dwStreamIndex, ref Guid guidAttribute, out PROPVARIANT pvarAttribute);
+        HRESULTMF GetPresentationAttribute(uint dwStreamIndex, ref Guid guidAttribute, out PROPVARIANT pvarAttribute);
     }
 
     public enum MF_SOURCE_READER : uint
@@ -1805,35 +1805,35 @@ namespace MFCaptureEngine
     {
         #region IMFSourceReader
         [PreserveSig]
-        new HRESULT GetStreamSelection(uint dwStreamIndex, out bool pfSelected);
+        new HRESULTMF GetStreamSelection(uint dwStreamIndex, out bool pfSelected);
         [PreserveSig]
-        new HRESULT SetStreamSelection(uint dwStreamIndex, bool fSelected);
+        new HRESULTMF SetStreamSelection(uint dwStreamIndex, bool fSelected);
         [PreserveSig]
-        new HRESULT GetNativeMediaType(uint dwStreamIndex, uint dwMediaTypeIndex, out IMFMediaType ppMediaType);
+        new HRESULTMF GetNativeMediaType(uint dwStreamIndex, uint dwMediaTypeIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        new HRESULT GetCurrentMediaType(uint dwStreamIndex, out IMFMediaType ppMediaType);
+        new HRESULTMF GetCurrentMediaType(uint dwStreamIndex, out IMFMediaType ppMediaType);
         [PreserveSig]
-        new HRESULT SetCurrentMediaType(uint dwStreamIndex, ref uint pdwReserved, IMFMediaType pMediaType);
+        new HRESULTMF SetCurrentMediaType(uint dwStreamIndex, ref uint pdwReserved, IMFMediaType pMediaType);
         [PreserveSig]
-        new HRESULT SetCurrentPosition(ref Guid guidTimeFormat, ref PROPVARIANT varPosition);
+        new HRESULTMF SetCurrentPosition(ref Guid guidTimeFormat, ref PROPVARIANT varPosition);
         [PreserveSig]
-        new HRESULT ReadSample(uint dwStreamIndex, uint dwControlFlags, out uint pdwActualStreamIndex, out uint pdwStreamFlags, out long pllTimestamp, out IMFSample ppSample);
+        new HRESULTMF ReadSample(uint dwStreamIndex, uint dwControlFlags, out uint pdwActualStreamIndex, out uint pdwStreamFlags, out long pllTimestamp, out IMFSample ppSample);
         [PreserveSig]
-        new HRESULT Flush(uint dwStreamIndex);
+        new HRESULTMF Flush(uint dwStreamIndex);
         [PreserveSig]
-        new HRESULT GetServiceForStream(uint dwStreamIndex, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
+        new HRESULTMF GetServiceForStream(uint dwStreamIndex, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
         [PreserveSig]
-        new HRESULT GetPresentationAttribute(uint dwStreamIndex, ref Guid guidAttribute, out PROPVARIANT pvarAttribute);
+        new HRESULTMF GetPresentationAttribute(uint dwStreamIndex, ref Guid guidAttribute, out PROPVARIANT pvarAttribute);
         #endregion
 
         [PreserveSig]
-        HRESULT SetNativeMediaType(uint dwStreamIndex, IMFMediaType pMediaType, out uint pdwStreamFlags);
+        HRESULTMF SetNativeMediaType(uint dwStreamIndex, IMFMediaType pMediaType, out uint pdwStreamFlags);
         [PreserveSig]
-        HRESULT AddTransformForStream(uint dwStreamIndex, IntPtr pTransformOrActivate);
+        HRESULTMF AddTransformForStream(uint dwStreamIndex, IntPtr pTransformOrActivate);
         [PreserveSig]
-        HRESULT RemoveAllTransformsForStream(uint dwStreamIndex);
+        HRESULTMF RemoveAllTransformsForStream(uint dwStreamIndex);
         [PreserveSig]
-        HRESULT GetTransformForStream(uint dwStreamIndex, uint dwTransformIndex, out Guid pGuidCategory, out IMFTransform ppTransform);
+        HRESULTMF GetTransformForStream(uint dwStreamIndex, uint dwTransformIndex, out Guid pGuidCategory, out IMFTransform ppTransform);
     }
 
     [ComImport]
@@ -1842,17 +1842,17 @@ namespace MFCaptureEngine
     public interface IMFCollection
     {
         [PreserveSig]
-        HRESULT GetElementCount(out uint pcElements);
+        HRESULTMF GetElementCount(out uint pcElements);
         [PreserveSig]
-        HRESULT GetElement(uint dwElementIndex, out IntPtr ppUnkElement);
+        HRESULTMF GetElement(uint dwElementIndex, out IntPtr ppUnkElement);
         [PreserveSig]
-        HRESULT AddElement(IntPtr pUnkElement);
+        HRESULTMF AddElement(IntPtr pUnkElement);
         [PreserveSig]
-        HRESULT RemoveElement(uint dwElementIndex, out IntPtr ppUnkElement);
+        HRESULTMF RemoveElement(uint dwElementIndex, out IntPtr ppUnkElement);
         [PreserveSig]
-        HRESULT InsertElementAt(uint dwIndex, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
+        HRESULTMF InsertElementAt(uint dwIndex, [MarshalAs(UnmanagedType.IUnknown)] object pUnknown);
         [PreserveSig]
-        HRESULT RemoveAllElements();
+        HRESULTMF RemoveAllElements();
     }
 
     public enum MFT_ENUM_FLAG
@@ -1877,7 +1877,7 @@ namespace MFCaptureEngine
     public interface IMFGetService
     {
         [PreserveSig]
-        HRESULT GetService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
+        HRESULTMF GetService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
     }
 
     [ComImport]
@@ -1886,27 +1886,27 @@ namespace MFCaptureEngine
     public interface IMFSinkWriter
     {
         [PreserveSig]
-        HRESULT AddStream(IMFMediaType pTargetMediaType, out int pdwStreamIndex);
+        HRESULTMF AddStream(IMFMediaType pTargetMediaType, out int pdwStreamIndex);
         [PreserveSig]
-        HRESULT SetInputMediaType(int dwStreamIndex, IMFMediaType pInputMediaType, IMFAttributes pEncodingParameters = null);
+        HRESULTMF SetInputMediaType(int dwStreamIndex, IMFMediaType pInputMediaType, IMFAttributes pEncodingParameters = null);
         [PreserveSig]
-        HRESULT BeginWriting();
+        HRESULTMF BeginWriting();
         [PreserveSig]
-        HRESULT WriteSample(int dwStreamIndex, IMFSample pSample);
+        HRESULTMF WriteSample(int dwStreamIndex, IMFSample pSample);
         [PreserveSig]
-        HRESULT SendStreamTick(int dwStreamIndex, long llTimestamp);
+        HRESULTMF SendStreamTick(int dwStreamIndex, long llTimestamp);
         [PreserveSig]
-        HRESULT PlaceMarker(int dwStreamIndex, IntPtr pvContext);
+        HRESULTMF PlaceMarker(int dwStreamIndex, IntPtr pvContext);
         [PreserveSig]
-        HRESULT NotifyEndOfSegment(int dwStreamIndex);
+        HRESULTMF NotifyEndOfSegment(int dwStreamIndex);
         [PreserveSig]
-        HRESULT Flush(int dwStreamIndex);
+        HRESULTMF Flush(int dwStreamIndex);
         [PreserveSig]
-        HRESULT Finalize();
+        HRESULTMF Finalize();
         [PreserveSig]
-        HRESULT GetServiceForStream(int dwStreamIndex, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
+        HRESULTMF GetServiceForStream(int dwStreamIndex, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
         [PreserveSig]
-        HRESULT GetStatistics(int dwStreamIndex, out MF_SINK_WRITER_STATISTICS pStats);
+        HRESULTMF GetStatistics(int dwStreamIndex, out MF_SINK_WRITER_STATISTICS pStats);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -1937,31 +1937,31 @@ namespace MFCaptureEngine
     {
         #region IMFSinkWriter
         [PreserveSig]
-        new HRESULT AddStream(IMFMediaType pTargetMediaType, out int pdwStreamIndex);
+        new HRESULTMF AddStream(IMFMediaType pTargetMediaType, out int pdwStreamIndex);
         [PreserveSig]
-        new HRESULT SetInputMediaType(int dwStreamIndex, IMFMediaType pInputMediaType, IMFAttributes pEncodingParameters = null);
+        new HRESULTMF SetInputMediaType(int dwStreamIndex, IMFMediaType pInputMediaType, IMFAttributes pEncodingParameters = null);
         [PreserveSig]
-        new HRESULT BeginWriting();
+        new HRESULTMF BeginWriting();
         [PreserveSig]
-        new HRESULT WriteSample(int dwStreamIndex, IMFSample pSample);
+        new HRESULTMF WriteSample(int dwStreamIndex, IMFSample pSample);
         [PreserveSig]
-        new HRESULT SendStreamTick(int dwStreamIndex, long llTimestamp);
+        new HRESULTMF SendStreamTick(int dwStreamIndex, long llTimestamp);
         [PreserveSig]
-        new HRESULT PlaceMarker(int dwStreamIndex, IntPtr pvContext);
+        new HRESULTMF PlaceMarker(int dwStreamIndex, IntPtr pvContext);
         [PreserveSig]
-        new HRESULT NotifyEndOfSegment(int dwStreamIndex);
+        new HRESULTMF NotifyEndOfSegment(int dwStreamIndex);
         [PreserveSig]
-        new HRESULT Flush(int dwStreamIndex);
+        new HRESULTMF Flush(int dwStreamIndex);
         [PreserveSig]
-        new HRESULT Finalize();
+        new HRESULTMF Finalize();
         [PreserveSig]
-        new HRESULT GetServiceForStream(int dwStreamIndex, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
+        new HRESULTMF GetServiceForStream(int dwStreamIndex, ref Guid guidService, ref Guid riid, out IntPtr ppvObject);
         [PreserveSig]
-        new HRESULT GetStatistics(int dwStreamIndex, out MF_SINK_WRITER_STATISTICS pStats);
+        new HRESULTMF GetStatistics(int dwStreamIndex, out MF_SINK_WRITER_STATISTICS pStats);
         #endregion
 
         [PreserveSig]
-        HRESULT GetTransformForStream(uint dwStreamIndex, uint dwTransformIndex, out Guid pGuidCategory, out IMFTransform ppTransform);
+        HRESULTMF GetTransformForStream(uint dwStreamIndex, uint dwTransformIndex, out Guid pGuidCategory, out IMFTransform ppTransform);
     }
 
     [ComImport]
@@ -1970,13 +1970,13 @@ namespace MFCaptureEngine
     public interface IMFSimpleAudioVolume
     {
         [PreserveSig]
-        HRESULT SetMasterVolume(float fLevel);
+        HRESULTMF SetMasterVolume(float fLevel);
         [PreserveSig]
-        HRESULT GetMasterVolume(out float pfLevel);
+        HRESULTMF GetMasterVolume(out float pfLevel);
         [PreserveSig]
-        HRESULT SetMute(bool bMute);
+        HRESULTMF SetMute(bool bMute);
         [PreserveSig]
-        HRESULT GetMute(out bool pbMute);
+        HRESULTMF GetMute(out bool pbMute);
     }
 
     [ComImport]
@@ -1985,15 +1985,15 @@ namespace MFCaptureEngine
     public interface IMFAudioStreamVolume
     {
         [PreserveSig]
-        HRESULT GetChannelCount(out uint pdwCount);
+        HRESULTMF GetChannelCount(out uint pdwCount);
         [PreserveSig]
-        HRESULT SetChannelVolume(uint dwIndex, float fLevel);
+        HRESULTMF SetChannelVolume(uint dwIndex, float fLevel);
         [PreserveSig]
-        HRESULT GetChannelVolume(uint dwIndex, out float pfLevel);
+        HRESULTMF GetChannelVolume(uint dwIndex, out float pfLevel);
         [PreserveSig]
-        HRESULT SetAllVolumes(uint dwCount, float pfVolumes);
+        HRESULTMF SetAllVolumes(uint dwCount, float pfVolumes);
         [PreserveSig]
-        HRESULT GetAllVolumes(uint dwCount, out float pfVolumes);
+        HRESULTMF GetAllVolumes(uint dwCount, out float pfVolumes);
     }
 
     [ComImport]
@@ -2002,51 +2002,51 @@ namespace MFCaptureEngine
     public interface IMFTransform
     {
         [PreserveSig]
-        HRESULT GetStreamLimits(out uint pdwInputMinimum, out uint pdwInputMaximum, out uint pdwOutputMinimum, out uint pdwOutputMaximum);
+        HRESULTMF GetStreamLimits(out uint pdwInputMinimum, out uint pdwInputMaximum, out uint pdwOutputMinimum, out uint pdwOutputMaximum);
         [PreserveSig]
-        HRESULT GetStreamCount(out uint pcInputStreams, out uint pcOutputStreams);
+        HRESULTMF GetStreamCount(out uint pcInputStreams, out uint pcOutputStreams);
         [PreserveSig]
-        HRESULT GetStreamIDs(uint dwInputIDArraySize, out uint pdwInputIDs, uint dwOutputIDArraySize, out uint pdwOutputIDs);
+        HRESULTMF GetStreamIDs(uint dwInputIDArraySize, out uint pdwInputIDs, uint dwOutputIDArraySize, out uint pdwOutputIDs);
         [PreserveSig]
-        HRESULT GetInputStreamInfo(uint dwInputStreamID, out MFT_INPUT_STREAM_INFO pStreamInfo);
+        HRESULTMF GetInputStreamInfo(uint dwInputStreamID, out MFT_INPUT_STREAM_INFO pStreamInfo);
         [PreserveSig]
-        HRESULT GetOutputStreamInfo(uint dwOutputStreamID, out MFT_OUTPUT_STREAM_INFO pStreamInfo);
+        HRESULTMF GetOutputStreamInfo(uint dwOutputStreamID, out MFT_OUTPUT_STREAM_INFO pStreamInfo);
         [PreserveSig]
-        HRESULT GetAttributes(out IMFAttributes pAttributes);
+        HRESULTMF GetAttributes(out IMFAttributes pAttributes);
         [PreserveSig]
-        HRESULT GetInputStreamAttributes(uint dwInputStreamID, out IMFAttributes pAttributes);
+        HRESULTMF GetInputStreamAttributes(uint dwInputStreamID, out IMFAttributes pAttributes);
         [PreserveSig]
-        HRESULT GetOutputStreamAttributes(uint dwOutputStreamID, out IMFAttributes pAttributes);
+        HRESULTMF GetOutputStreamAttributes(uint dwOutputStreamID, out IMFAttributes pAttributes);
         [PreserveSig]
-        HRESULT DeleteInputStream(uint dwStreamID);
+        HRESULTMF DeleteInputStream(uint dwStreamID);
         [PreserveSig]
-        HRESULT AddInputStreams(uint cStreams, uint adwStreamIDs);
+        HRESULTMF AddInputStreams(uint cStreams, uint adwStreamIDs);
         [PreserveSig]
-        HRESULT GetInputAvailableType(uint dwInputStreamID, uint dwTypeIndex, out IMFMediaType ppType);
+        HRESULTMF GetInputAvailableType(uint dwInputStreamID, uint dwTypeIndex, out IMFMediaType ppType);
         [PreserveSig]
-        HRESULT GetOutputAvailableType(uint dwOutputStreamID, uint dwTypeIndex, out IMFMediaType ppType);
+        HRESULTMF GetOutputAvailableType(uint dwOutputStreamID, uint dwTypeIndex, out IMFMediaType ppType);
         [PreserveSig]
-        HRESULT SetInputType(uint dwInputStreamID, IMFMediaType pType, uint dwFlags);
+        HRESULTMF SetInputType(uint dwInputStreamID, IMFMediaType pType, uint dwFlags);
         [PreserveSig]
-        HRESULT SetOutputType(uint dwOutputStreamID, IMFMediaType pType, uint dwFlags);
+        HRESULTMF SetOutputType(uint dwOutputStreamID, IMFMediaType pType, uint dwFlags);
         [PreserveSig]
-        HRESULT GetInputCurrentType(uint dwInputStreamID, out IMFMediaType ppType);
+        HRESULTMF GetInputCurrentType(uint dwInputStreamID, out IMFMediaType ppType);
         [PreserveSig]
-        HRESULT GetOutputCurrentType(uint dwOutputStreamID, out IMFMediaType ppType);
+        HRESULTMF GetOutputCurrentType(uint dwOutputStreamID, out IMFMediaType ppType);
         [PreserveSig]
-        HRESULT GetInputStatus(uint dwInputStreamID, out uint pdwFlags);
+        HRESULTMF GetInputStatus(uint dwInputStreamID, out uint pdwFlags);
         [PreserveSig]
-        HRESULT GetOutputStatus(out uint pdwFlags);
+        HRESULTMF GetOutputStatus(out uint pdwFlags);
         [PreserveSig]
-        HRESULT SetOutputBounds(long hnsLowerBound, long hnsUpperBound);
+        HRESULTMF SetOutputBounds(long hnsLowerBound, long hnsUpperBound);
         [PreserveSig]
-        HRESULT ProcessEvent(uint dwInputStreamID, IMFMediaEvent pEvent);
+        HRESULTMF ProcessEvent(uint dwInputStreamID, IMFMediaEvent pEvent);
         [PreserveSig]
-        HRESULT ProcessMessage(MFT_MESSAGE_TYPE eMessage, IntPtr ulParam);
+        HRESULTMF ProcessMessage(MFT_MESSAGE_TYPE eMessage, IntPtr ulParam);
         [PreserveSig]
-        HRESULT ProcessInput(uint dwInputStreamID, IMFSample pSample, uint dwFlags);
+        HRESULTMF ProcessInput(uint dwInputStreamID, IMFSample pSample, uint dwFlags);
         [PreserveSig]
-        HRESULT ProcessOutput(uint dwFlags, uint cOutputBufferCount, ref MFT_OUTPUT_DATA_BUFFER pOutputSamples, out uint pdwStatus);
+        HRESULTMF ProcessOutput(uint dwFlags, uint cOutputBufferCount, ref MFT_OUTPUT_DATA_BUFFER pOutputSamples, out uint pdwStatus);
     }
 
     public enum MFT_INPUT_STREAM_INFO_FLAGS
@@ -2113,17 +2113,17 @@ namespace MFCaptureEngine
     public interface IMFVideoProcessorControl
     {
         [PreserveSig]
-        HRESULT SetBorderColor(ref MFARGB pBorderColor);
+        HRESULTMF SetBorderColor(ref MFARGB pBorderColor);
         [PreserveSig]
-        HRESULT SetSourceRectangle(ref RECT pSrcRect);
+        HRESULTMF SetSourceRectangle(ref RECT pSrcRect);
         [PreserveSig]
-        HRESULT SetDestinationRectangle(ref RECT pDstRect);
+        HRESULTMF SetDestinationRectangle(ref RECT pDstRect);
         [PreserveSig]
-        HRESULT SetMirror(MF_VIDEO_PROCESSOR_MIRROR eMirror);
+        HRESULTMF SetMirror(MF_VIDEO_PROCESSOR_MIRROR eMirror);
         [PreserveSig]
-        HRESULT SetRotation(MF_VIDEO_PROCESSOR_ROTATION eRotation);
+        HRESULTMF SetRotation(MF_VIDEO_PROCESSOR_ROTATION eRotation);
         [PreserveSig]
-        HRESULT SetConstrictionSize(Windows.Foundation.Size pConstrictionSize);
+        HRESULTMF SetConstrictionSize(Windows.Foundation.Size pConstrictionSize);
     }
 
     public enum MF_VIDEO_PROCESSOR_MIRROR
@@ -2146,25 +2146,25 @@ namespace MFCaptureEngine
     {
         #region IMFVideoProcessorControl
         [PreserveSig]
-        new HRESULT SetBorderColor(ref MFARGB pBorderColor);
+        new HRESULTMF SetBorderColor(ref MFARGB pBorderColor);
         [PreserveSig]
-        new HRESULT SetSourceRectangle(ref RECT pSrcRect);
+        new HRESULTMF SetSourceRectangle(ref RECT pSrcRect);
         [PreserveSig]
-        new HRESULT SetDestinationRectangle(ref RECT pDstRect);
+        new HRESULTMF SetDestinationRectangle(ref RECT pDstRect);
         [PreserveSig]
-        new HRESULT SetMirror(MF_VIDEO_PROCESSOR_MIRROR eMirror);
+        new HRESULTMF SetMirror(MF_VIDEO_PROCESSOR_MIRROR eMirror);
         [PreserveSig]
-        new HRESULT SetRotation(MF_VIDEO_PROCESSOR_ROTATION eRotation);
+        new HRESULTMF SetRotation(MF_VIDEO_PROCESSOR_ROTATION eRotation);
         [PreserveSig]
-        new HRESULT SetConstrictionSize(Windows.Foundation.Size pConstrictionSize);
+        new HRESULTMF SetConstrictionSize(Windows.Foundation.Size pConstrictionSize);
         #endregion
 
         [PreserveSig]
-        HRESULT SetRotationOverride(MFVideoRotationFormat uiRotation);
+        HRESULTMF SetRotationOverride(MFVideoRotationFormat uiRotation);
         [PreserveSig]
-        HRESULT EnableHardwareEffects(bool fEnabled);
+        HRESULTMF EnableHardwareEffects(bool fEnabled);
         [PreserveSig]
-        HRESULT GetSupportedHardwareEffects(out uint puiSupport);
+        HRESULTMF GetSupportedHardwareEffects(out uint puiSupport);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -2191,34 +2191,34 @@ namespace MFCaptureEngine
         #region IMFVideoProcessorControl2
         #region IMFVideoProcessorControl
         [PreserveSig]
-        new HRESULT SetBorderColor(ref MFARGB pBorderColor);
+        new HRESULTMF SetBorderColor(ref MFARGB pBorderColor);
         [PreserveSig]
-        new HRESULT SetSourceRectangle(ref RECT pSrcRect);
+        new HRESULTMF SetSourceRectangle(ref RECT pSrcRect);
         [PreserveSig]
-        new HRESULT SetDestinationRectangle(ref RECT pDstRect);
+        new HRESULTMF SetDestinationRectangle(ref RECT pDstRect);
         [PreserveSig]
-        new HRESULT SetMirror(MF_VIDEO_PROCESSOR_MIRROR eMirror);
+        new HRESULTMF SetMirror(MF_VIDEO_PROCESSOR_MIRROR eMirror);
         [PreserveSig]
-        new HRESULT SetRotation(MF_VIDEO_PROCESSOR_ROTATION eRotation);
+        new HRESULTMF SetRotation(MF_VIDEO_PROCESSOR_ROTATION eRotation);
         [PreserveSig]
-        new HRESULT SetConstrictionSize(Windows.Foundation.Size pConstrictionSize);
+        new HRESULTMF SetConstrictionSize(Windows.Foundation.Size pConstrictionSize);
         #endregion
 
-        new HRESULT SetRotationOverride(MFVideoRotationFormat uiRotation);
+        new HRESULTMF SetRotationOverride(MFVideoRotationFormat uiRotation);
         [PreserveSig]
-        new HRESULT EnableHardwareEffects(bool fEnabled);
+        new HRESULTMF EnableHardwareEffects(bool fEnabled);
         [PreserveSig]
-        new HRESULT GetSupportedHardwareEffects(out uint puiSupport);
+        new HRESULTMF GetSupportedHardwareEffects(out uint puiSupport);
         #endregion
 
         [PreserveSig]
-        HRESULT GetNaturalOutputType(out IMFMediaType ppType);
+        HRESULTMF GetNaturalOutputType(out IMFMediaType ppType);
         [PreserveSig]
-        HRESULT EnableSphericalVideoProcessing(bool fEnable, MFVideoSphericalFormat eFormat, MFVideoSphericalProjectionMode eProjectionMode);
+        HRESULTMF EnableSphericalVideoProcessing(bool fEnable, MFVideoSphericalFormat eFormat, MFVideoSphericalProjectionMode eProjectionMode);
         [PreserveSig]
-        HRESULT SetSphericalVideoProperties(float X, float Y, float Z, float W, float fieldOfView);
+        HRESULTMF SetSphericalVideoProperties(float X, float Y, float Z, float W, float fieldOfView);
         [PreserveSig]
-        HRESULT SetOutputDevice(IntPtr pOutputDevice);
+        HRESULTMF SetOutputDevice(IntPtr pOutputDevice);
     }
 
     public enum MFVideoSphericalFormat
@@ -2249,7 +2249,7 @@ namespace MFCaptureEngine
     public interface IMFVideoProcessor
     {
         [PreserveSig]
-        HRESULT GetAvailableVideoProcessorModes(ref uint lpdwNumProcessingModes, out Guid pVideoProcessingModes);
+        HRESULTMF GetAvailableVideoProcessorModes(ref uint lpdwNumProcessingModes, out Guid pVideoProcessingModes);
     }
 
 }

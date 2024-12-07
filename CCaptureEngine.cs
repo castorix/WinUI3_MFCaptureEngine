@@ -18,6 +18,7 @@ using static Global.MFError;
 using System.Diagnostics;
 using System.Reflection.Metadata;
 using Microsoft.UI.Xaml.Media;
+using Windows.Devices.Sms;
 
 // Reference : https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/CaptureEngineVideoCapture
 
@@ -96,25 +97,25 @@ namespace WinUI3_MFCaptureEngine
         // The Common Language Runtime cannot stop at this exception.Common causes include: incorrect COM interop marshalling and memory corruption.To investigate further use native-only debugging.
         // Exception thrown at 0x77CD896B (ntdll.dll) in WinUI3_MFCaptureEngine.exe: 0xC0000005: Access violation reading location 0x00D30000.
 
-        public HRESULT Initialize(IntPtr hWnd, IntPtr pAudioSource, IntPtr pVideoSource)
+        public GlobalStructures.HRESULTMF Initialize(IntPtr hWnd, IntPtr pAudioSource, IntPtr pVideoSource)
         {
             //HRESULT hr = MFStartup(MF_VERSION);
-            HRESULT hr = HRESULT.S_OK;
-            if (hr == HRESULT.S_OK)
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
+            if (hr == GlobalStructures.HRESULTMF.S_OK)
             {
-                m_hEvent = CreateEvent(IntPtr.Zero, false, false, null);
+                m_hEvent = CreateEvent(nint.Zero, false, false, null);
                 m_pCaptureEngineClassFactory = (IMFCaptureEngineClassFactory)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_MFCaptureEngineClassFactory));
                 if (m_pCaptureEngineClassFactory != null)
                 {
                     hr = MFCreateAttributes(out m_pAttributes, 1);
-                    if (hr == HRESULT.S_OK)
+                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                     {
                         hr = CreateDeviceContext();
-                        if (hr == HRESULT.S_OK)
+                        if (hr == GlobalStructures.HRESULTMF.S_OK)
                         {
                             uint nResetToken;
                             hr = MFCreateDXGIDeviceManager(out nResetToken, out m_pDXGIDeviceManager);
-                            if (hr == HRESULT.S_OK)
+                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                             {
                                 hr = m_pDXGIDeviceManager.ResetDevice(m_pD3D11DevicePtr, nResetToken);
                                 IntPtr pUnknownDeviceManager = Marshal.GetComInterfaceForObject(m_pDXGIDeviceManager, typeof(IMFDXGIDeviceManager));
@@ -122,10 +123,10 @@ namespace WinUI3_MFCaptureEngine
                                 Marshal.Release(pUnknownDeviceManager);
 
                                 hr = m_pCaptureEngineClassFactory.CreateInstance(CLSID_MFCaptureEngine, typeof(IMFCaptureEngine).GUID, out m_pCaptureEngine);
-                                if (hr == HRESULT.S_OK)
+                                if (hr == GlobalStructures.HRESULTMF.S_OK)
                                 {
                                     hr = m_pCaptureEngine.Initialize(this, m_pAttributes, pAudioSource, pVideoSource);
-                                    if (hr == HRESULT.S_OK)
+                                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                                     {
                                         //var CLSID_CColorControlDmo = new Guid("798059f0-89ca-4160-b325-aeb48efe4f9a");
                                         //m_pTransform = (IMFTransform)Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_CColorControlDmo));
@@ -140,16 +141,16 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
 
-        public HRESULT GetDeviceData()
+        public GlobalStructures.HRESULTMF GetDeviceData()
         {
-            HRESULT hr = HRESULT.S_OK;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
             IMFAttributes pAttributes = null;
             hr = MFCreateAttributes(out pAttributes, 1);
             IMFActivate[] pActivateArray = null;
             pAttributes.SetGUID(MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE, MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID);
             uint nElements = 0;
             hr = MFEnumDeviceSources(pAttributes, out pActivateArray, out nElements);
-            if (hr == HRESULT.S_OK)
+            if (hr == GlobalStructures.HRESULTMF.S_OK)
             {
                 if (nElements > 0)
                 {
@@ -158,16 +159,16 @@ namespace WinUI3_MFCaptureEngine
                     m_sFriendlyName = sbValue.ToString();
                     
                     hr = m_pCaptureEngine.GetSource(out m_pCaptureSource);
-                    if (hr == HRESULT.S_OK)
+                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                     {
                         IMFMediaType pMediaType = null;
                         hr = m_pCaptureSource.GetCurrentDeviceMediaType((uint)MF_CAPTURE_ENGINE_MEDIA_TYPE.MF_CAPTURE_ENGINE_PREFERRED_SOURCE_STREAM_FOR_VIDEO_PREVIEW, out pMediaType);
-                        if (hr == HRESULT.S_OK)
+                        if (hr == GlobalStructures.HRESULTMF.S_OK)
                         {
                             hr = MFGetAttributeSize(pMediaType, MF_MT_FRAME_SIZE, out m_nWidth, out m_nHeight);
-                            if (hr == HRESULT.S_OK)
+                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                             {
-                                PostMessage(m_hWnd, WM_APP_CAPTURE_EVENT, IntPtr.Zero, (IntPtr)1);
+                                PostMessage(m_hWnd, WM_APP_CAPTURE_EVENT, nint.Zero, (IntPtr)1);
                                 int nSize = (int)(m_nWidth * 4 * m_nHeight);
                                 m_pBytesArray = new byte[nSize];
                             }
@@ -176,7 +177,7 @@ namespace WinUI3_MFCaptureEngine
                     }
                     _mw.Title = "Device : " + m_sFriendlyName + " (" + m_nWidth.ToString() + " * " + m_nHeight.ToString() + ")";                   
                 }
-                for (int n = 0; n<nElements; n++)
+                for (int n = 0; n < nElements; n++)
                 {
                     SafeRelease(ref pActivateArray[n]);
                 }            
@@ -185,13 +186,15 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
         
-        public HRESULT CreateDeviceContext()
+        public GlobalStructures.HRESULTMF CreateDeviceContext()
         {
-            HRESULT hr = HRESULT.S_OK;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
             uint creationFlags = (uint)D3D11_CREATE_DEVICE_FLAG.D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
             // Needs "Enable native code Debugging"
+#if DEBUG
             creationFlags |= (uint)D3D11_CREATE_DEVICE_FLAG.D3D11_CREATE_DEVICE_DEBUG;
+#endif
 
             int[] aD3D_FEATURE_LEVEL = new int[] { (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_11_1, (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_11_0,
                 (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_10_1, (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_10_0, (int)D3D_FEATURE_LEVEL.D3D_FEATURE_LEVEL_9_3,
@@ -210,7 +213,7 @@ namespace WinUI3_MFCaptureEngine
                 out featureLevel,         // returns feature level of device created            
                 out m_pD3D11DeviceContextPtr // returns the device immediate context
             );
-            if (hr == HRESULT.S_OK)
+            if (hr == GlobalStructures.HRESULTMF.S_OK)
             {
                 ID3D10Multithread pMultithread = Marshal.GetObjectForIUnknown(m_pD3D11DevicePtr) as ID3D10Multithread;
                 bool bRet = pMultithread.SetMultithreadProtected(true);
@@ -219,37 +222,37 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }   
 
-        public HRESULT StartPreview()
+        public GlobalStructures.HRESULTMF StartPreview()
         {
-            HRESULT hr = HRESULT.S_OK;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
             if (m_pCaptureEngine != null)
             {
                 if (m_pCapturePreviewSink == null)
                 {
                     IMFCaptureSink pCaptureSink = null;
                     hr = m_pCaptureEngine.GetSink(MF_CAPTURE_ENGINE_SINK_TYPE.MF_CAPTURE_ENGINE_SINK_TYPE_PREVIEW, out pCaptureSink);
-                    if (hr == HRESULT.S_OK)
+                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                     {
                         m_pCapturePreviewSink = (IMFCapturePreviewSink)pCaptureSink;
-                        if (hr == HRESULT.S_OK)
+                        if (hr == GlobalStructures.HRESULTMF.S_OK)
                         {
                             if (m_pCaptureSource == null)
                                 hr = m_pCaptureEngine.GetSource(out m_pCaptureSource);
-                            if (hr == HRESULT.S_OK)
+                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                             {
                                 IMFMediaType pMediaType = null;
                                 hr = m_pCaptureSource.GetCurrentDeviceMediaType((uint)MF_CAPTURE_ENGINE_MEDIA_TYPE.MF_CAPTURE_ENGINE_PREFERRED_SOURCE_STREAM_FOR_VIDEO_PREVIEW, out pMediaType);
-                                if (hr == HRESULT.S_OK)
+                                if (hr == GlobalStructures.HRESULTMF.S_OK)
                                 {
                                     IMFMediaType pMediaType2 = null;
                                     hr = CloneVideoMediaType(pMediaType, MFVideoFormat_RGB32, out pMediaType2);
-                                    if (hr == HRESULT.S_OK)
+                                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                                     {
                                         hr = pMediaType2.SetUINT32(MF_MT_ALL_SAMPLES_INDEPENDENT, 1);
-                                        if (hr == HRESULT.S_OK)
+                                        if (hr == GlobalStructures.HRESULTMF.S_OK)
                                         {
                                             hr = m_pCapturePreviewSink.AddStream((uint)MF_CAPTURE_ENGINE_MEDIA_TYPE.MF_CAPTURE_ENGINE_PREFERRED_SOURCE_STREAM_FOR_VIDEO_PREVIEW, pMediaType2, null, out uint nSinkStreamIndex);
-                                            if (hr == HRESULT.S_OK)
+                                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                                             {
                                                 hr = m_pCapturePreviewSink.SetSampleCallback(nSinkStreamIndex, this);
                                                 //hr = m_pCapturePreviewSink.SetRenderHandle(m_hWnd);                                               
@@ -265,12 +268,12 @@ namespace WinUI3_MFCaptureEngine
                         }
                     }
                 }
-                if (hr == HRESULT.S_OK)
+                if (hr == GlobalStructures.HRESULTMF.S_OK)
                 {
                     if (!m_bPreview)
                     {
                         try
-                        { 
+                        {
                             ResetEvent();
                             hr = m_pCaptureEngine.StartPreview();
                             WaitForResult();
@@ -293,9 +296,9 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
 
-        public HRESULT StopPreview()
+        public GlobalStructures.HRESULTMF StopPreview()
         {
-            HRESULT hr = HRESULT.S_OK;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
             if (m_pCaptureEngine != null)
             {
                 if (m_bPreview)
@@ -323,9 +326,9 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
 
-        public HRESULT StartRecord(string sFileName, Guid guidVideoEncoding, Guid guidAudioEncoding)
+        public GlobalStructures.HRESULTMF StartRecord(string sFileName, Guid guidVideoEncoding, Guid guidAudioEncoding)
         {
-            HRESULT hr = HRESULT.S_OK;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
             if (m_pCaptureEngine != null && !m_bRecording)
             {
                 if (m_pCaptureRecordSink == null)
@@ -334,28 +337,28 @@ namespace WinUI3_MFCaptureEngine
                     hr = m_pCaptureEngine.GetSink(MF_CAPTURE_ENGINE_SINK_TYPE.MF_CAPTURE_ENGINE_SINK_TYPE_RECORD, out pCaptureSink);
                     m_pCaptureRecordSink = (IMFCaptureRecordSink)pCaptureSink;
                 }
-                if (hr == HRESULT.S_OK)
+                if (hr == GlobalStructures.HRESULTMF.S_OK)
                 {                   
                     if (m_pCaptureSource == null)
                         hr = m_pCaptureEngine.GetSource(out m_pCaptureSource);
-                    if (hr == HRESULT.S_OK)
+                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                     {
                         hr = m_pCaptureRecordSink.RemoveAllStreams();
-                        if (hr == HRESULT.S_OK)
+                        if (hr == GlobalStructures.HRESULTMF.S_OK)
                         {
                             hr = m_pCaptureRecordSink.SetOutputFileName(sFileName);
-                            if (hr == HRESULT.S_OK)
+                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                             {
                                 if (guidVideoEncoding != Guid.Empty)
                                 {
                                     uint dwSinkStreamIndex = 0; ;
                                     hr = ConfigureVideoEncoding(m_pCaptureSource, m_pCaptureRecordSink, guidVideoEncoding, out dwSinkStreamIndex);
-                                    if (hr == HRESULT.S_OK)
+                                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                                     {
                                         if (guidAudioEncoding != Guid.Empty)
                                         {
                                             hr = ConfigureAudioEncoding(m_pCaptureSource, m_pCaptureRecordSink, guidAudioEncoding);
-                                            if (hr == HRESULT.S_OK)
+                                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                                             {
                                                 //hr = m_pCaptureRecordSink.SetSampleCallback(dwSinkStreamIndex, this);
 
@@ -366,7 +369,7 @@ namespace WinUI3_MFCaptureEngine
                                                     IMFSourceReader pSourceReader = (IMFSourceReader)pServiceUnknown;
                                                     SafeRelease(ref pSourceReader);
 
-                                                    IntPtr pPtr = IntPtr.Zero;
+                                                    IntPtr pPtr = nint.Zero;
                                                     //IMFSimpleAudioVolume pVol = null;
                                                     Guid guid = typeof(IMFSimpleAudioVolume).GUID;
                                                     //Guid guid = typeof(IMFAudioStreamVolume).GUID;
@@ -403,9 +406,9 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
 
-        public HRESULT StopRecord()
+        public GlobalStructures.HRESULTMF StopRecord()
         {
-            HRESULT hr = HRESULT.S_OK;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
             if (m_pCaptureEngine != null)
             {
                 hr = m_pCaptureEngine.StopRecord(true, false);
@@ -413,7 +416,7 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
 
-        HRESULT ConfigureVideoEncoding(IMFCaptureSource pSource, IMFCaptureRecordSink pRecord, Guid guidEncodingType, out uint dwSinkStreamIndex)
+        GlobalStructures.HRESULTMF ConfigureVideoEncoding(IMFCaptureSource pSource, IMFCaptureRecordSink pRecord, Guid guidEncodingType, out uint dwSinkStreamIndex)
         {
             IMFMediaType pMediaType = null;
             IMFMediaType pMediaType2 = null;
@@ -421,14 +424,14 @@ namespace WinUI3_MFCaptureEngine
             dwSinkStreamIndex = 0;
 
             // Configure the video format for the recording sink.
-            HRESULT hr = pSource.GetCurrentDeviceMediaType((uint)MF_CAPTURE_ENGINE_MEDIA_TYPE.MF_CAPTURE_ENGINE_PREFERRED_SOURCE_STREAM_FOR_VIDEO_RECORD, out pMediaType);
-            if (hr == HRESULT.S_OK)
+            GlobalStructures.HRESULTMF hr = pSource.GetCurrentDeviceMediaType((uint)MF_CAPTURE_ENGINE_MEDIA_TYPE.MF_CAPTURE_ENGINE_PREFERRED_SOURCE_STREAM_FOR_VIDEO_RECORD, out pMediaType);
+            if (hr == GlobalStructures.HRESULTMF.S_OK)
             {
                 hr = CloneVideoMediaType(pMediaType, guidEncodingType, out pMediaType2);
-                if (hr == HRESULT.S_OK)
+                if (hr == GlobalStructures.HRESULTMF.S_OK)
                 {
                     hr = pMediaType.GetGUID(MF_MT_SUBTYPE, out guidSubType);
-                    if (hr == HRESULT.S_OK)
+                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                     {
                         if (guidSubType == MFVideoFormat_H264_ES || guidSubType == MFVideoFormat_H264)
                         {
@@ -439,7 +442,7 @@ namespace WinUI3_MFCaptureEngine
                         {
                             uint uiEncodingBitrate;
                             hr = GetEncodingBitrate(pMediaType2, out uiEncodingBitrate);
-                            if (hr == HRESULT.S_OK)
+                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                             {
                                 hr = pMediaType2.SetUINT32(MF_MT_AVG_BITRATE, uiEncodingBitrate);
                             }
@@ -454,15 +457,15 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
 
-        HRESULT GetEncodingBitrate(IMFMediaType pMediaType, out uint uiEncodingBitrate)
+        GlobalStructures.HRESULTMF GetEncodingBitrate(IMFMediaType pMediaType, out uint uiEncodingBitrate)
         {
             uint uiWidth;
             uint uiHeight;
             float uiBitrate;
             uint uiFrameRateNum = 0;
             uint uiFrameRateDenom = 0;
-            HRESULT hr = MFGetAttributeSize(pMediaType, MF_MT_FRAME_SIZE, out uiWidth, out uiHeight);
-            if (hr == HRESULT.S_OK)
+            GlobalStructures.HRESULTMF hr = MFGetAttributeSize(pMediaType, MF_MT_FRAME_SIZE, out uiWidth, out uiHeight);
+            if (hr == GlobalStructures.HRESULTMF.S_OK)
             {
                 hr = MFGetAttributeRatio(pMediaType, MF_MT_FRAME_RATE, out uiFrameRateNum, out uiFrameRateDenom);
             }
@@ -471,7 +474,7 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
 
-        HRESULT ConfigureAudioEncoding(IMFCaptureSource pSource, IMFCaptureRecordSink pRecord, Guid guidEncodingType)
+        GlobalStructures.HRESULTMF ConfigureAudioEncoding(IMFCaptureSource pSource, IMFCaptureRecordSink pRecord, Guid guidEncodingType)
         {
             IMFCollection pAvailableTypes = null;
             IMFMediaType pMediaType = null;
@@ -479,19 +482,19 @@ namespace WinUI3_MFCaptureEngine
 
             // Configure the audio format for the recording sink.
 
-            HRESULT hr = MFCreateAttributes(out pAttributes, 1);
-            if (hr == HRESULT.S_OK)
+            GlobalStructures.HRESULTMF hr = MFCreateAttributes(out pAttributes, 1);
+            if (hr == GlobalStructures.HRESULTMF.S_OK)
             {
                 // Enumerate low latency media types
                 hr = pAttributes.SetUINT32(MF_LOW_LATENCY, 1);
                 // Get a list of encoded output formats that are supported by the encoder.
                 hr = MFTranscodeGetAudioOutputAvailableTypes(ref guidEncodingType, (uint)(MFT_ENUM_FLAG.MFT_ENUM_FLAG_ALL | MFT_ENUM_FLAG.MFT_ENUM_FLAG_SORTANDFILTER),
                     pAttributes, out pAvailableTypes);
-                if (hr == HRESULT.S_OK)
+                if (hr == GlobalStructures.HRESULTMF.S_OK)
                 {
                     // Pick the first format from the list.
                     //hr = GetCollectionObject(pAvailableTypes, 0, out pMediaType);
-                    IntPtr pUnk = IntPtr.Zero;
+                    IntPtr pUnk = nint.Zero;
                     //hr = pAvailableTypes.GetElement(31, out pUnk);
                     hr = pAvailableTypes.GetElement(0, out pUnk);
 
@@ -500,9 +503,9 @@ namespace WinUI3_MFCaptureEngine
                         hr = pAvailableTypes.GetElementCount(out uint nCount);
                         for (uint i = 0; i < nCount; i++)
                         {
-                            IntPtr pUnknown = IntPtr.Zero;
+                            IntPtr pUnknown = nint.Zero;
                             hr = pAvailableTypes.GetElement(i, out pUnknown);
-                            if (hr == HRESULT.S_OK)
+                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                             {
                                 pMediaType = Marshal.GetObjectForIUnknown(pUnknown) as IMFMediaType;
                                 uint nAVG_BITRATE = 0;
@@ -548,17 +551,17 @@ namespace WinUI3_MFCaptureEngine
                         }
                     }
 
-                    if (hr == HRESULT.S_OK)
+                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                     {
                         pMediaType = Marshal.GetObjectForIUnknown(pUnk) as IMFMediaType;
 
                         // Connect the audio stream to the recording sink.
                         uint dwSinkStreamIndex;
                         hr = pRecord.AddStream((uint)MF_CAPTURE_ENGINE_MEDIA_TYPE.MF_CAPTURE_ENGINE_PREFERRED_SOURCE_STREAM_FOR_AUDIO, pMediaType, null, out dwSinkStreamIndex);
-                        if (hr == (HRESULT)MF_E_INVALIDSTREAMNUMBER)
+                        if (hr == (GlobalStructures.HRESULTMF)MF_E_INVALIDSTREAMNUMBER)
                         {
                             //If an audio device is not present, allow video only recording
-                            hr = HRESULT.S_OK;
+                            hr = GlobalStructures.HRESULTMF.S_OK;
                         }
                         SafeRelease(ref pMediaType);
                         Marshal.Release(pUnk);
@@ -570,7 +573,7 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
 
-        public HRESULT TakePhoto(string pszFileName, Guid guidImage, ref IMFByteStream byteStream)
+        public GlobalStructures.HRESULTMF TakePhoto(string pszFileName, Guid guidImage, ref IMFByteStream byteStream)
         {
             IMFCaptureSink pSink = null;
             IMFCapturePhotoSink pPhoto = null;
@@ -578,34 +581,34 @@ namespace WinUI3_MFCaptureEngine
             IMFMediaType pMediaType = null;
             IMFMediaType pMediaType2 = null;
             bool bHasPhotoStream = true;
-            HRESULT hr = HRESULT.S_OK;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
 
             if (!m_bTakingPhoto)
             {
                 // Get a pointer to the photo sink.
                 hr = m_pCaptureEngine.GetSink(MF_CAPTURE_ENGINE_SINK_TYPE.MF_CAPTURE_ENGINE_SINK_TYPE_PHOTO, out pSink);
-                if (hr == HRESULT.S_OK)
+                if (hr == GlobalStructures.HRESULTMF.S_OK)
                 {
                     pPhoto = (IMFCapturePhotoSink)pSink;
                     hr = m_pCaptureEngine.GetSource(out pSource);
-                    if (hr == HRESULT.S_OK)
+                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                     {
                         hr = pSource.GetCurrentDeviceMediaType((uint)MF_CAPTURE_ENGINE_MEDIA_TYPE.MF_CAPTURE_ENGINE_PREFERRED_SOURCE_STREAM_FOR_PHOTO, out pMediaType);
-                        if (hr == HRESULT.S_OK)
+                        if (hr == GlobalStructures.HRESULTMF.S_OK)
                         {
                             //Configure the photo format
                             hr = CreatePhotoMediaType(pMediaType, out pMediaType2, guidImage);
-                            if (hr == HRESULT.S_OK)
+                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                             {
                                 hr = pPhoto.RemoveAllStreams();
-                                if (hr == HRESULT.S_OK)
+                                if (hr == GlobalStructures.HRESULTMF.S_OK)
                                 {
                                     uint dwSinkStreamIndex;
                                     // Try to connect the first still image stream to the photo sink
                                     if (bHasPhotoStream)
                                     {
                                         hr = pPhoto.AddStream((uint)MF_CAPTURE_ENGINE_MEDIA_TYPE.MF_CAPTURE_ENGINE_PREFERRED_SOURCE_STREAM_FOR_PHOTO, pMediaType2, null, out dwSinkStreamIndex);
-                                        if (hr == HRESULT.S_OK)
+                                        if (hr == GlobalStructures.HRESULTMF.S_OK)
                                         {
                                             if (pszFileName != null)
                                                 hr = pPhoto.SetOutputFileName(pszFileName);
@@ -615,7 +618,7 @@ namespace WinUI3_MFCaptureEngine
                                             //m_sImageFileName = pszFileName;
                                             //hr = pPhoto.SetSampleCallback(this);
 
-                                            if (hr == HRESULT.S_OK)
+                                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                                             {
                                                 try
                                                 {
@@ -652,7 +655,7 @@ namespace WinUI3_MFCaptureEngine
             return hr;
         }
 
-        HRESULT CreatePhotoMediaType(IMFMediaType pSrcMediaType, out IMFMediaType ppPhotoMediaType, Guid guidImage)
+        GlobalStructures.HRESULTMF CreatePhotoMediaType(IMFMediaType pSrcMediaType, out IMFMediaType ppPhotoMediaType, Guid guidImage)
         {
             ppPhotoMediaType = null;
             
@@ -661,14 +664,14 @@ namespace WinUI3_MFCaptureEngine
 
             IMFMediaType pPhotoMediaType = null;
 
-            HRESULT hr = MFCreateMediaType(out pPhotoMediaType);
-            if (hr == HRESULT.S_OK)
+            GlobalStructures.HRESULTMF hr = MFCreateMediaType(out pPhotoMediaType);
+            if (hr == GlobalStructures.HRESULTMF.S_OK)
             {
                 hr = pPhotoMediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Image);
-                if (hr == HRESULT.S_OK)
+                if (hr == GlobalStructures.HRESULTMF.S_OK)
                 {
                     hr = pPhotoMediaType.SetGUID(MF_MT_SUBTYPE, guidImage);
-                    if (hr == HRESULT.S_OK)
+                    if (hr == GlobalStructures.HRESULTMF.S_OK)
                     {
                         hr = CopyAttribute(pSrcMediaType, pPhotoMediaType, MF_MT_FRAME_SIZE);
                         ppPhotoMediaType = pPhotoMediaType;
@@ -684,9 +687,9 @@ namespace WinUI3_MFCaptureEngine
             SetEvent(m_hEvent);
         }
 
-        HRESULT IMFCaptureEngineOnEventCallback.OnEvent(IMFMediaEvent pEvent)
+        GlobalStructures.HRESULTMF IMFCaptureEngineOnEventCallback.OnEvent(IMFMediaEvent pEvent)
         {
-            HRESULT hr = HRESULT.S_OK;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
             if (pEvent != null)
             {
                 try
@@ -764,20 +767,20 @@ namespace WinUI3_MFCaptureEngine
         byte[] m_pBytesArray;
         void IMFCaptureEngineOnSampleCallback.OnSample(IMFSample pSample)
         {
-            HRESULT hr = HRESULT.S_OK;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.S_OK;
             if (pSample != null)
             {
                 IMFMediaBuffer pMediaBuffer = null;
                 hr = pSample.GetBufferByIndex(0, out pMediaBuffer);
-                if (hr == HRESULT.S_OK)
+                if (hr == GlobalStructures.HRESULTMF.S_OK)
                 {
                     if (m_bPreview)
                     {
                         if (!m_bTakingPhoto)
                         {
-                            IntPtr pData = IntPtr.Zero;
+                            IntPtr pData = nint.Zero;
                             hr = pMediaBuffer.Lock(out pData, out int nMaxLenght, out int nCurrentLenght);
-                            if (hr == HRESULT.S_OK)
+                            if (hr == GlobalStructures.HRESULTMF.S_OK)
                             {
                                 Marshal.Copy(pData, m_pBytesArray, 0, nCurrentLenght);
                                 hr = pMediaBuffer.Unlock();
@@ -787,9 +790,9 @@ namespace WinUI3_MFCaptureEngine
                     }
                     else if (m_bTakingPhoto)
                     {
-                        IntPtr pData = IntPtr.Zero;
+                        IntPtr pData = nint.Zero;
                         hr = pMediaBuffer.Lock(out pData, out int nMaxLenght, out int nCurrentLenght);
-                        if (hr == HRESULT.S_OK)
+                        if (hr == GlobalStructures.HRESULTMF.S_OK)
                         {
                             //byte[] pBytesArray = new byte[nCurrentLenght];
                             //Marshal.Copy(pData, pBytesArray, 0, nCurrentLenght);
@@ -810,13 +813,13 @@ namespace WinUI3_MFCaptureEngine
         {  
             MFError.HRESULTMF hr = MFError.HRESULTMF.E_FAIL;
             if (this.m_pCapturePreviewSink != null)
-              hr = (HRESULTMF)this.m_pCapturePreviewSink.SetMirrorState(bMirror);
+              hr = (MFError.HRESULTMF)this.m_pCapturePreviewSink.SetMirrorState(bMirror);
             return hr;
         }
 
-        public HRESULT SetRotation(bool bRecord, uint dwStreamIndex, uint dwRotationValue)
+        public GlobalStructures.HRESULTMF SetRotation(bool bRecord, uint dwStreamIndex, uint dwRotationValue)
         {
-            HRESULT hr = HRESULT.E_FAIL;
+            GlobalStructures.HRESULTMF hr = GlobalStructures.HRESULTMF.E_FAIL;
             if (!bRecord)
             {
                 if (this.m_pCapturePreviewSink != null)

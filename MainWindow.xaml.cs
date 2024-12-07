@@ -29,6 +29,7 @@ using System.ComponentModel;
 //using System.Reflection.Metadata;
 using System.Text;
 using DirectShow;
+using Global;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -53,16 +54,16 @@ namespace WinUI3_MFCaptureEngine
         public static extern System.Runtime.InteropServices.ComTypes.IStream SHCreateMemStream(IntPtr pInit, uint cbInit);
 
         [DllImport("Ole32.dll", SetLastError = true)]
-        public static extern HRESULT CreateStreamOnHGlobal(IntPtr hGlobal, bool fDeleteOnRelease, out System.Runtime.InteropServices.ComTypes.IStream ppstm);
+        public static extern HRESULTMF CreateStreamOnHGlobal(IntPtr hGlobal, bool fDeleteOnRelease, out System.Runtime.InteropServices.ComTypes.IStream ppstm);
 
         public const int GMEM_FIXED = 0x0000;
         public const int GMEM_ZEROINIT = 0x0040;
 
         [DllImport("Mfplat.dll", SetLastError = true, PreserveSig = true)]
-        public static extern HRESULT MFCreateMFByteStreamOnStream(System.Runtime.InteropServices.ComTypes.IStream pStream, out IMFByteStream ppByteStream);
+        public static extern HRESULTMF MFCreateMFByteStreamOnStream(System.Runtime.InteropServices.ComTypes.IStream pStream, out IMFByteStream ppByteStream);
 
         [DllImport("Mfplat.dll", SetLastError = true, PreserveSig = true)]
-        public static extern HRESULT MFCreateMFByteStreamOnStreamEx([MarshalAs(UnmanagedType.IUnknown)] object punkStream /* IRandomAccessStream */, out IMFByteStream ppByteStream);
+        public static extern HRESULTMF MFCreateMFByteStreamOnStreamEx([MarshalAs(UnmanagedType.IUnknown)] object punkStream /* IRandomAccessStream */, out IMFByteStream ppByteStream);
 
         [DllImport("Kernel32.dll", SetLastError = true)]
         public static extern IntPtr GlobalAlloc(uint uFlags, int dwBytes);
@@ -138,12 +139,12 @@ namespace WinUI3_MFCaptureEngine
             this.Closed += MainWindow_Closed;
 
             captureEngine = new CCaptureEngine(this);
-            HRESULT hr = captureEngine.Initialize(hWndMain, IntPtr.Zero, IntPtr.Zero);
+            HRESULTMF hr = captureEngine.Initialize(hWndMain, IntPtr.Zero, IntPtr.Zero);
         }
 
         private void btn_PreviewVideo_Click(object sender, RoutedEventArgs e)
         {
-            HRESULT hr = HRESULT.S_OK;
+            HRESULTMF hr = HRESULTMF.S_OK;
             if (captureEngine != null)
             {
                 if (!captureEngine.m_bPreview)
@@ -173,7 +174,7 @@ namespace WinUI3_MFCaptureEngine
 
         private async void RecordVideo()
         {
-            HRESULT hr = HRESULT.S_OK;
+            HRESULTMF hr = HRESULTMF.S_OK;
             if (captureEngine != null)
             {
                 if (!captureEngine.m_bRecording)
@@ -196,7 +197,7 @@ namespace WinUI3_MFCaptureEngine
                                 break;
                         }
                         hr = captureEngine.StartRecord(tbFileVideo.Text, guidVideoEncoding, guidAudioEncoding);
-                        if (hr == HRESULT.S_OK)
+                        if (hr == HRESULTMF.S_OK)
                         {
                             fi_RecordVideo.Glyph = "\u23F9";
                             ttip_RecordVideo.Content = "Stop recording video";
@@ -214,7 +215,7 @@ namespace WinUI3_MFCaptureEngine
                     hr = captureEngine.StopRecord();
                     // https://emojipedia.org/movie-camera/
                     // https://www.unicode.org/emoji/charts/full-emoji-list.html
-                    if (hr == HRESULT.S_OK)
+                    if (hr == HRESULTMF.S_OK)
                     {
                         fi_RecordVideo.Glyph = "\U0001F3A5";
                         ttip_RecordVideo.Content = "Start recording video";
@@ -269,11 +270,11 @@ namespace WinUI3_MFCaptureEngine
             if (pStream != null)
             {
                 IMFByteStream pMFByteStream = null;
-                HRESULT hr = MFCreateMFByteStreamOnStream(pStream, out pMFByteStream);
-                if (hr == HRESULT.S_OK)
+                HRESULTMF hr = MFCreateMFByteStreamOnStream(pStream, out pMFByteStream);
+                if (hr == HRESULTMF.S_OK)
                 {
                     hr = captureEngine.TakePhoto(null, GUID_ContainerFormatBmp, ref pMFByteStream);
-                    if (hr == HRESULT.S_OK)
+                    if (hr == HRESULTMF.S_OK)
                     {
                         IntPtr pData = Marshal.AllocHGlobal(nSize);
                         pMFByteStream.Read(pData, (uint)nSize, out uint nRead);
@@ -339,8 +340,8 @@ namespace WinUI3_MFCaptureEngine
                                 break;
                         }
                         IMFByteStream pMFByteStream = null;
-                        HRESULT hr = captureEngine.TakePhoto(tbFileImage.Text, guidCodec, ref pMFByteStream);
-                        if (hr == HRESULT.S_OK)
+                        HRESULTMF hr = captureEngine.TakePhoto(tbFileImage.Text, guidCodec, ref pMFByteStream);
+                        if (hr == HRESULTMF.S_OK)
                         {
                             hr = g_pMS.SetPositions(DsLong.FromInt64(0), AM_SEEKING_SeekingFlags.AM_SEEKING_AbsolutePositioning, null, AM_SEEKING_SeekingFlags.AM_SEEKING_NoPositioning);
                             hr = g_pMC.Run(); 
@@ -392,18 +393,18 @@ namespace WinUI3_MFCaptureEngine
                 return false;
         }
 
-        //private void tsMirror_Toggled(object sender, RoutedEventArgs e)
-        //{
-        //    if (captureEngine != null)
-        //    {
-        //        ToggleSwitch ts = sender as ToggleSwitch;
-        //        MFError.HRESULTMF hr = captureEngine.SetMirrorState(ts.IsOn);
-        //        if (hr != MFError.HRESULTMF.S_OK)
-        //        {
-        //            ts.IsOn = false;
-        //        }
-        //    }
-        //}
+        private void tsMirror_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (captureEngine != null)
+            {
+                ToggleSwitch ts = sender as ToggleSwitch;
+                MFError.HRESULTMF hr = captureEngine.SetMirrorState(ts.IsOn);
+                if (hr != MFError.HRESULTMF.S_OK)
+                {
+                    ts.IsOn = false;
+                }
+            }
+        }
 
         private void cmbRotate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -431,8 +432,8 @@ namespace WinUI3_MFCaptureEngine
                             IMFMediaEvent pMediaEvent = Marshal.GetObjectForIUnknown(wParam) as IMFMediaEvent;
                             if (pMediaEvent != null)
                             {
-                                HRESULT hrStatus;
-                                HRESULT hr = pMediaEvent.GetStatus(out hrStatus);
+                                HRESULTMF hrStatus;
+                                HRESULTMF hr = pMediaEvent.GetStatus(out hrStatus);
                                 MediaEventType nType = 0;
                                 hr = pMediaEvent.GetType(out nType);
                                 Guid guidType;
@@ -493,7 +494,7 @@ namespace WinUI3_MFCaptureEngine
                             {                                
                                 int nSize = (int)(captureEngine.m_nWidth * 4 * captureEngine.m_nHeight);
                                 m_pBytesArray = new byte[nSize];
-                                CopyImage();                    
+                                //CopyImage();                    
                             }
                         }
                     }

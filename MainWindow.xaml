@@ -86,13 +86,14 @@
             <TextBox x:Name="tbFileImage" Width="400" Height="34" Margin="0, 8, 0, 0"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <!--<ToggleSwitch x:Name="tsMirror" Header="Mirror" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0, 6, 0, 0"
+            <!--<TextBlock Margin="10, 10, 0, 0">Mirror (preview)</TextBlock>
+            <ToggleSwitch x:Name="tsMirror" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10, 0, 0, 0"
                           OffContent="No" OnContent="Yes" Toggled="tsMirror_Toggled">
-            <ToolTipService.ToolTip>
-                <ToolTip Content="Mirror Preview" Placement="Bottom" Background="LightYellow" Foreground="Black"/>
-            </ToolTipService.ToolTip>
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Mirror Preview" Placement="Bottom" Background="LightYellow" Foreground="Black"/>
+                </ToolTipService.ToolTip>
             </ToggleSwitch>-->
-            <TextBlock Margin="10, 8, 0, 0">Rotate (video)</TextBlock>
+            <TextBlock Margin="10, 10, 0, 0">Rotate (video)</TextBlock>
             <!--Header="Rotate"-->
             <ComboBox x:Name="cmbRotate" Margin="0, 4, 0, 0"
                 ItemsSource="{x:Bind rotate}" SelectionChanged="cmbRotate_SelectionChanged">                

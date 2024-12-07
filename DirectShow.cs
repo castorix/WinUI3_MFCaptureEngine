@@ -22,23 +22,23 @@ namespace DirectShow
     public interface IGraphBuilder : IFilterGraph
     {
         #region IFilterGraph
-        new HRESULT AddFilter(IBaseFilter pFilter, string pName);
-        new HRESULT RemoveFilter(IBaseFilter pFilter);
-        new HRESULT EnumFilters(out IEnumFilters ppEnum);
-        new HRESULT FindFilterByName(string pName, out IBaseFilter ppFilter);
-        new HRESULT ConnectDirect(IPin ppinOut, IPin ppinIn, ref AM_MEDIA_TYPE pmt);
-        new HRESULT Reconnect(IPin ppin);
-        new HRESULT Disconnect(IPin ppin);
-        new HRESULT SetDefaultSyncSource();
+        new HRESULTMF AddFilter(IBaseFilter pFilter, string pName);
+        new HRESULTMF RemoveFilter(IBaseFilter pFilter);
+        new HRESULTMF EnumFilters(out IEnumFilters ppEnum);
+        new HRESULTMF FindFilterByName(string pName, out IBaseFilter ppFilter);
+        new HRESULTMF ConnectDirect(IPin ppinOut, IPin ppinIn, ref AM_MEDIA_TYPE pmt);
+        new HRESULTMF Reconnect(IPin ppin);
+        new HRESULTMF Disconnect(IPin ppin);
+        new HRESULTMF SetDefaultSyncSource();
         #endregion
 
-        HRESULT Connect(IPin ppinOut, IPin ppinIn);
-        HRESULT Render(IPin ppinOut);
-        HRESULT RenderFile(string lpcwstrFile, string lpcwstrPlayList);
-        HRESULT AddSourceFilter(string lpcwstrFileName, string lpcwstrFilterName, out IBaseFilter ppFilter);
-        HRESULT SetLogFile(IntPtr hFile);
-        HRESULT Abort();
-        HRESULT ShouldOperationContinue();
+        HRESULTMF Connect(IPin ppinOut, IPin ppinIn);
+        HRESULTMF Render(IPin ppinOut);
+        HRESULTMF RenderFile(string lpcwstrFile, string lpcwstrPlayList);
+        HRESULTMF AddSourceFilter(string lpcwstrFileName, string lpcwstrFilterName, out IBaseFilter ppFilter);
+        HRESULTMF SetLogFile(IntPtr hFile);
+        HRESULTMF Abort();
+        HRESULTMF ShouldOperationContinue();
     }
 
     [ComImport()]
@@ -48,29 +48,29 @@ namespace DirectShow
     {
         #region IGraphBuilder
         #region IFilterGraph
-        new HRESULT AddFilter(IBaseFilter pFilter, string pName);
-        new HRESULT RemoveFilter(IBaseFilter pFilter);
-        new HRESULT EnumFilters(out IEnumFilters ppEnum);
-        new HRESULT FindFilterByName(string pName, out IBaseFilter ppFilter);
-        new HRESULT ConnectDirect(IPin ppinOut, IPin ppinIn, ref AM_MEDIA_TYPE pmt);
-        new HRESULT Reconnect(IPin ppin);
-        new HRESULT Disconnect(IPin ppin);
-        new HRESULT SetDefaultSyncSource();
+        new HRESULTMF AddFilter(IBaseFilter pFilter, string pName);
+        new HRESULTMF RemoveFilter(IBaseFilter pFilter);
+        new HRESULTMF EnumFilters(out IEnumFilters ppEnum);
+        new HRESULTMF FindFilterByName(string pName, out IBaseFilter ppFilter);
+        new HRESULTMF ConnectDirect(IPin ppinOut, IPin ppinIn, ref AM_MEDIA_TYPE pmt);
+        new HRESULTMF Reconnect(IPin ppin);
+        new HRESULTMF Disconnect(IPin ppin);
+        new HRESULTMF SetDefaultSyncSource();
         #endregion
 
-        new HRESULT Connect(IPin ppinOut, IPin ppinIn);
-        new HRESULT Render(IPin ppinOut);
-        new HRESULT RenderFile(string lpcwstrFile, string lpcwstrPlayList);
-        new HRESULT AddSourceFilter(string lpcwstrFileName, string lpcwstrFilterName, out IBaseFilter ppFilter);
-        new HRESULT SetLogFile(IntPtr hFile);
-        new HRESULT Abort();
-        new HRESULT ShouldOperationContinue();
+        new HRESULTMF Connect(IPin ppinOut, IPin ppinIn);
+        new HRESULTMF Render(IPin ppinOut);
+        new HRESULTMF RenderFile(string lpcwstrFile, string lpcwstrPlayList);
+        new HRESULTMF AddSourceFilter(string lpcwstrFileName, string lpcwstrFilterName, out IBaseFilter ppFilter);
+        new HRESULTMF SetLogFile(IntPtr hFile);
+        new HRESULTMF Abort();
+        new HRESULTMF ShouldOperationContinue();
         #endregion
 
         //HRESULT AddSourceFilterForMoniker(IMoniker pMoniker, IBindCtx pCtx, string lpcwstrFilterName, out IBaseFilter ppFilter);
-        HRESULT AddSourceFilterForMoniker(IMoniker pMoniker, IntPtr pCtx, string lpcwstrFilterName, out IBaseFilter ppFilter);
-        HRESULT ReconnectEx(IPin ppin, AM_MEDIA_TYPE pmt);
-        HRESULT RenderEx(IPin pPinOut, uint dwFlags, ref uint pvContext);
+        HRESULTMF AddSourceFilterForMoniker(IMoniker pMoniker, IntPtr pCtx, string lpcwstrFilterName, out IBaseFilter ppFilter);
+        HRESULTMF ReconnectEx(IPin ppin, AM_MEDIA_TYPE pmt);
+        HRESULTMF RenderEx(IPin pPinOut, uint dwFlags, ref uint pvContext);
     }
 
     public enum AM_RENSDEREXFLAGS
@@ -83,14 +83,14 @@ namespace DirectShow
     [Guid("56a8689f-0ad4-11ce-b03a-0020af0ba770")]
     public interface IFilterGraph
     {
-        HRESULT AddFilter(IBaseFilter pFilter, string pName);
-        HRESULT RemoveFilter(IBaseFilter pFilter);
-        HRESULT EnumFilters(out IEnumFilters ppEnum);
-        HRESULT FindFilterByName(string pName, out IBaseFilter ppFilter);
-        HRESULT ConnectDirect(IPin ppinOut, IPin ppinIn, ref AM_MEDIA_TYPE pmt);
-        HRESULT Reconnect(IPin ppin);
-        HRESULT Disconnect(IPin ppin);
-        HRESULT SetDefaultSyncSource();
+        HRESULTMF AddFilter(IBaseFilter pFilter, string pName);
+        HRESULTMF RemoveFilter(IBaseFilter pFilter);
+        HRESULTMF EnumFilters(out IEnumFilters ppEnum);
+        HRESULTMF FindFilterByName(string pName, out IBaseFilter ppFilter);
+        HRESULTMF ConnectDirect(IPin ppinOut, IPin ppinIn, ref AM_MEDIA_TYPE pmt);
+        HRESULTMF Reconnect(IPin ppin);
+        HRESULTMF Disconnect(IPin ppin);
+        HRESULTMF SetDefaultSyncSource();
     }
 
     [ComImport()]
@@ -98,10 +98,10 @@ namespace DirectShow
     [Guid("56a86893-0ad4-11ce-b03a-0020af0ba770")]
     public interface IEnumFilters
     {
-        HRESULT Next(uint cFilters, out IBaseFilter ppFilter, out uint pcFetched);
-        HRESULT Skip(uint cFilters);
-        HRESULT Reset();
-        HRESULT Clone(out IEnumFilters ppEnum);
+        HRESULTMF Next(uint cFilters, out IBaseFilter ppFilter, out uint pcFetched);
+        HRESULTMF Skip(uint cFilters);
+        HRESULTMF Reset();
+        HRESULTMF Clone(out IEnumFilters ppEnum);
     }
 
     [ComImport()]
@@ -109,7 +109,7 @@ namespace DirectShow
     [Guid("0000010c-0000-0000-C000-000000000046")]
     public interface IPersist
     {
-        HRESULT GetClassID(out Guid pClassID);
+        HRESULTMF GetClassID(out Guid pClassID);
     }
 
     [ComImport()]
@@ -118,14 +118,14 @@ namespace DirectShow
     public interface IMediaFilter : IPersist
     {
         #region IPersist
-        new HRESULT GetClassID(out Guid pClassID);
+        new HRESULTMF GetClassID(out Guid pClassID);
         #endregion
-        HRESULT Stop();
-        HRESULT Pause();
-        HRESULT Run(Int64 tStart);
-        HRESULT GetState(int dwMilliSecsTimeout, out FILTER_STATE State);
-        HRESULT SetSyncSource(IntPtr pClock);
-        HRESULT GetSyncSource(out IntPtr pClock);
+        HRESULTMF Stop();
+        HRESULTMF Pause();
+        HRESULTMF Run(Int64 tStart);
+        HRESULTMF GetState(int dwMilliSecsTimeout, out FILTER_STATE State);
+        HRESULTMF SetSyncSource(IntPtr pClock);
+        HRESULTMF GetSyncSource(out IntPtr pClock);
         //HRESULT SetSyncSource(IReferenceClock pClock);
         //HRESULT GetSyncSource(out IReferenceClock pClock);
     }
@@ -137,21 +137,21 @@ namespace DirectShow
     {
         #region IMediaFilter
         #region IPersist
-        new HRESULT GetClassID(out Guid pClassID);
+        new HRESULTMF GetClassID(out Guid pClassID);
         #endregion
-        new HRESULT Stop();
-        new HRESULT Pause();
-        new HRESULT Run(Int64 tStart);
-        new HRESULT GetState(int dwMilliSecsTimeout, out FILTER_STATE State);
-        new HRESULT SetSyncSource(IntPtr pClock);
-        new HRESULT GetSyncSource(out IntPtr pClock);
+        new HRESULTMF Stop();
+        new HRESULTMF Pause();
+        new HRESULTMF Run(Int64 tStart);
+        new HRESULTMF GetState(int dwMilliSecsTimeout, out FILTER_STATE State);
+        new HRESULTMF SetSyncSource(IntPtr pClock);
+        new HRESULTMF GetSyncSource(out IntPtr pClock);
         #endregion
 
-        HRESULT EnumPins(out IEnumPins ppEnum);
-        HRESULT FindPin(string Id, out IPin ppPin);
-        HRESULT QueryFilterInfo(out FILTER_INFO pInfo);
-        HRESULT JoinFilterGraph(IFilterGraph pGraph, string pName);
-        HRESULT QueryVendorInfo(out string pVendorInfo);
+        HRESULTMF EnumPins(out IEnumPins ppEnum);
+        HRESULTMF FindPin(string Id, out IPin ppPin);
+        HRESULTMF QueryFilterInfo(out FILTER_INFO pInfo);
+        HRESULTMF JoinFilterGraph(IFilterGraph pGraph, string pName);
+        HRESULTMF QueryVendorInfo(out string pVendorInfo);
     }
 
     [ComImport()]
@@ -159,10 +159,10 @@ namespace DirectShow
     [Guid("56a86892-0ad4-11ce-b03a-0020af0ba770")]
     public interface IEnumPins
     {
-        HRESULT Next(uint cPins, out IPin ppPins, out uint pcFetched);
-        HRESULT Skip(uint cPins);
-        HRESULT Reset();
-        HRESULT Clone(out IEnumPins ppEnum);
+        HRESULTMF Next(uint cPins, out IPin ppPins, out uint pcFetched);
+        HRESULTMF Skip(uint cPins);
+        HRESULTMF Reset();
+        HRESULTMF Clone(out IEnumPins ppEnum);
     }
 
     [ComImport()]
@@ -170,21 +170,21 @@ namespace DirectShow
     [Guid("56a86891-0ad4-11ce-b03a-0020af0ba770")]
     public interface IPin
     {
-        HRESULT Connect(IPin pReceivePin, ref AM_MEDIA_TYPE pmt);
-        HRESULT ReceiveConnection(IPin pConnector, ref AM_MEDIA_TYPE pmt);
-        HRESULT Disconnect();
-        HRESULT ConnectedTo(out IPin pPin);
-        HRESULT ConnectionMediaType(out AM_MEDIA_TYPE pmt);
-        HRESULT QueryPinInfo(out PIN_INFO pInfo);
-        HRESULT QueryDirection(out PIN_DIRECTION pPinDir);
-        HRESULT QueryId(out string Id);
-        HRESULT QueryAccept(ref AM_MEDIA_TYPE pmt);
-        HRESULT EnumMediaTypes(out IEnumMediaTypes ppEnum);
-        HRESULT QueryInternalConnections(out IPin apPin, ref uint nPin);
-        HRESULT EndOfStream();
-        HRESULT BeginFlush();
-        HRESULT EndFlush();
-        HRESULT NewSegment(Int64 tStart, Int64 tStop, double dRate);
+        HRESULTMF Connect(IPin pReceivePin, ref AM_MEDIA_TYPE pmt);
+        HRESULTMF ReceiveConnection(IPin pConnector, ref AM_MEDIA_TYPE pmt);
+        HRESULTMF Disconnect();
+        HRESULTMF ConnectedTo(out IPin pPin);
+        HRESULTMF ConnectionMediaType(out AM_MEDIA_TYPE pmt);
+        HRESULTMF QueryPinInfo(out PIN_INFO pInfo);
+        HRESULTMF QueryDirection(out PIN_DIRECTION pPinDir);
+        HRESULTMF QueryId(out string Id);
+        HRESULTMF QueryAccept(ref AM_MEDIA_TYPE pmt);
+        HRESULTMF EnumMediaTypes(out IEnumMediaTypes ppEnum);
+        HRESULTMF QueryInternalConnections(out IPin apPin, ref uint nPin);
+        HRESULTMF EndOfStream();
+        HRESULTMF BeginFlush();
+        HRESULTMF EndFlush();
+        HRESULTMF NewSegment(Int64 tStart, Int64 tStop, double dRate);
     }
 
     [ComImport()]
@@ -192,10 +192,10 @@ namespace DirectShow
     [Guid("89c31040-846b-11ce-97d3-00aa0055595a")]
     public interface IEnumMediaTypes
     {
-        HRESULT Next(uint cMediaTypes, out AM_MEDIA_TYPE ppMediaTypes, out uint pcFetched);
-        HRESULT Skip(uint cMediaTypes);
-        HRESULT Reset();
-        HRESULT Clone(out IEnumMediaTypes ppEnum);
+        HRESULTMF Next(uint cMediaTypes, out AM_MEDIA_TYPE ppMediaTypes, out uint pcFetched);
+        HRESULTMF Skip(uint cMediaTypes);
+        HRESULTMF Reset();
+        HRESULTMF Clone(out IEnumMediaTypes ppEnum);
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
@@ -250,26 +250,26 @@ namespace DirectShow
     public interface IMediaControl
     {
         [PreserveSig]
-        HRESULT Run();
+        HRESULTMF Run();
         [PreserveSig]
-        HRESULT Pause();
+        HRESULTMF Pause();
         [PreserveSig]
-        HRESULT Stop();
+        HRESULTMF Stop();
         [PreserveSig]
-        HRESULT GetState(int msTimeout, out int pfs);
+        HRESULTMF GetState(int msTimeout, out int pfs);
         [PreserveSig]
-        HRESULT RenderFile(string strFilename);
+        HRESULTMF RenderFile(string strFilename);
         [PreserveSig]
-        HRESULT AddSourceFilter(string strFilename, out object ppUnk);
+        HRESULTMF AddSourceFilter(string strFilename, out object ppUnk);
         [PreserveSig]
-        HRESULT get_FilterCollection(out object ppUnk);
+        HRESULTMF get_FilterCollection(out object ppUnk);
         [PreserveSig]
-        HRESULT get_RegFilterCollection(out object ppUnk);
+        HRESULTMF get_RegFilterCollection(out object ppUnk);
         //HRESULT AddSourceFilter(string strFilename, out IDispatch ppUnk);
         //HRESULT get_FilterCollection(out IDispatch ppUnk);
         //HRESULT get_RegFilterCollection(out IDispatch ppUnk);
         [PreserveSig]
-        HRESULT StopWhenReady();
+        HRESULTMF StopWhenReady();
     }
 
     [ComImport()]
@@ -277,48 +277,48 @@ namespace DirectShow
     [Guid("56a868b4-0ad4-11ce-b03a-0020af0ba770")]
     public interface IVideoWindow
     {
-        HRESULT put_Caption(string strCaption);
-        HRESULT get_Caption(out string strCaption);
-        HRESULT put_WindowStyle(int WindowStyle);
-        HRESULT get_WindowStyle(out int WindowStyle);
-        HRESULT put_WindowStyleEx(int WindowStyleEx);
-        HRESULT get_WindowStyleEx(out int WindowStyleEx);
-        HRESULT put_AutoShow(int AutoShow);
-        HRESULT get_AutoShow(out int AutoShow);
-        HRESULT put_WindowState(int WindowState);
-        HRESULT get_WindowState(out int WindowState);
-        HRESULT put_BackgroundPalette(int BackgroundPalette);
-        HRESULT get_BackgroundPalette(out int pBackgroundPalette);
+        HRESULTMF put_Caption(string strCaption);
+        HRESULTMF get_Caption(out string strCaption);
+        HRESULTMF put_WindowStyle(int WindowStyle);
+        HRESULTMF get_WindowStyle(out int WindowStyle);
+        HRESULTMF put_WindowStyleEx(int WindowStyleEx);
+        HRESULTMF get_WindowStyleEx(out int WindowStyleEx);
+        HRESULTMF put_AutoShow(int AutoShow);
+        HRESULTMF get_AutoShow(out int AutoShow);
+        HRESULTMF put_WindowState(int WindowState);
+        HRESULTMF get_WindowState(out int WindowState);
+        HRESULTMF put_BackgroundPalette(int BackgroundPalette);
+        HRESULTMF get_BackgroundPalette(out int pBackgroundPalette);
         [PreserveSig]
-        HRESULT put_Visible(int Visible);
-        HRESULT get_Visible(out int pVisible);
-        HRESULT put_Left(int Left);
-        HRESULT get_Left(out int pLeft);
-        HRESULT put_Width(int Width);
-        HRESULT get_Width(out int pWidth);
-        HRESULT put_Top(int Top);
-        HRESULT get_Top(out int pTop);
-        HRESULT put_Height(int Height);
-        HRESULT get_Height(out int pHeight);
+        HRESULTMF put_Visible(int Visible);
+        HRESULTMF get_Visible(out int pVisible);
+        HRESULTMF put_Left(int Left);
+        HRESULTMF get_Left(out int pLeft);
+        HRESULTMF put_Width(int Width);
+        HRESULTMF get_Width(out int pWidth);
+        HRESULTMF put_Top(int Top);
+        HRESULTMF get_Top(out int pTop);
+        HRESULTMF put_Height(int Height);
+        HRESULTMF get_Height(out int pHeight);
         [PreserveSig]
-        HRESULT put_Owner(IntPtr Owner);
-        HRESULT get_Owner(out IntPtr Owner);
-        HRESULT put_MessageDrain(IntPtr Drain);
-        HRESULT get_MessageDrain(out IntPtr Drain);
-        HRESULT get_BorderColor(out int Color);
-        HRESULT put_BorderColor(int Color);
-        HRESULT get_FullScreenMode(out int FullScreenMode);
-        HRESULT put_FullScreenMode(int FullScreenMode);
-        HRESULT SetWindowForeground(int Focus);
-        HRESULT NotifyOwnerMessage(IntPtr hwnd, int uMsg, int wParam, IntPtr lParam);
+        HRESULTMF put_Owner(IntPtr Owner);
+        HRESULTMF get_Owner(out IntPtr Owner);
+        HRESULTMF put_MessageDrain(IntPtr Drain);
+        HRESULTMF get_MessageDrain(out IntPtr Drain);
+        HRESULTMF get_BorderColor(out int Color);
+        HRESULTMF put_BorderColor(int Color);
+        HRESULTMF get_FullScreenMode(out int FullScreenMode);
+        HRESULTMF put_FullScreenMode(int FullScreenMode);
+        HRESULTMF SetWindowForeground(int Focus);
+        HRESULTMF NotifyOwnerMessage(IntPtr hwnd, int uMsg, int wParam, IntPtr lParam);
         [PreserveSig]
-        HRESULT SetWindowPosition(int Left, int Top, int Width, int Height);
-        HRESULT GetWindowPosition(out int pLeft, out int pTop, out int pWidth, out int pHeight);
-        HRESULT GetMinIdealImageSize(out int pWidth, out int pHeight);
-        HRESULT GetMaxIdealImageSize(out int pWidth, out int pHeight);
-        HRESULT GetRestorePosition(out int pLeft, out int pTop, out int pWidth, out int pHeight);
-        HRESULT HideCursor(int HideCursor);
-        HRESULT IsCursorHidden(out int CursorHidden);
+        HRESULTMF SetWindowPosition(int Left, int Top, int Width, int Height);
+        HRESULTMF GetWindowPosition(out int pLeft, out int pTop, out int pWidth, out int pHeight);
+        HRESULTMF GetMinIdealImageSize(out int pWidth, out int pHeight);
+        HRESULTMF GetMaxIdealImageSize(out int pWidth, out int pHeight);
+        HRESULTMF GetRestorePosition(out int pLeft, out int pTop, out int pWidth, out int pHeight);
+        HRESULTMF HideCursor(int HideCursor);
+        HRESULTMF IsCursorHidden(out int CursorHidden);
     }
 
     [ComImport()]
@@ -327,18 +327,18 @@ namespace DirectShow
     public interface IMediaEventEx : IMediaEvent
     {
         #region IMediaEvent
-        new HRESULT GetEventHandle(out IntPtr hEvent);
+        new HRESULTMF GetEventHandle(out IntPtr hEvent);
         [PreserveSig]
-        new HRESULT GetEvent(out int lEventCode, out IntPtr lParam1, out IntPtr lParam2, int msTimeout);
-        new HRESULT WaitForCompletion(int msTimeout, out int pEvCode);
-        new HRESULT CancelDefaultHandling(long lEvCode);
-        new HRESULT RestoreDefaultHandling(int lEvCode);
-        new HRESULT FreeEventParams(int lEvCode, IntPtr lParam1, IntPtr lParam2);
+        new HRESULTMF GetEvent(out int lEventCode, out IntPtr lParam1, out IntPtr lParam2, int msTimeout);
+        new HRESULTMF WaitForCompletion(int msTimeout, out int pEvCode);
+        new HRESULTMF CancelDefaultHandling(long lEvCode);
+        new HRESULTMF RestoreDefaultHandling(int lEvCode);
+        new HRESULTMF FreeEventParams(int lEvCode, IntPtr lParam1, IntPtr lParam2);
         #endregion
 
-        HRESULT SetNotifyWindow(IntPtr hwnd, int lMsg, IntPtr lInstanceData);
-        HRESULT SetNotifyFlags(int lNoNotifyFlags);
-        HRESULT GetNotifyFlags(out int lplNoNotifyFlags);
+        HRESULTMF SetNotifyWindow(IntPtr hwnd, int lMsg, IntPtr lInstanceData);
+        HRESULTMF SetNotifyFlags(int lNoNotifyFlags);
+        HRESULTMF GetNotifyFlags(out int lplNoNotifyFlags);
     }
 
     [ComImport()]
@@ -346,13 +346,13 @@ namespace DirectShow
     [Guid("56a868b6-0ad4-11ce-b03a-0020af0ba770")]
     public interface IMediaEvent
     {
-        HRESULT GetEventHandle(out IntPtr hEvent);
+        HRESULTMF GetEventHandle(out IntPtr hEvent);
         [PreserveSig]
-        HRESULT GetEvent(out int lEventCode, out IntPtr lParam1, out IntPtr lParam2, int msTimeout);
-        HRESULT WaitForCompletion(int msTimeout, out int pEvCode);
-        HRESULT CancelDefaultHandling(long lEvCode);
-        HRESULT RestoreDefaultHandling(int lEvCode);
-        HRESULT FreeEventParams(int lEvCode, IntPtr lParam1, IntPtr lParam2);
+        HRESULTMF GetEvent(out int lEventCode, out IntPtr lParam1, out IntPtr lParam2, int msTimeout);
+        HRESULTMF WaitForCompletion(int msTimeout, out int pEvCode);
+        HRESULTMF CancelDefaultHandling(long lEvCode);
+        HRESULTMF RestoreDefaultHandling(int lEvCode);
+        HRESULTMF FreeEventParams(int lEvCode, IntPtr lParam1, IntPtr lParam2);
     }
 
     [ComImport()]
@@ -361,41 +361,41 @@ namespace DirectShow
     public interface IMediaSeeking
     {
         [PreserveSig]
-        HRESULT GetCapabilities(out uint pCapabilities);
+        HRESULTMF GetCapabilities(out uint pCapabilities);
         [PreserveSig]
-        HRESULT CheckCapabilities(ref uint pCapabilities);
+        HRESULTMF CheckCapabilities(ref uint pCapabilities);
         [PreserveSig]
-        HRESULT IsFormatSupported(ref Guid pFormat);
+        HRESULTMF IsFormatSupported(ref Guid pFormat);
         [PreserveSig]
-        HRESULT QueryPreferredFormat(out Guid pFormat);
+        HRESULTMF QueryPreferredFormat(out Guid pFormat);
         [PreserveSig]
-        HRESULT GetTimeFormat(out Guid pFormat);
+        HRESULTMF GetTimeFormat(out Guid pFormat);
         [PreserveSig]
-        HRESULT IsUsingTimeFormat(ref Guid pFormat);
+        HRESULTMF IsUsingTimeFormat(ref Guid pFormat);
         [PreserveSig]
-        HRESULT SetTimeFormat(ref Guid pFormat);
+        HRESULTMF SetTimeFormat(ref Guid pFormat);
         [PreserveSig]
-        HRESULT GetDuration(out long pDuration);
+        HRESULTMF GetDuration(out long pDuration);
         [PreserveSig]
-        HRESULT GetStopPosition(out long pStop);
+        HRESULTMF GetStopPosition(out long pStop);
         [PreserveSig]
-        HRESULT GetCurrentPosition(out long pCurrent);
+        HRESULTMF GetCurrentPosition(out long pCurrent);
         [PreserveSig]
-        HRESULT ConvertTimeFormat(out long pTarget, ref Guid pTargetFormat, long Source, ref Guid pSourceFormat);
+        HRESULTMF ConvertTimeFormat(out long pTarget, ref Guid pTargetFormat, long Source, ref Guid pSourceFormat);
         //HRESULT SetPositions(ref long pCurrent, uint dwCurrentFlags, ref long pStop, uint dwStopFlags);
         [PreserveSig]
-        HRESULT SetPositions([In, Out, MarshalAs(UnmanagedType.LPStruct)] DsLong pCurrent, [In] AM_SEEKING_SeekingFlags dwCurrentFlags,
+        HRESULTMF SetPositions([In, Out, MarshalAs(UnmanagedType.LPStruct)] DsLong pCurrent, [In] AM_SEEKING_SeekingFlags dwCurrentFlags,
             [In, Out, MarshalAs(UnmanagedType.LPStruct)] DsLong pStop, [In] AM_SEEKING_SeekingFlags dwStopFlags);
         [PreserveSig]
-        HRESULT GetPositions(long pCurrent, long pStop);
+        HRESULTMF GetPositions(long pCurrent, long pStop);
         [PreserveSig]
-        HRESULT GetAvailable(long pEarliest, long pLatest);
+        HRESULTMF GetAvailable(long pEarliest, long pLatest);
         [PreserveSig]
-        HRESULT SetRate(double dRate);
+        HRESULTMF SetRate(double dRate);
         [PreserveSig]
-        HRESULT GetRate(out double pdRate);
+        HRESULTMF GetRate(out double pdRate);
         [PreserveSig]
-        HRESULT GetPreroll(out long pllPreroll);
+        HRESULTMF GetPreroll(out long pllPreroll);
     }
 
     // Copied from DirectShowLib
@@ -524,18 +524,18 @@ namespace DirectShow
     [Guid("93E5A4E0-2D50-11d2-ABFA-00A0C9C6E38D")]
     public interface ICaptureGraphBuilder2
     {
-        HRESULT SetFiltergraph(IGraphBuilder pfg);
-        HRESULT GetFiltergraph(out IGraphBuilder ppfg);
-        HRESULT SetOutputFileName(ref Guid pType, string lpstrFile, out IBaseFilter ppf, out IFileSinkFilter ppSink);
-        HRESULT FindInterface(ref Guid pCategory, ref Guid pType, IBaseFilter pf, ref Guid riid, out IntPtr ppint);
+        HRESULTMF SetFiltergraph(IGraphBuilder pfg);
+        HRESULTMF GetFiltergraph(out IGraphBuilder ppfg);
+        HRESULTMF SetOutputFileName(ref Guid pType, string lpstrFile, out IBaseFilter ppf, out IFileSinkFilter ppSink);
+        HRESULTMF FindInterface(ref Guid pCategory, ref Guid pType, IBaseFilter pf, ref Guid riid, out IntPtr ppint);
         //HRESULT RenderStream(ref Guid pCategory, ref Guid pType, IUnknown pSource,IBaseFilter pfCompressor,IBaseFilter pfRenderer);
         [PreserveSig]
-        HRESULT RenderStream(ref Guid pCategory, ref Guid pType, IntPtr pSource, IBaseFilter pfCompressor, IBaseFilter pfRenderer);
-        HRESULT ControlStream(ref Guid pCategory, ref Guid pType, IBaseFilter pFilter, Int64 pstart, Int64 pstop, ushort wStartCookie, ushort wStopCookie);
-        HRESULT AllocCapFile(string lpstr, UInt64 dwlSize);
-        HRESULT CopyCaptureFile(string lpwstrOld, string lpwstrNew, int fAllowEscAbort, IAMCopyCaptureFileProgress pCallback);
+        HRESULTMF RenderStream(ref Guid pCategory, ref Guid pType, IntPtr pSource, IBaseFilter pfCompressor, IBaseFilter pfRenderer);
+        HRESULTMF ControlStream(ref Guid pCategory, ref Guid pType, IBaseFilter pFilter, Int64 pstart, Int64 pstop, ushort wStartCookie, ushort wStopCookie);
+        HRESULTMF AllocCapFile(string lpstr, UInt64 dwlSize);
+        HRESULTMF CopyCaptureFile(string lpwstrOld, string lpwstrNew, int fAllowEscAbort, IAMCopyCaptureFileProgress pCallback);
         //HRESULT FindPin(IUnknown pSource, PIN_DIRECTION pindir, ref Guid pCategory, ref Guid pType, bool fUnconnected, int num, out IPin ppPin);
-        HRESULT FindPin(IntPtr pSource, PIN_DIRECTION pindir, ref Guid pCategory, ref Guid pType, bool fUnconnected, int num, out IPin ppPin);
+        HRESULTMF FindPin(IntPtr pSource, PIN_DIRECTION pindir, ref Guid pCategory, ref Guid pType, bool fUnconnected, int num, out IPin ppPin);
     }
 
     [ComImport()]
@@ -543,8 +543,8 @@ namespace DirectShow
     [Guid("a2104830-7c70-11cf-8bce-00aa00a3f1a6")]
     public interface IFileSinkFilter
     {
-        HRESULT SetFileName(string pszFileName, AM_MEDIA_TYPE pmt);
-        HRESULT GetCurFile(out string ppszFileName, out AM_MEDIA_TYPE pmt);
+        HRESULTMF SetFileName(string pszFileName, AM_MEDIA_TYPE pmt);
+        HRESULTMF GetCurFile(out string ppszFileName, out AM_MEDIA_TYPE pmt);
     }
 
     [ComImport()]
@@ -552,7 +552,7 @@ namespace DirectShow
     [Guid("670d1d20-a068-11d0-b3f0-00aa003761c5")]
     public interface IAMCopyCaptureFileProgress
     {
-        HRESULT Progress(int iProgress);
+        HRESULTMF Progress(int iProgress);
     }
 
     [ComImport()]
@@ -560,7 +560,7 @@ namespace DirectShow
     [Guid("29840822-5B84-11D0-BD3B-00A0C911CE86")]
     public interface ICreateDevEnum
     {
-        HRESULT CreateClassEnumerator(ref Guid clsidDeviceClass, out IEnumMoniker ppEnumMoniker, int dwFlags);
+        HRESULTMF CreateClassEnumerator(ref Guid clsidDeviceClass, out IEnumMoniker ppEnumMoniker, int dwFlags);
     }
 
     [ComImport]
@@ -568,10 +568,10 @@ namespace DirectShow
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IEnumMoniker
     {
-        HRESULT Next(uint celt, out IMoniker rgelt, out uint pceltFetched);
-        HRESULT Skip(uint celt);
-        HRESULT Reset();
-        HRESULT Clone(out IEnumMoniker ppenum);
+        HRESULTMF Next(uint celt, out IMoniker rgelt, out uint pceltFetched);
+        HRESULTMF Skip(uint celt);
+        HRESULTMF Reset();
+        HRESULTMF Clone(out IEnumMoniker ppenum);
     }
 
     [ComImport]
@@ -580,52 +580,52 @@ namespace DirectShow
     public interface IMoniker : IPersistStream
     {
         #region IPersist
-        new HRESULT GetClassID([Out] out Guid pClassID);
+        new HRESULTMF GetClassID([Out] out Guid pClassID);
         #endregion
 
         #region IPersistStream
-        new HRESULT IsDirty();
-        new HRESULT Load(System.Runtime.InteropServices.ComTypes.IStream pStm);
-        new HRESULT Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty);
-        new HRESULT GetSizeMax(out ULARGE_INTEGER pcbSize);
+        new HRESULTMF IsDirty();
+        new HRESULTMF Load(System.Runtime.InteropServices.ComTypes.IStream pStm);
+        new HRESULTMF Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty);
+        new HRESULTMF GetSizeMax(out ULARGE_INTEGER pcbSize);
         #endregion
 
         //HRESULT BindToObject(System.Runtime.InteropServices.ComTypes.IBindCtx pbc, IMoniker pmkToLeft, ref Guid riidResult, ref IntPtr ppvResult);
-        HRESULT BindToObject(IntPtr pbc, IMoniker pmkToLeft, ref Guid riidResult, ref IntPtr ppvResult);
+        HRESULTMF BindToObject(IntPtr pbc, IMoniker pmkToLeft, ref Guid riidResult, ref IntPtr ppvResult);
 
         //HRESULT BindToStorage(IBindCtx pbc, IMoniker pmkToLeft, ref Guid riid, out IntPtr ppvObj);
-        HRESULT BindToStorage(IntPtr pbc, IMoniker pmkToLeft, ref Guid riid, out IntPtr ppvObj);
+        HRESULTMF BindToStorage(IntPtr pbc, IMoniker pmkToLeft, ref Guid riid, out IntPtr ppvObj);
 
         //HRESULT Reduce(IBindCtx pbc, int dwReduceHowFar, ref IMoniker ppmkToLeft, out IMoniker ppmkReduced);
-        HRESULT Reduce(IntPtr pbc, int dwReduceHowFar, ref IMoniker ppmkToLeft, out IMoniker ppmkReduced);
+        HRESULTMF Reduce(IntPtr pbc, int dwReduceHowFar, ref IMoniker ppmkToLeft, out IMoniker ppmkReduced);
 
-        HRESULT ComposeWith(IMoniker pmkRight, bool fOnlyIfNotGeneric, out IMoniker ppmkComposite);
+        HRESULTMF ComposeWith(IMoniker pmkRight, bool fOnlyIfNotGeneric, out IMoniker ppmkComposite);
 
-        HRESULT Enum(bool fForward, out IEnumMoniker ppenumMoniker);
+        HRESULTMF Enum(bool fForward, out IEnumMoniker ppenumMoniker);
 
-        HRESULT IsEqual(IMoniker pmkOtherMoniker);
+        HRESULTMF IsEqual(IMoniker pmkOtherMoniker);
 
-        HRESULT Hash(out int pdwHash);
+        HRESULTMF Hash(out int pdwHash);
 
         //HRESULT IsRunning(IBindCtx pbc, IMoniker pmkToLeft, IMoniker pmkNewlyRunning);
-        HRESULT IsRunning(IntPtr pbc, IMoniker pmkToLeft, IMoniker pmkNewlyRunning);
+        HRESULTMF IsRunning(IntPtr pbc, IMoniker pmkToLeft, IMoniker pmkNewlyRunning);
 
         //HRESULT GetTimeOfLastChange(IBindCtx pbc, IMoniker pmkToLeft, out FILETIME pFileTime);
-        HRESULT GetTimeOfLastChange(IntPtr pbc, IMoniker pmkToLeft, out System.Runtime.InteropServices.ComTypes.FILETIME pFileTime);
+        HRESULTMF GetTimeOfLastChange(IntPtr pbc, IMoniker pmkToLeft, out System.Runtime.InteropServices.ComTypes.FILETIME pFileTime);
 
-        HRESULT Inverse(out IMoniker ppmk);
+        HRESULTMF Inverse(out IMoniker ppmk);
 
-        HRESULT CommonPrefixWith(IMoniker pmkOther, out IMoniker ppmkPrefix);
+        HRESULTMF CommonPrefixWith(IMoniker pmkOther, out IMoniker ppmkPrefix);
 
-        HRESULT RelativePathTo(IMoniker pmkOther, out IMoniker ppmkRelPath);
+        HRESULTMF RelativePathTo(IMoniker pmkOther, out IMoniker ppmkRelPath);
 
         //HRESULT GetDisplayName(IBindCtx pbc, IMoniker pmkToLeft, out LPOLESTR ppszDisplayName);
-        HRESULT GetDisplayName(IntPtr pbc, IMoniker pmkToLeft, out string ppszDisplayName);
+        HRESULTMF GetDisplayName(IntPtr pbc, IMoniker pmkToLeft, out string ppszDisplayName);
 
         //HRESULT ParseDisplayName(IBindCtx pbc, IMoniker pmkToLeft, LPOLESTR pszDisplayName, out uint pchEaten, out IMoniker ppmkOut);
-        HRESULT ParseDisplayName(IntPtr pbc, IMoniker pmkToLeft, string pszDisplayName, out uint pchEaten, out IMoniker ppmkOut);
+        HRESULTMF ParseDisplayName(IntPtr pbc, IMoniker pmkToLeft, string pszDisplayName, out uint pchEaten, out IMoniker ppmkOut);
 
-        HRESULT IsSystemMoniker(out int pdwMksys);
+        HRESULTMF IsSystemMoniker(out int pdwMksys);
     }
 
     [ComImport]
@@ -634,12 +634,12 @@ namespace DirectShow
     public interface IPersistStream : IPersist
     {
         #region IPersist
-        new HRESULT GetClassID([Out] out Guid pClassID);
+        new HRESULTMF GetClassID([Out] out Guid pClassID);
         #endregion
-        HRESULT IsDirty();
-        HRESULT Load(System.Runtime.InteropServices.ComTypes.IStream pStm);
-        HRESULT Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty);
-        HRESULT GetSizeMax(out ULARGE_INTEGER pcbSize);
+        HRESULTMF IsDirty();
+        HRESULTMF Load(System.Runtime.InteropServices.ComTypes.IStream pStm);
+        HRESULTMF Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty);
+        HRESULTMF GetSizeMax(out ULARGE_INTEGER pcbSize);
     }
 
     [StructLayout(LayoutKind.Explicit)]
@@ -660,10 +660,10 @@ namespace DirectShow
     {
         //HRESULT Read(string pszPropName, ref VARIANT* pVar, IErrorLog pErrorLog);
         //HRESULT Read(string pszPropName, ref IntPtr pVar, IErrorLog pErrorLog);
-        HRESULT Read(string pszPropName, out PROPVARIANT pVar, IErrorLog pErrorLog);
+        HRESULTMF Read(string pszPropName, out PROPVARIANT pVar, IErrorLog pErrorLog);
 
         //HRESULT Write(string pszPropName, VARIANT* pVar);
-        HRESULT Write(string pszPropName, IntPtr pVar);
+        HRESULTMF Write(string pszPropName, IntPtr pVar);
     }
 
     [ComImport]
@@ -672,7 +672,7 @@ namespace DirectShow
     public interface IErrorLog
     {
         //HRESULT AddError(LPCOLESTR pszPropName, System.Runtime.InteropServices.ComTypes.EXCEPINFO pExcepInfo);
-        HRESULT AddError([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropName, System.Runtime.InteropServices.ComTypes.EXCEPINFO pExcepInfo);
+        HRESULTMF AddError([In, MarshalAs(UnmanagedType.LPWStr)] string pszPropName, System.Runtime.InteropServices.ComTypes.EXCEPINFO pExcepInfo);
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -792,13 +792,13 @@ namespace DirectShow
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IVMRFilterConfig9
     {
-        HRESULT SetImageCompositor(IVMRImageCompositor9 lpVMRImgCompositor);
-        HRESULT SetNumberOfStreams(uint dwMaxStreams);
-        HRESULT GetNumberOfStreams(out uint pdwMaxStreams);
-        HRESULT SetRenderingPrefs(uint dwRenderFlags);
-        HRESULT GetRenderingPrefs(out uint pdwRenderFlags);
-        HRESULT SetRenderingMode(uint Mode);
-        HRESULT GetRenderingMode(out uint pMode);
+        HRESULTMF SetImageCompositor(IVMRImageCompositor9 lpVMRImgCompositor);
+        HRESULTMF SetNumberOfStreams(uint dwMaxStreams);
+        HRESULTMF GetNumberOfStreams(out uint pdwMaxStreams);
+        HRESULTMF SetRenderingPrefs(uint dwRenderFlags);
+        HRESULTMF GetRenderingPrefs(out uint pdwRenderFlags);
+        HRESULTMF SetRenderingMode(uint Mode);
+        HRESULTMF GetRenderingMode(out uint pMode);
     }
 
     [ComImport]
@@ -806,12 +806,12 @@ namespace DirectShow
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IVMRImageCompositor9
     {
-        HRESULT InitCompositionDevice(IntPtr pD3DDevice);
-        HRESULT TermCompositionDevice(IntPtr pD3DDevice);
-        HRESULT SetStreamMediaType(uint dwStrmID, AM_MEDIA_TYPE pmt, bool fTexture);
+        HRESULTMF InitCompositionDevice(IntPtr pD3DDevice);
+        HRESULTMF TermCompositionDevice(IntPtr pD3DDevice);
+        HRESULTMF SetStreamMediaType(uint dwStrmID, AM_MEDIA_TYPE pmt, bool fTexture);
         //HRESULT CompositeImage(IntPtr pD3DDevice, IDirect3DSurface9* pddsRenderTarget, AM_MEDIA_TYPE pmtRenderTarget, long rtStart,
         //     long rtEnd, uint dwClrBkGnd, VMR9VideoStreamInfo pVideoStreamInfo, uint cStreams);
-        HRESULT CompositeImage(IntPtr pD3DDevice, IntPtr pddsRenderTarget, AM_MEDIA_TYPE pmtRenderTarget, long rtStart,
+        HRESULTMF CompositeImage(IntPtr pD3DDevice, IntPtr pddsRenderTarget, AM_MEDIA_TYPE pmtRenderTarget, long rtStart,
             long rtEnd, uint dwClrBkGnd, ref VMR9VideoStreamInfo pVideoStreamInfo, uint cStreams);
     }
 
@@ -862,22 +862,22 @@ namespace DirectShow
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IVMRWindowlessControl9
     {
-        HRESULT GetNativeVideoSize(out int lpWidth, out int lpHeight, out int lpARWidth, out int lpARHeight);
-        HRESULT GetMinIdealVideoSize(out int lpWidth, out int lpHeight);
-        HRESULT GetMaxIdealVideoSize(out int lpWidth, out int lpHeight);
+        HRESULTMF GetNativeVideoSize(out int lpWidth, out int lpHeight, out int lpARWidth, out int lpARHeight);
+        HRESULTMF GetMinIdealVideoSize(out int lpWidth, out int lpHeight);
+        HRESULTMF GetMaxIdealVideoSize(out int lpWidth, out int lpHeight);
         //HRESULT SetVideoPosition(ref RECT lpSRCRect, ref RECT lpDSTRect);
-        HRESULT SetVideoPosition(IntPtr lpSRCRect, ref RECT lpDSTRect);
+        HRESULTMF SetVideoPosition(IntPtr lpSRCRect, ref RECT lpDSTRect);
         //HRESULT SetVideoPosition(IntPtr lpSRCRect, IntPtr lpDSTRect);
-        HRESULT GetVideoPosition(out RECT lpSRCRect, out RECT lpDSTRect);
-        HRESULT GetAspectRatioMode(out uint lpAspectRatioMode);
-        HRESULT SetAspectRatioMode(uint AspectRatioMode);
-        HRESULT SetVideoClippingWindow(IntPtr hwnd);
-        HRESULT RepaintVideo(IntPtr hwnd, IntPtr hdc);
-        HRESULT DisplayModeChanged();
+        HRESULTMF GetVideoPosition(out RECT lpSRCRect, out RECT lpDSTRect);
+        HRESULTMF GetAspectRatioMode(out uint lpAspectRatioMode);
+        HRESULTMF SetAspectRatioMode(uint AspectRatioMode);
+        HRESULTMF SetVideoClippingWindow(IntPtr hwnd);
+        HRESULTMF RepaintVideo(IntPtr hwnd, IntPtr hdc);
+        HRESULTMF DisplayModeChanged();
         //HRESULT GetCurrentImage(out BYTE** lpDib);
-        HRESULT GetCurrentImage(out IntPtr lpDib);
-        HRESULT SetBorderColor(uint Clr);
-        HRESULT GetBorderColor(out uint lpClr);
+        HRESULTMF GetCurrentImage(out IntPtr lpDib);
+        HRESULTMF SetBorderColor(uint Clr);
+        HRESULTMF GetBorderColor(out uint lpClr);
     }
 
     //[ComImport]
@@ -896,13 +896,13 @@ namespace DirectShow
     public interface IVMRMixerBitmap9
     {
         [PreserveSig]
-        HRESULT SetAlphaBitmap([In] ref VMR9AlphaBitmap pBmpParms);
+        HRESULTMF SetAlphaBitmap([In] ref VMR9AlphaBitmap pBmpParms);
 
         [PreserveSig]
-        HRESULT UpdateAlphaBitmapParameters([In] ref VMR9AlphaBitmap pBmpParms);
+        HRESULTMF UpdateAlphaBitmapParameters([In] ref VMR9AlphaBitmap pBmpParms);
 
         [PreserveSig]
-        HRESULT GetAlphaBitmapParameters([Out] out VMR9AlphaBitmap pBmpParms);
+        HRESULTMF GetAlphaBitmapParameters([Out] out VMR9AlphaBitmap pBmpParms);
     }
 
     /// <summary> 
